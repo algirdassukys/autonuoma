@@ -5,7 +5,8 @@ class config {
 	const DB_NAME      = 'autonuoma_min';
 	const DB_USERNAME  = 'root';
 	const DB_PASSWORD  = '';
-	const DB_PREFIX	   = 'pavyzdys_3';
+
+	const DB_PREFIX	   = 'pavyzdys_';
 	
 	const NUMBER_OF_ROWS_IN_PAGE = 10;
 }
