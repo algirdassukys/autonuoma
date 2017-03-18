@@ -36,9 +36,6 @@
 		$pageId = mysql::escape($_GET['page']);
 	}
 	
-	// nustatome, kiek įrašų rodysime elementų sąraše
-	define('NUMBER_OF_ROWS_IN_PAGE', 2);
-	
 	// nustatome, kurį veiksmų failą įtraukti į šabloną main.tpl.php
 	$actionFile = "";
 	if(!empty($module) && !empty($action)) {
