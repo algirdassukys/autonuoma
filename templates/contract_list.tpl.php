@@ -8,7 +8,7 @@
 </div>
 <div class="float-clear"></div>
 
-<table>
+<table class="listTable">
 	<tr>
 		<th>Nr.</th>
 		<th>Data</th>

@@ -213,28 +213,30 @@ class contracts {
 	public function updateOrderedServices($data) {
 		$this->deleteOrderedServices($data['nr']);
 		
-		foreach($data['paslaugos'] as $key=>$val) {
-			$tmp = explode(":", $val);
-			$serviceId = $tmp[0];
-			$price = $tmp[1];
-			$date_from = $tmp[2];
-			$query = "  INSERT INTO `{$this->uzsakytos_paslaugos_lentele}`
-									(
-										`fk_sutartis`,
-										`fk_kaina_galioja_nuo`,
-										`fk_paslauga`,
-										`kiekis`,
-										`kaina`
-									)
-									VALUES
-									(
-										'{$data['nr']}',
-										'{$date_from}',
-										'{$serviceId}',
-										'{$data['kiekiai'][$key]}',
-										'{$price}'
-									)";
-				mysql::query($query);
+		if(isset($data['paslaugos']) && sizeof($data['paslaugos']) > 0) {
+			foreach($data['paslaugos'] as $key=>$val) {
+				$tmp = explode(":", $val);
+				$serviceId = $tmp[0];
+				$price = $tmp[1];
+				$date_from = $tmp[2];
+				$query = "  INSERT INTO `{$this->uzsakytos_paslaugos_lentele}`
+										(
+											`fk_sutartis`,
+											`fk_kaina_galioja_nuo`,
+											`fk_paslauga`,
+											`kiekis`,
+											`kaina`
+										)
+										VALUES
+										(
+											'{$data['nr']}',
+											'{$date_from}',
+											'{$serviceId}',
+											'{$data['kiekiai'][$key]}',
+											'{$price}'
+										)";
+					mysql::query($query);
+			}
 		}
 	}
 	

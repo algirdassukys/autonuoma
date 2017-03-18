@@ -40,12 +40,12 @@
 			</p>
 			<p>
 				<label class="field" for="valstybinis_nr">Valstybinis numeris<?php echo in_array('valstybinis_nr', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="valstybinis_nr" name="valstybinis_nr" class="textbox-70" value="<?php echo isset($data['valstybinis_nr']) ? $data['valstybinis_nr'] : ''; ?>">
+				<input type="text" id="valstybinis_nr" name="valstybinis_nr" class="textbox textbox-70" value="<?php echo isset($data['valstybinis_nr']) ? $data['valstybinis_nr'] : ''; ?>">
 				<?php if(key_exists('valstybinis_nr', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['valstybinis_nr']} simb.)</span>"; ?>
 			</p>
 			<p>
 				<label class="field" for="pagaminimo_data">Pagaminimo data<?php echo in_array('pagaminimo_data', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="pagaminimo_data" name="pagaminimo_data" class="textbox-70 date" value="<?php echo isset($data['pagaminimo_data']) ? $data['pagaminimo_data'] : ''; ?>"></p>
+				<input type="text" id="pagaminimo_data" name="pagaminimo_data" class="textbox textbox-70 date" value="<?php echo isset($data['pagaminimo_data']) ? $data['pagaminimo_data'] : ''; ?>"></p>
 			<p>
 				<label class="field" for="pavaru_deze">Pavarų dėžė<?php echo in_array('pavaru_deze', $required) ? '<span> *</span>' : ''; ?></label>
 				<select id="pavaru_deze" name="pavaru_deze">
@@ -133,7 +133,7 @@
 			</p>
 			<p>
 				<label class="field" for="rida">Rida<?php echo in_array('rida', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="rida" name="rida" class="textbox-70" value="<?php echo isset($data['rida']) ? $data['rida'] : ''; ?>"><span class="units">km.</span>
+				<input type="text" id="rida" name="rida" class="textbox textbox-70" value="<?php echo isset($data['rida']) ? $data['rida'] : ''; ?>"><span class="units">km.</span>
 			</p>
 			<p>
 				<label class="field" for="radijas">Radijas</label>
@@ -149,20 +149,20 @@
 			</p>
 			<p>
 				<label class="field" for="vietu_skaicius">Vietų skaičius<?php echo in_array('vietu_skaicius', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="vietu_skaicius" name="vietu_skaicius" class="textbox-30" value="<?php echo isset($data['vietu_skaicius']) ? $data['vietu_skaicius'] : ''; ?>">
+				<input type="text" id="vietu_skaicius" name="vietu_skaicius" class="textbox textbox-30" value="<?php echo isset($data['vietu_skaicius']) ? $data['vietu_skaicius'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="registravimo_data">Registravimo data<?php echo in_array('registravimo_data', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="registravimo_data" name="registravimo_data" class="textbox-70 date" value="<?php echo isset($data['registravimo_data']) ? $data['registravimo_data'] : ''; ?>">
+				<input type="text" id="registravimo_data" name="registravimo_data" class="textbox textbox-70 date" value="<?php echo isset($data['registravimo_data']) ? $data['registravimo_data'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="verte">Vertė<?php echo in_array('verte', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="verte" name="verte" class="textbox-70" value="<?php echo isset($data['verte']) ? $data['verte'] : ''; ?>"><span class="units">&euro;</span>
+				<input type="text" id="verte" name="verte" class="textbox textbox-70" value="<?php echo isset($data['verte']) ? $data['verte'] : ''; ?>"><span class="units">&euro;</span>
 			</p>
 		</fieldset>
 		<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 		<p>
-			<input type="submit" class="submit" name="submit" value="Išsaugoti">
+			<input type="submit" class="submit button" name="submit" value="Išsaugoti">
 		</p>
 		<?php if(isset($data['id'])) { ?>
 			<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />

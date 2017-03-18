@@ -41,9 +41,11 @@ if(!empty($_POST['submit'])) {
 
 		// pašaliname paslaugos kainas, kurios nėra naudojamos sutartyse
 		$deleteQueryClause = "";
-		foreach($dataPrepared['kainos'] as $key=>$val) {
-			if($dataPrepared['neaktyvus'][$key] == 1) {
-				$deleteQueryClause .= " AND NOT `galioja_nuo`='" . $dataPrepared['datos'][$key] . "'";
+		if(sizeof($dataPrepared['kainos']) > 0) {
+			foreach($dataPrepared['kainos'] as $key=>$val) {
+				if($dataPrepared['neaktyvus'][$key] == 1) {
+					$deleteQueryClause .= " AND NOT `galioja_nuo`='" . $dataPrepared['datos'][$key] . "'";
+				}
 			}
 		}
 		$servicesObj->deleteServicePrices($dataPrepared['id'], $deleteQueryClause);

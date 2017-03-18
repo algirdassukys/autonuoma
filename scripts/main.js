@@ -12,7 +12,6 @@ $(window).ready(function (){
             // klonuojame vaikinio įrašo eilutę
             rowClone = childRowContainer.children(".childRow:last").clone(true, true);
             var test = 10;
-			debugger
 			
             // pašaliname klonuotų įvedimo elementų reikšmes
             $(rowClone).children("input[type=text]").val("");
@@ -52,19 +51,19 @@ $(window).ready(function (){
     // Datos ir laiko įskiepių nustatymas
     $.datetimepicker.setLocale('lt');
     $('.datetime').datetimepicker({
-        format:'Y-m-d H:i',
+        format: 'Y-m-d H:i',
         dayOfWeekStart : 1,
         startDate: '2016-01-01',
         defaultDate: '2016-01-01'
     });
     
     $('.date').datetimepicker({
-        yearOffset:222,
-        timepicker:false,
-        format:'Y-m-d',
-        formatDate:'Y-m-d',
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
         defaultDate: '2016-01-01'
     });
+   
     
 });
 

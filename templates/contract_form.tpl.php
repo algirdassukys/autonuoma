@@ -19,7 +19,7 @@
 			<p>
 				<?php if(!isset($data['editing'])) { ?>
 					<label class="field" for="nr">Numeris<?php echo in_array('nr', $required) ? '<span> *</span>' : ''; ?></label>
-					<input type="text" id="nr" name="nr" class="textbox-70" value="<?php echo isset($data['nr']) ? $data['nr'] : ''; ?>">
+					<input type="text" id="nr" name="nr" class="textbox textbox-70" value="<?php echo isset($data['nr']) ? $data['nr'] : ''; ?>">
 				<?php } else { ?>
 						<label class="field" for="nr">Numeris</label>
 						<span class="input-value"><?php echo $data['nr']; ?></span>
@@ -29,7 +29,7 @@
 			</p>
 			<p>
 				<label class="field" for="sutarties_data">Data<?php echo in_array('sutarties_data', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="sutarties_data" name="sutarties_data" class="date textbox-70" value="<?php echo isset($data['sutarties_data']) ? $data['sutarties_data'] : ''; ?>">
+				<input type="text" id="sutarties_data" name="sutarties_data" class="textbox date textbox-70" value="<?php echo isset($data['sutarties_data']) ? $data['sutarties_data'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="fk_klientas">Klientas<?php echo in_array('fk_klientas', $required) ? '<span> *</span>' : ''; ?></label>
@@ -37,8 +37,8 @@
 					<option value="">---------------</option>
 					<?php
 						// išrenkame klientus
-						$data = $customersObj->getCustomersList();
-						foreach($data as $key => $val) {
+						$customers = $customersObj->getCustomersList();
+						foreach($customers as $key => $val) {
 							$selected = "";
 							if(isset($data['fk_klientas']) && $data['fk_klientas'] == $val['asmens_kodas']) {
 								$selected = " selected='selected'";
@@ -54,8 +54,8 @@
 					<option value="">---------------</option>
 					<?php
 						// išrenkame vartotojus
-						$data = $employeesObj->getEmplyeesList();
-						foreach($data as $key => $val) {
+						$employees = $employeesObj->getEmplyeesList();
+						foreach($employees as $key => $val) {
 							$selected = "";
 							if(isset($data['fk_darbuotojas']) && $data['fk_darbuotojas'] == $val['tabelio_nr']) {
 								$selected = " selected='selected'";
@@ -67,15 +67,15 @@
 			</p>
 			<p>
 				<label class="field" for="nuomos_data_laikas">Nuomos data ir laikas<?php echo in_array('nuomos_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="nuomos_data_laikas" name="nuomos_data_laikas" class="datetime textbox-150" value="<?php echo isset($data['nuomos_data_laikas']) ? $data['nuomos_data_laikas'] : ''; ?>">
+				<input type="text" id="nuomos_data_laikas" name="nuomos_data_laikas" class="textbox datetime textbox-150" value="<?php echo isset($data['nuomos_data_laikas']) ? $data['nuomos_data_laikas'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="planuojama_grazinimo_data_laikas">Planuojama grąžinti<?php echo in_array('planuojama_grazinimo_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="planuojama_grazinimo_data_laikas" name="planuojama_grazinimo_data_laikas" class="datetime textbox-150" value="<?php echo isset($data['planuojama_grazinimo_data_laikas']) ? $data['planuojama_grazinimo_data_laikas'] : ''; ?>">
+				<input type="text" id="planuojama_grazinimo_data_laikas" name="planuojama_grazinimo_data_laikas" class="textbox datetime textbox-150" value="<?php echo isset($data['planuojama_grazinimo_data_laikas']) ? $data['planuojama_grazinimo_data_laikas'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="faktine_grazinimo_data_laikas">Grąžinta<?php echo in_array('faktine_grazinimo_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="faktine_grazinimo_data_laikas" name="faktine_grazinimo_data_laikas" class="datetime textbox-150" value="<?php echo isset($data['faktine_grazinimo_data_laikas']) ? $data['faktine_grazinimo_data_laikas'] : ''; ?>">
+				<input type="text" id="faktine_grazinimo_data_laikas" name="faktine_grazinimo_data_laikas" class="textbox datetime textbox-150" value="<?php echo isset($data['faktine_grazinimo_data_laikas']) ? $data['faktine_grazinimo_data_laikas'] : ''; ?>">
 			</p>
 			<p>
 				<label class="field" for="busena">Būsena<?php echo in_array('busena', $required) ? '<span> *</span>' : ''; ?></label>
@@ -96,7 +96,7 @@
 			</p>
 			<p>
 				<label class="field" for="kaina">Nuomos kaina<?php echo in_array('kaina', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="kaina" name="kaina" class="textbox-70" value="<?php echo isset($data['kaina']) ? $data['kaina'] : ''; ?>"> <span class="units">&euro;</span>
+				<input type="text" id="kaina" name="kaina" class="textbox textbox-70" value="<?php echo isset($data['kaina']) ? $data['kaina'] : ''; ?>"> <span class="units">&euro;</span>
 			</p>
 			<p>
 				<label class="field" for="bendra_kaina">Bendra kaina su paslaugomis</label><span class="units"><?php echo isset($data['bendra_kaina']) ? $data['bendra_kaina'] . ' &euro;' : ''; ?></span>
@@ -112,8 +112,8 @@
 					<option value="">---------------</option>
 					<?php
 						// išrenkame automobilius
-						$data = $carsObj->getCarList();
-						foreach($data as $key => $val) {
+						$cars = $carsObj->getCarList();
+						foreach($cars as $key => $val) {
 							$selected = "";
 							if(isset($data['fk_automobilis']) && $data['fk_automobilis'] == $val['id']) {
 								$selected = " selected='selected'";
@@ -129,8 +129,8 @@
 					<option value="">---------------</option>
 					<?php
 						// išrenkame aikšteles
-						$data = $contractsObj->getParkingLots();
-						foreach($data as $key => $val) {
+						$parkingLots = $contractsObj->getParkingLots();
+						foreach($parkingLots as $key => $val) {
 							$selected = "";
 							if(isset($data['fk_paemimo_vieta']) && $data['fk_paemimo_vieta'] == $val['id']) {
 								$selected = " selected='selected'";
@@ -142,11 +142,11 @@
 			</p>
 			<p>
 				<label class="field" for="pradine_rida">Rida paimant<?php echo in_array('pradine_rida', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="pradine_rida" name="pradine_rida" class="textbox-70" value="<?php echo isset($data['pradine_rida']) ? $data['pradine_rida'] : ''; ?>"><span class="units">km.</span>
+				<input type="text" id="pradine_rida" name="pradine_rida" class="textbox textbox-70" value="<?php echo isset($data['pradine_rida']) ? $data['pradine_rida'] : ''; ?>"><span class="units">km.</span>
 			</p>
 			<p>
 				<label class="field" for="degalu_kiekis_paimant">Degalų kiekis paimant<?php echo in_array('degalu_kiekis_paimant', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="degalu_kiekis_paimant" name="degalu_kiekis_paimant" class="textbox-70" value="<?php echo isset($data['degalu_kiekis_paimant']) ? $data['degalu_kiekis_paimant'] : ''; ?>"><span class="units">l.</span>
+				<input type="text" id="degalu_kiekis_paimant" name="degalu_kiekis_paimant" class="textbox textbox-70" value="<?php echo isset($data['degalu_kiekis_paimant']) ? $data['degalu_kiekis_paimant'] : ''; ?>"><span class="units">l.</span>
 			</p>
 			<p>
 				<label class="field" for="fk_grazinimo_vieta">Grąžinimo vieta<?php echo in_array('fk_grazinimo_vieta', $required) ? '<span> *</span>' : ''; ?></label>
@@ -154,8 +154,8 @@
 					<option value="">---------------</option>
 					<?php
 						// išrenkame aikšteles
-						$data = $contractsObj->getParkingLots();
-						foreach($data as $key => $val) {
+						$parkingLots = $contractsObj->getParkingLots();
+						foreach($parkingLots as $key => $val) {
 							$selected = "";
 							if(isset($data['fk_grazinimo_vieta']) && $data['fk_grazinimo_vieta'] == $val['id']) {
 								$selected = " selected='selected'";
@@ -167,11 +167,11 @@
 			</p>
 			<p>
 				<label class="field" for="galine_rida">Rida grąžinus<?php echo in_array('galine_rida', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="galine_rida" name="galine_rida" class="textbox-70" value="<?php echo isset($data['galine_rida']) ? $data['galine_rida'] : ''; ?>"><span class="units">km.</span>
+				<input type="text" id="galine_rida" name="galine_rida" class="textbox textbox-70" value="<?php echo isset($data['galine_rida']) ? $data['galine_rida'] : ''; ?>"><span class="units">km.</span>
 			</p>
 			<p>
 				<label class="field" for="dagalu_kiekis_grazinus">Degalų kiekis grąžinus<?php echo in_array('dagalu_kiekis_grazinus', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="dagalu_kiekis_grazinus" name="dagalu_kiekis_grazinus" class="textbox-70" value="<?php echo isset($data['dagalu_kiekis_grazinus']) ? $data['dagalu_kiekis_grazinus'] : ''; ?>"><span class="units">l.</span>
+				<input type="text" id="dagalu_kiekis_grazinus" name="dagalu_kiekis_grazinus" class="textbox textbox-70" value="<?php echo isset($data['dagalu_kiekis_grazinus']) ? $data['dagalu_kiekis_grazinus'] : ''; ?>"><span class="units">l.</span>
 			</p>
 		</fieldset>
 
@@ -201,7 +201,7 @@
 								}
 							?>
 						</select>
-						<input type="text" name="kiekiai[]" class="textbox-30" value="" disabled="disabled" />
+						<input type="text" name="kiekiai[]" class="textbox textbox-30" value="" disabled="disabled" />
 						<a href="#" title="" class="removeChild">šalinti</a>
 					</div>
 					<div class="float-clear"></div>
@@ -227,7 +227,7 @@
 									}
 								?>
 							</select>
-							<input type="text" name="kiekiai[]" class="textbox-30" value="<?php echo isset($val['kiekis']) ? $val['kiekis'] : ''; ?>" />
+							<input type="text" name="kiekiai[]" class="textbox textbox-30" value="<?php echo isset($val['kiekis']) ? $val['kiekis'] : ''; ?>" />
 							<a href="#" title="" class="removeChild">šalinti</a>
 						</div>
 						<div class="float-clear"></div>
@@ -240,9 +240,12 @@
 				<a href="#" title="" class="addChild">Pridėti</a>
 			</p>
 		</fieldset>
+		
+		<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 		<p>
-			<input type="submit" class="submit" name="submit" value="Išsaugoti">
+			<input type="submit" class="submit button" name="submit" value="Išsaugoti">
 		</p>
+
 		<input type="hidden" name="id" value="<?php echo isset($data['id']) ? $data['id'] : ''; ?>" />
 	</form>
 </div>

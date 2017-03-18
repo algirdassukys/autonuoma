@@ -105,6 +105,7 @@ class services {
 	/**
 	 * Paslaugos įrašymas
 	 * @param type $data
+	 * @return įrašytos paslaugos ID
 	 */
 	public function insertService($data) {
 		$query = "  INSERT INTO `{$this->paslaugos_lentele}`
@@ -118,6 +119,8 @@ class services {
 									'{$data['aprasymas']}'
 								)";
 		mysql::query($query);
+		
+		return mysql::getLastInsertedId();
 	}
 	
 	/**
@@ -147,21 +150,23 @@ class services {
 	 * @param type $data
 	 */
 	public function insertServicePrices($data) {
-		foreach($data['kainos'] as $key=>$val) {
-			if($data['neaktyvus'] == array() || $data['neaktyvus'][$key] == 0) {
-				$query = "  INSERT INTO `{$this->paslaugu_kainos_lentele}`
-										(
-											`fk_paslauga`,
-											`galioja_nuo`,
-											`kaina`
-										)
-										VALUES
-										(
-											'{$data['id']}',
-											'{$data['datos'][$key]}',
-											'{$val}'
-										)";
-				mysql::query($query);
+		if(isset($data['kainos']) && sizeof($data['kainos']) > 0) {
+			foreach($data['kainos'] as $key=>$val) {
+				if($data['neaktyvus'] == array() || $data['neaktyvus'][$key] == 0) {
+					$query = "  INSERT INTO `{$this->paslaugu_kainos_lentele}`
+											(
+												`fk_paslauga`,
+												`galioja_nuo`,
+												`kaina`
+											)
+											VALUES
+											(
+												'{$data['id']}',
+												'{$data['datos'][$key]}',
+												'{$val}'
+											)";
+					mysql::query($query);
+				}
 			}
 		}
 	}

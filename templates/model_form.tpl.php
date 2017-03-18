@@ -35,13 +35,13 @@
 			</p>
 			<p>
 				<label class="field" for="name">Pavadinimas<?php echo in_array('pavadinimas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="name" name="pavadinimas" class="textbox-150" value="<?php echo isset($data['pavadinimas']) ? $data['pavadinimas'] : ''; ?>">
+				<input type="text" id="name" name="pavadinimas" class="textbox textbox-150" value="<?php echo isset($data['pavadinimas']) ? $data['pavadinimas'] : ''; ?>">
 				<?php if(key_exists('pavadinimas', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['pavadinimas']} simb.)</span>"; ?>
 			</p>
 		</fieldset>
 		<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 		<p>
-			<input type="submit" class="submit" name="submit" value="Išsaugoti">
+			<input type="submit" class="submit button" name="submit" value="Išsaugoti">
 		</p>
 		<?php if(isset($data['id'])) { ?>
 			<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />

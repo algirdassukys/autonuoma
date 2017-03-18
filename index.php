@@ -42,7 +42,7 @@
 	// nustatome, kurį veiksmų failą įtraukti į šabloną main.tpl.php
 	$actionFile = "";
 	if(!empty($module) && !empty($action)) {
-		$actionFile = "actions/{$module}_{$action}.php";
+		$actionFile = "controls/{$module}_{$action}.php";
 	}
 	
 	// įtraukiame pagrindinį šabloną

@@ -13,7 +13,7 @@
 	</div>
 <?php } ?>
 
-<table>
+<table class="listTable">
 	<tr>
 		<th>Tabelio nr.</th>
 		<th>Vardas</th>

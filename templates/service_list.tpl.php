@@ -14,7 +14,7 @@
 	</div>
 <?php } ?>
 
-<table>
+<table class="listTable">
 	<tr>
 		<th>ID</th>
 		<th>Pavadinimas</th>

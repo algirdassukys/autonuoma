@@ -18,7 +18,7 @@
 			<legend>Papildomos paslaugos informacija</legend>
 			<p>
 				<label class="field" for="pavadinimas">Pavadinimas<?php echo in_array('pavadinimas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="pavadinimas" name="pavadinimas" class="textbox-150" value="<?php echo isset($data['pavadinimas']) ? $data['pavadinimas'] : ''; ?>">
+				<input type="text" id="pavadinimas" name="pavadinimas" class="textbox textbox-200" value="<?php echo isset($data['pavadinimas']) ? $data['pavadinimas'] : ''; ?>">
 				<?php if(key_exists('pavadinimas', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['pavadinimas']} simb.)</span>"; ?>
 			</p>
 			<p>
@@ -39,8 +39,8 @@
 				?>
 					
 					<div class="childRow hidden">
-						<input type="text" name="kainos[]" value="" class="textbox-70" disabled="disabled" />
-						<input type="text" name="datos[]" value="" class="textbox-70" disabled="disabled" />
+						<input type="text" name="kainos[]" value="" class="textbox textbox-70" disabled="disabled" />
+						<input type="text" name="datos[]" value="" class="textbox textbox-70" disabled="disabled" />
 						<input type="hidden" class="isDisabledForEditing" name="neaktyvus[]" value="0" />
 						<a href="#" title="" class="removeChild">šalinti</a>
 					</div>
@@ -51,8 +51,8 @@
 						foreach($data['paslaugos_kainos'] as $key => $val) {
 				?>
 							<div class="childRow">
-								<input type="text" name="kainos[]" value="<?php echo $val['kaina']; ?>" class="textbox-70<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo ' disabledInput'; ?>" />
-								<input type="text" name="datos[]" value="<?php echo $val['galioja_nuo']; ?>" class="textbox-70<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo ' disabledInput'; ?>" />
+								<input type="text" name="kainos[]" value="<?php echo $val['kaina']; ?>" class="textbox textbox-70<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo ' disabledInput'; ?>" />
+								<input type="text" name="datos[]" value="<?php echo $val['galioja_nuo']; ?>" class="textbox textbox-70<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo ' disabledInput'; ?>" />
 								<input type="hidden" class="isDisabledForEditing" name="neaktyvus[]" value="<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo "1"; else echo "0"; ?>" />
 								<a href="#" title="" class="removeChild<?php if(isset($val['neaktyvus']) && $val['neaktyvus'] == 1) echo " hidden"; ?>">šalinti</a>
 							</div>
@@ -69,7 +69,7 @@
 		
 		<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 		<p>
-			<input type="submit" class="submit" name="submit" value="Išsaugoti">
+			<input type="submit" class="submit button" name="submit" value="Išsaugoti">
 		</p>
 		<?php if(isset($data['id'])) { ?>
 			<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />

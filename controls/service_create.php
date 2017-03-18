@@ -36,9 +36,9 @@ if(!empty($_POST['submit'])) {
 		// suformuojame laukų reikšmių masyvą SQL užklausai
 		$dataPrepared = $validator->preparePostFieldsForSQL();
 		
-		// įrašome naują įrašą
-		$servicesObj->insertService($dataPrepared);
-
+		// įrašome naują pasaugą ir gauname jos id
+		$dataPrepared['id'] = $servicesObj->insertService($dataPrepared);
+		
 		// įrašome paslaugų kainas
 		$servicesObj->insertServicePrices($dataPrepared);
 

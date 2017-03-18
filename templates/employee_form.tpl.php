@@ -19,7 +19,7 @@
 				<p>
 					<label class="field" for="tabelio_nr">Tabelio numeris<?php echo in_array('tabelio_nr', $required) ? '<span> *</span>' : ''; ?></label>
 					<?php if(!isset($data['editing'])) { ?>
-						<input type="text" id="tabelio_nr" name="tabelio_nr" class="textbox-150" value="<?php echo isset($data['tabelio_nr']) ? $data['tabelio_nr'] : ''; ?>" />
+						<input type="text" id="tabelio_nr" name="tabelio_nr" class="textbox textbox-150" value="<?php echo isset($data['tabelio_nr']) ? $data['tabelio_nr'] : ''; ?>" />
 						<?php if(key_exists('tabelio_nr', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['tabelio_nr']} simb.)</span>"; ?>
 					<?php } else { ?>
 						<span class="input-value"><?php echo $data['tabelio_nr']; ?></span>
@@ -29,18 +29,18 @@
 				</p>
 			<p>
 				<label class="field" for="vardas">Vardas<?php echo in_array('vardas', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="vardas" name="vardas" class="textbox-150" value="<?php echo isset($data['vardas']) ? $data['vardas'] : ''; ?>" />
+				<input type="text" id="vardas" name="vardas" class="textbox textbox-150" value="<?php echo isset($data['vardas']) ? $data['vardas'] : ''; ?>" />
 				<?php if(key_exists('vardas', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['vardas']} simb.)</span>"; ?>
 			</p>
 			<p>
 				<label class="field" for="pavarde">Pavardė<?php echo in_array('pavarde', $required) ? '<span> *</span>' : ''; ?></label>
-				<input type="text" id="pavarde" name="pavarde" class="textbox-150" value="<?php echo isset($data['pavarde']) ? $data['pavarde'] : ''; ?>" />
+				<input type="text" id="pavarde" name="pavarde" class="textbox textbox-150" value="<?php echo isset($data['pavarde']) ? $data['pavarde'] : ''; ?>" />
 				<?php if(key_exists('pavarde', $maxLengths)) echo "<span class='max-len'>(iki {$maxLengths['pavarde']} simb.)</span>"; ?>
 			</p>
 		</fieldset>
 		<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 		<p>
-			<input type="submit" class="submit" name="submit" value="Išsaugoti">
+			<input type="submit" class="submit button" name="submit" value="Išsaugoti">
 		</p>
 	</form>
 </div>
