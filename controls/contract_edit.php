@@ -84,6 +84,9 @@ if(!empty($_POST['submit'])) {
 	$data['uzsakytos_paslaugos'] = $contractsObj->getOrderedServices($id);
 }
 
+// nustatome požymį, kad įrašas redaguojamas norint išjungti ID redagavimą šablone
+$data['editing'] = 1;
+
 // įtraukiame šabloną
 include 'templates/contract_form.tpl.php';
 

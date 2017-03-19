@@ -53,6 +53,9 @@ if(!empty($_POST['submit'])) {
 	$data = $employeesObj->getEmployee($id);
 }
 
+// nustatome požymį, kad įrašas redaguojamas norint išjungti ID redagavimą šablone
+$data['editing'] = 1;
+
 // įtraukiame šabloną
 include 'templates/employee_form.tpl.php';
 
