@@ -17,17 +17,10 @@
 		$id = mysql::escape($_GET['id']);
 	}
 	
-	// nustatome, ar kuriamas naujas elementas
+	// nustatome, kokia funkcija kviečiama
 	$action = '';
 	if(isset($_GET['action'])) {
 		$action = mysql::escape($_GET['action']);
-	}
-	
-	// jeigu šalinamas elementas, nustatome šalinamo elemento id
-	$removeId = 0;
-	if(!empty($_GET['remove'])) {
-		// paruošiame $_GET masyvo id reikšmę SQL užklausai
-		$removeId = mysql::escape($_GET['remove']);
 	}
 		
 	// nustatome elementų sąrašo puslapio numerį
@@ -36,7 +29,7 @@
 		$pageId = mysql::escape($_GET['page']);
 	}
 	
-	// nustatome, kurį veiksmų failą įtraukti į šabloną main.tpl.php
+	// nustatome, kurį valdiklį įtraukti šablone main.tpl.php
 	$actionFile = "";
 	if(!empty($module) && !empty($action)) {
 		$actionFile = "controls/{$module}_{$action}.php";
