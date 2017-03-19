@@ -3,7 +3,8 @@
 	<li>Sutartys</li>
 </ul>
 <div id="actions">
-	<a href="report.php?id=1" target="_blank">Sutarčių ataskaita</a>
+	<a href='index.php?module=<?php echo $module; ?>&action=report_delayed_cars'>Vėluojamų grąžinti automobilių ataskaita</a>
+	<a href='index.php?module=<?php echo $module; ?>&action=report'>Sutarčių ataskaita</a>
 	<a href='index.php?module=<?php echo $module; ?>&action=create'>Nauja sutartis</a>
 </div>
 <div class="float-clear"></div>
