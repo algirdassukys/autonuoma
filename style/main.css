@@ -338,7 +338,7 @@ h2#pageTitle {
 }
 #formContainer span.input-value {
     display: block;
-    margin-top: 3px;
+    margin-top: 7px;
     font-style: italic;
 }
 #formContainer p.required-note {
