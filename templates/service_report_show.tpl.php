@@ -55,7 +55,7 @@
 				<td class="border"><?php echo "{$servicesStats[0]['bendra_suma']}"; ?> &euro;</td>
 			</tr>
 		</table>
-		<a href="index.php?module=report&action=services" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
+		<a href="index.php?module=service&action=report" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   
 	} else {
 ?>

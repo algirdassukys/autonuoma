@@ -96,7 +96,7 @@
 				</td>
 			</tr>
 		</table>
-		<a href="index.php?module=report&action=contracts" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
+		<a href="index.php?module=contract&action=report" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   
 	} else {
 ?>

@@ -11,7 +11,7 @@ $data = array();
 if(empty($_POST['submit'])) {
 
 	// rodome ataskaitos parametrų įvedimo formą
-	include 'templates/report_delayed_cars_form.tpl.php';
+	include 'templates/contract_report_form.tpl.php';
 } else {
 	$formSubmitted = true;
 
@@ -35,13 +35,15 @@ if(empty($_POST['submit'])) {
 		$fields = $_POST;
 
 		// rodome ataskaitos parametrų įvedimo formą su klaidomis ir sustabdome scenarijaus vykdym1
-		include 'templates/report_delayed_cars_form.tpl.php';
+		include 'templates/contract_report_form.tpl.php';
 		exit;
 	}
 
 	// išrenkame ataskaitos duomenis
-	$delayedCarsData = $contractsObj->getDelayedCars($data['dataNuo'], $data['dataIki']);
+	$contractData = $contractsObj->getCustomerContracts($data['dataNuo'], $data['dataIki']);
+	$totalPrice = $contractsObj->getSumPriceOfContracts($data['dataNuo'], $data['dataIki']);
+	$totalServicePrice = $contractsObj->getSumPriceOfOrderedServices($data['dataNuo'], $data['dataIki']);
 
 	// rodome ataskaitą
-	include 'templates/report_delayed_cars_show.tpl.php';
+	include 'templates/contract_report_show.tpl.php';
 }

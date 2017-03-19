@@ -44,7 +44,7 @@
 				}
 			?>
 		</table>
-		<a href="index.php?module=report&action=delayed_cars" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
+		<a href="index.php?module=contract&action=report_delayed_cars" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   
 	} else { 
 ?>
