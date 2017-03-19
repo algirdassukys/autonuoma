@@ -4,12 +4,12 @@
 include 'libraries/contracts.class.php';
 $contractsObj = new contracts();
 
-// suskaičiuojame bendrą įrašų kiekį
-$elementCount = $contractsObj->getContractListCount();
-
 // sukuriame puslapiavimo klasės objektą
 include 'utils/paging.class.php';
 $paging = new paging(config::NUMBER_OF_ROWS_IN_PAGE);
+
+// suskaičiuojame bendrą įrašų kiekį
+$elementCount = $contractsObj->getContractListCount();
 
 // suformuojame sąrašo puslapius
 $paging->process($elementCount, $pageId);
