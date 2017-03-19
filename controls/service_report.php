@@ -28,6 +28,13 @@ if(empty($_POST['submit'])) {
 	if($validator->validate($_POST)) {
 		// suformuojame laukų reikšmių masyvą SQL užklausai
 		$data = $validator->preparePostFieldsForSQL();
+		
+		// išrenkame ataskaitos duomenis
+		$servicesData = $servicesObj->getOrderedServices($data['dataNuo'], $data['dataIki']);
+		$servicesStats = $servicesObj->getStatsOfOrderedServices($data['dataNuo'], $data['dataIki']);
+		
+		// rodome ataskaitą
+		include 'templates/service_report_show.tpl.php';
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
@@ -36,14 +43,6 @@ if(empty($_POST['submit'])) {
 		
 		// rodome ataskaitos parametrų įvedimo formą su klaidomis ir sustabdome scenarijaus vykdym1
 		include 'templates/service_report_form.tpl.php';
-		exit;
 	}
-	
-	// išrenkame ataskaitos duomenis
-	$servicesData = $servicesObj->getOrderedServices($data['dataNuo'], $data['dataIki']);
-	$servicesStats = $servicesObj->getStatsOfOrderedServices($data['dataNuo'], $data['dataIki']);
-	
-	// rodome ataskaitą
-	include 'templates/service_report_show.tpl.php';
 }
 

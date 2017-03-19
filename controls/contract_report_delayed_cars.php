@@ -9,7 +9,6 @@ $formSubmitted = false;
 
 $data = array();
 if(empty($_POST['submit'])) {
-
 	// rodome ataskaitos parametrų įvedimo formą
 	include 'templates/delayed_cars_report_form.tpl.php';
 } else {
@@ -24,10 +23,15 @@ if(empty($_POST['submit'])) {
 	include 'utils/validator.class.php';
 	$validator = new validator($validations);
 
-
 	if($validator->validate($_POST)) {
 		// suformuojame laukų reikšmių masyvą SQL užklausai
 		$data = $validator->preparePostFieldsForSQL();
+		
+		// išrenkame ataskaitos duomenis
+		$delayedCarsData = $contractsObj->getDelayedCars($data['dataNuo'], $data['dataIki']);
+		
+		// rodome ataskaitą
+		include 'templates/delayed_cars_report_show.tpl.php';
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
@@ -36,12 +40,6 @@ if(empty($_POST['submit'])) {
 
 		// rodome ataskaitos parametrų įvedimo formą su klaidomis ir sustabdome scenarijaus vykdym1
 		include 'templates/delayed_cars_report_form.tpl.php';
-		exit;
 	}
 
-	// išrenkame ataskaitos duomenis
-	$delayedCarsData = $contractsObj->getDelayedCars($data['dataNuo'], $data['dataIki']);
-
-	// rodome ataskaitą
-	include 'templates/delayed_cars_report_show.tpl.php';
 }
