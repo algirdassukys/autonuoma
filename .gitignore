@@ -1,2 +1,5 @@
 /nbproject/*
 /.metadata/*
+/.settings/*
+.buildpath
+.project
