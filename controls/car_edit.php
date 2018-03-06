@@ -44,33 +44,43 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
-		// sutvarkome checkbox reikšmes
-		if(isset($dataPrepared['radijas']) && $dataPrepared['radijas'] == 'on') {
-			$dataPrepared['radijas'] = 1;
+		if(!defined('FOR_READING_ONLY')) {
+			// suformuojame laukų reikšmių masyvą SQL užklausai
+			$dataPrepared = $validator->preparePostFieldsForSQL();
+	
+			// sutvarkome checkbox reikšmes
+			if(isset($dataPrepared['radijas']) && $dataPrepared['radijas'] == 'on') {
+				$dataPrepared['radijas'] = 1;
+			} else {
+				$dataPrepared['radijas'] = 0;
+			}
+	
+			if(isset($dataPrepared['grotuvas']) && $dataPrepared['grotuvas'] == 'on') {
+				$dataPrepared['grotuvas'] = 1;
+			} else {
+				$dataPrepared['grotuvas'] = 0;
+			}
+	
+			if(isset($dataPrepared['kondicionierius']) && $dataPrepared['kondicionierius'] == 'on') {
+				$dataPrepared['kondicionierius'] = 1;
+			} else {
+				$dataPrepared['kondicionierius'] = 0;
+			}
+	
+			// atnaujiname duomenis
+			$carsObj->updateCar($dataPrepared);
 		} else {
-			$dataPrepared['radijas'] = 0;
+			$showEditWarning = true;
 		}
-
-		if(isset($dataPrepared['grotuvas']) && $dataPrepared['grotuvas'] == 'on') {
-			$dataPrepared['grotuvas'] = 1;
-		} else {
-			$dataPrepared['grotuvas'] = 0;
+		
+		// įtraukiame parametrą į nukreipimo nuorodą, jeigu įjungtas tik skaitymo režimas
+		$editWarning = '';
+		if($showEditWarning == true) {
+			$editWarning = '&edit_warning=1';
 		}
-
-		if(isset($dataPrepared['kondicionierius']) && $dataPrepared['kondicionierius'] == 'on') {
-			$dataPrepared['kondicionierius'] = 1;
-		} else {
-			$dataPrepared['kondicionierius'] = 0;
-		}
-
-		// atnaujiname duomenis
-		$carsObj->updateCar($dataPrepared);
-
+		
 		// nukreipiame vartotoją į automobilių puslapį
-		header("Location: index.php?module={$module}&action=list");
+		header("Location: index.php?module={$module}&action=list{$editWarning}");
 		die();
 	} else {
 		// gauname klaidų pranešimą

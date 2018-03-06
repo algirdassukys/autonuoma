@@ -4,16 +4,20 @@ include 'libraries/customers.class.php';
 $customersObj = new customers();
 
 if(!empty($id)) {
-	// patikriname, ar klientas neturi sudarytų sutarčių
-	$count = $customersObj->getContractCountOfCustomer($id);
-
-	$removeErrorParameter = '';
-	if($count == 0) {
-		// šaliname klientą
-		$customersObj->deleteCustomer($id);
+	if(!defined('FOR_READING_ONLY')) {
+		// patikriname, ar klientas neturi sudarytų sutarčių
+		$count = $customersObj->getContractCountOfCustomer($id);
+	
+		$removeErrorParameter = '';
+		if($count == 0) {
+			// šaliname klientą
+			$customersObj->deleteCustomer($id);
+		} else {
+			// nepašalinome, nes klientas sudaręs bent vieną sutartį, rodome klaidos pranešimą
+			$removeErrorParameter = '&remove_error=1';
+		}
 	} else {
-		// nepašalinome, nes klientas sudaręs bent vieną sutartį, rodome klaidos pranešimą
-		$removeErrorParameter = '&remove_error=1';
+		$removeErrorParameter = '&edit_warning=1';
 	}
 
 	// nukreipiame į klientų puslapį

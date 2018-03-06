@@ -9,6 +9,10 @@
 </div>
 <div class="float-clear"></div>
 
+<?php if(isset($_GET['edit_warning'])) { ?>
+	<div class="warningBox">Sistema skirta demonstravimui, todėl duomenų redagavimas yra išjungtas.</div>
+<?php } ?>
+
 <table class="listTable">
 	<tr>
 		<th>Nr.</th>

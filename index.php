@@ -35,6 +35,9 @@
 		$actionFile = "controls/{$module}_{$action}.php";
 	}
 	
+	// demo režimo valdymas
+	define('FOR_READING_ONLY', 1);
+	
 	// įtraukiame pagrindinį šabloną
 	include 'templates/main.tpl.php';
 ?>

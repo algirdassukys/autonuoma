@@ -33,29 +33,38 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
-		// atnaujiname duomenis
-		$servicesObj->updateService($dataPrepared);
-
-		// pašaliname paslaugos kainas, kurios nėra naudojamos sutartyse
-		$deleteQueryClause = "";
-		if(sizeof($dataPrepared['kainos']) > 0) {
-			foreach($dataPrepared['kainos'] as $key=>$val) {
-				if($dataPrepared['neaktyvus'][$key] == 1) {
-					$deleteQueryClause .= " AND NOT `galioja_nuo`='" . $dataPrepared['datos'][$key] . "'";
+		if(!defined('FOR_READING_ONLY')) {
+			// suformuojame laukų reikšmių masyvą SQL užklausai
+			$dataPrepared = $validator->preparePostFieldsForSQL();
+	
+			// atnaujiname duomenis
+			$servicesObj->updateService($dataPrepared);
+	
+			// pašaliname paslaugos kainas, kurios nėra naudojamos sutartyse
+			$deleteQueryClause = "";
+			if(sizeof($dataPrepared['kainos']) > 0) {
+				foreach($dataPrepared['kainos'] as $key=>$val) {
+					if($dataPrepared['neaktyvus'][$key] == 1) {
+						$deleteQueryClause .= " AND NOT `galioja_nuo`='" . $dataPrepared['datos'][$key] . "'";
+					}
 				}
 			}
+			$servicesObj->deleteServicePrices($dataPrepared['id'], $deleteQueryClause);
+	
+			// atnaujiname paslaugos kainas, kurios nėra naudojamos sutartyse
+			$servicesObj->insertServicePrices($dataPrepared);
+		} else {
+			$showEditWarning = true;
 		}
-		$servicesObj->deleteServicePrices($dataPrepared['id'], $deleteQueryClause);
-
-		// atnaujiname paslaugos kainas, kurios nėra naudojamos sutartyse
-		$servicesObj->insertServicePrices($dataPrepared);
-
+		
+		// įtraukiame parametrą į nukreipimo nuorodą, jeigu įjungtas tik skaitymo režimas
+		$editWarning = '';
+		if($showEditWarning == true) {
+			$editWarning = '&edit_warning=1';
+		}
+		
 		// nukreipiame į paslaugų puslapį
-		header("Location: index.php?module={$module}&action=list");
-
+		header("Location: index.php?module={$module}&action=list{$editWarning}");
 		die();
 	} else {
 		// gauname klaidų pranešimą

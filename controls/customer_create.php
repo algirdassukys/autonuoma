@@ -35,14 +35,24 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
-		// redaguojame klientą
-		$customersObj->insertCustomer($dataPrepared);
-
+		if(!defined('FOR_READING_ONLY')) {
+			// suformuojame laukų reikšmių masyvą SQL užklausai
+			$dataPrepared = $validator->preparePostFieldsForSQL();
+	
+			// redaguojame klientą
+			$customersObj->insertCustomer($dataPrepared);
+		} else {
+			$showEditWarning = true;
+		}
+		
+		// įtraukiame parametrą į nukreipimo nuorodą, jeigu įjungtas tik skaitymo režimas
+		$editWarning = '';
+		if($showEditWarning == true) {
+			$editWarning = '&edit_warning=1';
+		}
+		
 		// nukreipiame vartotoją į klientų puslapį
-		header("Location: index.php?module={$module}&action=list");
+		header("Location: index.php?module={$module}&action=list{$editWarning}");
 		die();
 	}
 	else {

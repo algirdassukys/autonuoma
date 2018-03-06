@@ -50,28 +50,38 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
-		// patikriname, ar nėra sutarčių su tokiu pačiu numeriu
-		$tmp = $contractsObj->getContract($dataPrepared['nr']);
-
-		if(isset($tmp['nr'])) {
-			// sudarome klaidų pranešimą
-			$formErrors = "Sutartis su įvestu numeriu jau egzistuoja.";
-			// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
-			$data = $_POST;
+		if(!defined('FOR_READING_ONLY')) {
+			// suformuojame laukų reikšmių masyvą SQL užklausai
+			$dataPrepared = $validator->preparePostFieldsForSQL();
+	
+			// patikriname, ar nėra sutarčių su tokiu pačiu numeriu
+			$tmp = $contractsObj->getContract($dataPrepared['nr']);
+	
+			if(isset($tmp['nr'])) {
+				// sudarome klaidų pranešimą
+				$formErrors = "Sutartis su įvestu numeriu jau egzistuoja.";
+				// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
+				$data = $_POST;
+			} else {
+				// įrašome naują sutartį
+				$contractsObj->insertContract($dataPrepared);
+	
+				// įrašome užsakytas paslaugas
+				$contractsObj->updateOrderedServices($dataPrepared);
+			}
 		} else {
-			// įrašome naują sutartį
-			$contractsObj->insertContract($dataPrepared);
-
-			// įrašome užsakytas paslaugas
-			$contractsObj->updateOrderedServices($dataPrepared);
+			$showEditWarning = true;
+		}
+		
+		// įtraukiame parametrą į nukreipimo nuorodą, jeigu įjungtas tik skaitymo režimas
+		$editWarning = '';
+		if($showEditWarning == true) {
+			$editWarning = '&edit_warning=1';
 		}
 		
 		// nukreipiame vartotoją į sutarčių puslapį
 		if($formErrors == null) {
-			header("Location: index.php?module={$module}&action=list");
+			header("Location: index.php?module={$module}&action=list{$editWarning}");
 			die();
 		}
 	} else {

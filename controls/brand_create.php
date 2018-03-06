@@ -25,14 +25,24 @@ if(!empty($_POST['submit'])) {
 	$validator = new validator($validations, $required, $maxLengths);
 
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
-		// įrašome naują įrašą
-		$brandsObj->insertBrand($dataPrepared);
-
+		if(!defined('FOR_READING_ONLY')) {
+			// suformuojame laukų reikšmių masyvą SQL užklausai
+			$dataPrepared = $validator->preparePostFieldsForSQL();
+	
+			// įrašome naują įrašą
+			$brandsObj->insertBrand($dataPrepared);
+		} else {
+			$showEditWarning = true;
+		}
+		
+		// įtraukiame parametrą į nukreipimo nuorodą, jeigu įjungtas tik skaitymo režimas
+		$editWarning = '';
+		if($showEditWarning == true) {
+			$editWarning = '&edit_warning=1';
+		}
+		
 		// nukreipiame į markių puslapį
-		header("Location: index.php?module={$module}&action=list");
+		header("Location: index.php?module={$module}&action=list{$editWarning}");
 		die();
 	} else {
 		// gauname klaidų pranešimą
