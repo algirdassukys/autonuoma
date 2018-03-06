@@ -4,7 +4,7 @@ include 'libraries/brands.class.php';
 $brandsObj = new brands();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar šalinama markė nepriskirta modeliui
 		$count = $brandsObj->getModelCountOfBrand($id);
 	

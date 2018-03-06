@@ -4,7 +4,7 @@ include 'libraries/cars.class.php';
 $carsObj = new cars();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar automobilis neįtrauktas į sutartis
 		$count = $carsObj->getContractCountOfCar($id);
 	

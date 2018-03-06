@@ -4,7 +4,7 @@ include 'libraries/customers.class.php';
 $customersObj = new customers();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar klientas neturi sudarytų sutarčių
 		$count = $customersObj->getContractCountOfCustomer($id);
 	

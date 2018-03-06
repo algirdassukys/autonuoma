@@ -4,7 +4,7 @@ include 'libraries/models.class.php';
 $modelsObj = new models();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar šalinamas modelis nenaudojamas, t.y. nepriskirtas jokiam automobiliui
 		$count = $modelsObj->getCarCountOfModel($id);
 	

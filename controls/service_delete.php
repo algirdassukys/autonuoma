@@ -4,7 +4,7 @@ include 'libraries/services.class.php';
 $servicesObj = new services();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar šalinama paslauga nenaudojama jokioje sutartyje
 		$contractCount = $servicesObj->getContractCountOfService($id);
 	

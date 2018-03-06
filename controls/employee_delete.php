@@ -4,7 +4,7 @@ include 'libraries/employees.class.php';
 $employeesObj = new employees();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// patikriname, ar darbuotojas neturi sudarytų sutarčių
 		$count = $employeesObj->getContractCountOfEmployee($id);
 	

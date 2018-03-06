@@ -5,6 +5,9 @@
 	// iškviečiame prisijungimo prie duomenų bazės klasę
 	include 'utils/mysql.class.php';
 	
+	// nustatome laiko juostą
+	date_default_timezone_set(config::DEFAULT_TIMEZONE);
+	
 	// nustatome pasirinktą modulį
 	$module = '';
 	if(isset($_GET['module'])) {
@@ -34,9 +37,6 @@
 	if(!empty($module) && !empty($action)) {
 		$actionFile = "controls/{$module}_{$action}.php";
 	}
-	
-	// demo režimo valdymas
-	define('FOR_READING_ONLY', 1);
 	
 	// įtraukiame pagrindinį šabloną
 	include 'templates/main.tpl.php';

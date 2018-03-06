@@ -25,7 +25,7 @@ if(!empty($_POST['submit'])) {
 	$validator = new validator($validations, $required, $maxLengths);
 
 	if($validator->validate($_POST)) {
-		if(!defined('FOR_READING_ONLY')) {
+		if(config::FOR_READING_ONLY != 1) {
 			// suformuojame laukų reikšmių masyvą SQL užklausai
 			$dataPrepared = $validator->preparePostFieldsForSQL();
 	

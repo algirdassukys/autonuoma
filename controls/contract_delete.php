@@ -4,7 +4,7 @@ include 'libraries/contracts.class.php';
 $contractsObj = new contracts();
 
 if(!empty($id)) {
-	if(!defined('FOR_READING_ONLY')) {
+	if(config::FOR_READING_ONLY != 1) {
 		// pašaliname užsakytas paslaugas
 		$contractsObj->deleteOrderedServices($id);
 	
