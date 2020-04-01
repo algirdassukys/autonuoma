@@ -123,10 +123,10 @@
 						$car_states = $carsObj->getCarStateList();
 						foreach($car_states as $key => $val) {
 							$selected = "";
-							if(isset($data['busena']) && $data['busena'] == $val['id']) {
+							if(isset($data['busena']) && $data['busena'] == $val['ID']) {
 								$selected = " selected='selected'";
 							}
-							echo "<option{$selected} value='{$val['id']}'>{$val['name']}</option>";
+							echo "<option{$selected} value='{$val['ID']}'>{$val['name']}</option>";
 						}
 					?>
 				</select>
