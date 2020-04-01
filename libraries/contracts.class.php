@@ -308,7 +308,7 @@ class contracts {
 							ON `{$this->sutartys_lentele}`.`fk_klientas`=`{$this->klientai_lentele}`.`asmens_kodas`
 						LEFT JOIN `{$this->uzsakytos_paslaugos_lentele}`
 							ON `{$this->sutartys_lentele}`.`nr`=`{$this->uzsakytos_paslaugos_lentele}`.`fk_sutartis`
-						LEFT JOIN (
+						INNER JOIN (
 							SELECT `asmens_kodas`,
 									sum(`{$this->sutartys_lentele}`.`kaina`) AS `bendra_kliento_sutarciu_kaina`
 							FROM `{$this->sutartys_lentele}`
@@ -317,7 +317,7 @@ class contracts {
 							{$whereClauseString}
 							GROUP BY `asmens_kodas`
 						) `t` ON `t`.`asmens_kodas`=`{$this->klientai_lentele}`.`asmens_kodas`
-						LEFT JOIN (
+						INNER JOIN (
 							SELECT `asmens_kodas`,
 									IFNULL(sum(`{$this->uzsakytos_paslaugos_lentele}`.`kiekis` * `{$this->uzsakytos_paslaugos_lentele}`.`kaina`), 0) as `bendra_kliento_paslaugu_kaina`
 							FROM `{$this->sutartys_lentele}`
