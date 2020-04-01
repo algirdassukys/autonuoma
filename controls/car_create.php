@@ -70,7 +70,7 @@ if(!empty($_POST['submit'])) {
 		$carsObj->insertCar($dataPrepared);
 
 		// nukreipiame vartotoją į automobilių puslapį
-		header("Location: index.php?module={$module}&action=list");
+		common::redirect("index.php?module={$module}&action=list");
 		die();
 	} else {
 		// gauname klaidų pranešimą

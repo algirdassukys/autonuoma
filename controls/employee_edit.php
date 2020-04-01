@@ -38,7 +38,7 @@ if(!empty($_POST['submit'])) {
 		$employeesObj->updateEmployee($dataPrepared);
 
 		// nukreipiame vartotoją į klientų puslapį
-		header("Location: index.php?module={$module}&action=list");
+		common::redirect("index.php?module={$module}&action=list");
 		die();
 	}
 	else {

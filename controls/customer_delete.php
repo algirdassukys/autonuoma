@@ -17,7 +17,7 @@ if(!empty($id)) {
 	}
 
 	// nukreipiame į klientų puslapį
-	header("Location: index.php?module={$module}&action=list{$removeErrorParameter}");
+	common::redirect("index.php?module={$module}&action=list{$removeErrorParameter}");
 	die();
 }
 

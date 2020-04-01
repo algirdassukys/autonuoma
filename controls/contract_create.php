@@ -71,7 +71,7 @@ if(!empty($_POST['submit'])) {
 		
 		// nukreipiame vartotoją į sutarčių puslapį
 		if($formErrors == null) {
-			header("Location: index.php?module={$module}&action=list");
+			common::redirect("index.php?module={$module}&action=list");
 			die();
 		}
 	} else {

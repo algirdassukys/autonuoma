@@ -11,7 +11,7 @@ if(!empty($id)) {
 	$contractsObj->deleteContract($id);
 
 	// nukreipiame į sutarčių puslapį
-	header("Location: index.php?module={$module}&action=list");
+	common::redirect("index.php?module={$module}&action=list");
 	die();
 }
 

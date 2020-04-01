@@ -42,7 +42,7 @@ if(!empty($_POST['submit'])) {
 		$customersObj->insertCustomer($dataPrepared);
 
 		// nukreipiame vartotoją į klientų puslapį
-		header("Location: index.php?module={$module}&action=list");
+		common::redirect("index.php?module={$module}&action=list");
 		die();
 	}
 	else {

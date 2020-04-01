@@ -2,6 +2,9 @@
 	// nuskaitome konfigūracijų failą
 	include 'config.php';
 
+	// iškviečiame bendrųjų funkcijų klasę
+	include 'utils/common.class.php';
+	
 	// iškviečiame prisijungimo prie duomenų bazės klasę
 	include 'utils/mysql.class.php';
 	

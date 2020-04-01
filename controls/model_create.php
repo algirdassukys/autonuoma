@@ -37,7 +37,7 @@ if(!empty($_POST['submit'])) {
 		$modelsObj->insertModel($dataPrepared);
 
 		// nukreipiame į modelių puslapį
-		header("Location: index.php?module={$module}&action=list");
+		common::redirect("index.php?module={$module}&action=list");
 		die();
 	} else {
 		// gauname klaidų pranešimą

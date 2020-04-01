@@ -32,7 +32,7 @@ if(!empty($_POST['submit'])) {
 		$brandsObj->insertBrand($dataPrepared);
 
 		// nukreipiame į markių puslapį
-		header("Location: index.php?module={$module}&action=list");
+		common::redirect("index.php?module={$module}&action=list");
 		die();
 	} else {
 		// gauname klaidų pranešimą
