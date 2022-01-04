@@ -82,6 +82,11 @@ if(!empty($_POST['submit'])) {
 	//  išrenkame elemento duomenis ir jais užpildome formos laukus.
 	$data = $contractsObj->getContract($id);
 	$data['uzsakytos_paslaugos'] = $contractsObj->getOrderedServices($id);
+
+	// į užsakytų paslaugų masyvo pradžią įtraukiame tuščią reikšmę, kad užsakytų paslaugų formoje
+	// būtų visada išvedami paslėpti formos laukai, kuriuos galėtume kopijuoti ir pridėti norimą
+	// kiekį paslaugų
+	array_unshift($data['uzsakytos_paslaugos'], array());
 }
 
 // nustatome požymį, kad įrašas redaguojamas norint išjungti ID redagavimą šablone

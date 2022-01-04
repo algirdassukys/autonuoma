@@ -39,19 +39,39 @@ if(!empty($_POST['submit'])) {
 		// atnaujiname duomenis
 		$servicesObj->updateService($dataPrepared);
 
-		// pašaliname paslaugos kainas, kurios nėra naudojamos sutartyse
-		$deleteQueryClause = "";
-		if(sizeof($dataPrepared['kainos']) > 0) {
-			foreach($dataPrepared['kainos'] as $key=>$val) {
-				if($dataPrepared['neaktyvus'][$key] == 1) {
-					$deleteQueryClause .= " AND NOT `galioja_nuo`='" . $dataPrepared['datos'][$key] . "'";
+		// pašaliname nebereikalingas paslaugų kainas ir įrašome naujas
+		// gauname esamas paslaugas
+		$servicePrices = $servicesObj->getServicePrices($id);
+
+		// jeigu paslaugos kainos nerandame iš formos gautame masyve, šaliname
+		foreach($servicePrices as $priceDb) {
+			$found = false;
+			foreach($dataPrepared['kainos'] as $keyForm => $priceForm) {
+				if($priceDb['kaina'] == $dataPrepared['kainos'][$keyForm] && $priceDb['galioja_nuo'] == $dataPrepared['datos'][$keyForm]) {
+					$found = true;
 				}
 			}
-		}
-		$servicesObj->deleteServicePrices($dataPrepared['id'], $deleteQueryClause);
 
-		// atnaujiname paslaugos kainas, kurios nėra naudojamos sutartyse
-		$servicesObj->insertServicePrices($dataPrepared);
+			if(!$found) {
+				// šalinama paslaugos kaina
+				$servicesObj->deleteServicePrices($id, $priceDb['galioja_nuo'], $priceDb['kaina']);
+			}
+		}
+
+		foreach($dataPrepared['kainos'] as $keyForm => $priceForm) {
+			// jeigu paslaugos kainos nerandame duomenų bazėje, tačiau ji yra formoje, įrašome
+			$found = false;
+			foreach($servicePrices as $priceDb) {
+				if($priceDb['kaina'] == $dataPrepared['kainos'][$keyForm] && $priceDb['galioja_nuo'] == $dataPrepared['datos'][$keyForm]) {
+					$found = true;
+				}
+			}
+
+			if(!$found) {
+				// įrašoma paslaugos kaina
+				$servicesObj->insertServicePrices($id, $dataPrepared['datos'][$keyForm], $dataPrepared['kainos'][$keyForm]);
+			}
+		}
 
 		// nukreipiame į paslaugų puslapį
 		common::redirect("index.php?module={$module}&action=list");
@@ -64,20 +84,23 @@ if(!empty($_POST['submit'])) {
 		if(isset($_POST['kainos']) && sizeof($_POST['kainos']) > 0) {
 			$i = 0;
 			foreach($_POST['kainos'] as $key => $val) {
+				$data['paslaugos_kainos'][$i]['fk_paslauga'] = $id;
 				$data['paslaugos_kainos'][$i]['kaina'] = $val;
 				$data['paslaugos_kainos'][$i]['galioja_nuo'] = $_POST['datos'][$key];
 				$data['paslaugos_kainos'][$i]['neaktyvus'] = $_POST['neaktyvus'][$key];
 				$i++;
 			}
 		}
+
+		array_unshift($data['paslaugos_kainos'], array());
 	}
 } else {
 	// tikriname, ar nurodytas elemento id. Jeigu taip, išrenkame elemento duomenis ir jais užpildome formos laukus.
 	if(!empty($id)) {
 		$data = $servicesObj->getService($id);
-		$tmp = $servicesObj->getServicePrices($id);
-		if(sizeof($tmp) > 0) {
-			foreach($tmp as $key => $val) {
+		$servicePrices = $servicesObj->getServicePrices($id);
+		if(sizeof($servicePrices) > 0) {
+			foreach($servicePrices as $key => $val) {
 				// jeigu paslaugos kaina yra naudojama, jos koreguoti neleidziame ir įvedimo laukelį padarome neaktyvų
 				$priceCount = $contractsObj->getPricesCountOfOrderedServices($id, $val['galioja_nuo']);
 				if($priceCount > 0) {
@@ -86,6 +109,11 @@ if(!empty($_POST['submit'])) {
 				$data['paslaugos_kainos'][] = $val;
 			}
 		}
+
+		// į paslaugų kainų masyvo pradžią įtraukiame tuščią reikšmę, kad paslaugų kainų formoje
+		// būtų visada išvedami paslėpti formos laukai, kuriuos galėtume kopijuoti ir pridėti norimą
+		// kiekį kainų
+		array_unshift($data['paslaugos_kainos'], array());
 	}
 }
 

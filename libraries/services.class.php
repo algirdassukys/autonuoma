@@ -38,7 +38,8 @@ class services {
 		$query = "  SELECT *
 					FROM `{$this->paslaugos_lentele}`" . $limitOffsetString;
 		$data = mysql::select($query);
-		
+
+		//
 		return $data;
 	}
 	
@@ -51,6 +52,7 @@ class services {
 					FROM `{$this->paslaugos_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
@@ -149,10 +151,10 @@ class services {
 	 * Paslaugos kainų įrašymas
 	 * @param type $data
 	 */
-	public function insertServicePrices($data) {
-		if(isset($data['kainos']) && sizeof($data['kainos']) > 0) {
-			foreach($data['kainos'] as $key=>$val) {
-				if($data['neaktyvus'] == array() || $data['neaktyvus'][$key] == 0) {
+	public function insertServicePrices($serviceId, $galiojaNuo, $kaina) {
+		// if(isset($data['kainos']) && sizeof($data['kainos']) > 0) {
+			// foreach($data['kainos'] as $key=>$val) {
+				// if($data['neaktyvus'] == array() || $data['neaktyvus'][$key] == 0) {
 					$query = "  INSERT INTO `{$this->paslaugu_kainos_lentele}`
 											(
 												`fk_paslauga`,
@@ -161,14 +163,14 @@ class services {
 											)
 											VALUES
 											(
-												'{$data['id']}',
-												'{$data['datos'][$key]}',
-												'{$val}'
+												'{$serviceId}',
+												'{$galiojaNuo}',
+												'{$kaina}'
 											)";
 					mysql::query($query);
-				}
-			}
-		}
+				// }
+			// }
+		// }
 	}
 	
 	/**
@@ -176,9 +178,9 @@ class services {
 	 * @param type $serviceId
 	 * @param type $clause
 	 */
-	public function deleteServicePrices($serviceId, $clause = "") {
+	public function deleteServicePrices($serviceId, $galiojaNuo, $kaina) {
 		$query = "  DELETE FROM `{$this->paslaugu_kainos_lentele}`
-					WHERE `fk_paslauga`='{$serviceId}'" . $clause;
+					WHERE `fk_paslauga`='{$serviceId}' AND `galioja_nuo`='{$galiojaNuo}' AND `kaina`='{$kaina}'";
 		mysql::query($query);
 	}
 	

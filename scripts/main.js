@@ -1,75 +1,71 @@
-$(window).ready(function (){
-    
-    $(".addChild").click(function() {
-        // pagrindinis vaikinių įrašų konteineris
-        childRowContainer = $(this).parent().prev(".childRowContainer");
-        
-        if(childRowContainer.children(".childRow:last").hasClass("hidden")) { // jeigu nėra nei vienos eilutės
-            // pašaliname paslėptos eilutės požymius
-            childRowContainer.children(".childRow:last, .labelLeft, .labelRight").removeClass("hidden");
-            childRowContainer.children(".childRow:last").children("input[type=text], select").prop("disabled", false);
-        } else {
-            // klonuojame vaikinio įrašo eilutę
-            rowClone = childRowContainer.children(".childRow:last").clone(true, true);
-            var test = 10;
-			
-            // pašaliname klonuotų įvedimo elementų reikšmes
-            $(rowClone).children("input[type=text]").val("");
-            $(rowClone).children("select").find('option').removeAttr("selected");
-            
-            // pašaliname išjungtų elementų požymius
-            $(rowClone).children("input[type=text], select").removeClass('disabledInput');
-            $(rowClone).children(".removeChild").removeClass('hidden');
-            $(rowClone).children("input.isDisabledForEditing").val(0);
-            
-            // klonuotą eilutę įtraukiame į pagrindinį vaikinių įrašų konteinerį
-            rowClone.appendTo(childRowContainer);
+$(window).ready(function () {
 
-            // sukuriame pagalbinį <div class="float-clear"></div> elementą formatavimui
-            clearDiv = $('<div />', {"class": 'float-clear'});
-            clearDiv.appendTo(childRowContainer);
-        }
-        
-        return false;
-    })
+  $(".addChild").click(function () {
+    // klonuojame formos eilutę
+    rowClone = $(".formRowsContainer").find(".formRow:first").clone(true, true);
 
-    $(".removeChild").click(function() {
-        // pagrindinis vaikinių įrašų konteineris
-        childRowContainer = $(this).parent().parent(".childRowContainer");
-        
-        if(childRowContainer.children('.childRow').size() > 1) {
-            $(this).parent().next(".float-clear").remove();
-            $(this).parent().remove();       
-        } else { // paskutinės eilutės nepašaliname, bet paslepiame
-            childRowContainer.children('.childRow, .labelLeft, .labelRight').addClass("hidden");
-            childRowContainer.children(".childRow").children("input[type=text], select").prop("disabled", true);
-        }
-        
-        return false;
-    })
-    
-    // Datos ir laiko įskiepių nustatymas
-    $.datetimepicker.setLocale('lt');
-    $('.datetime').datetimepicker({
-        format: 'Y-m-d H:i',
-        dayOfWeekStart : 1,
-        startDate: '2016-01-01',
-        defaultDate: '2016-01-01'
-    });
-    
-    $('.date').datetimepicker({
-        timepicker: false,
-        format: 'Y-m-d',
-        formatDate: 'Y-m-d',
-        defaultDate: '2016-01-01'
-    });
-   
-    
+    // pašaliname disabled požymius ir paslėpimo klasę
+    $(rowClone).find("input[type=text], select").prop('disabled', false);
+    $(rowClone).removeClass('d-none');
+
+    // klonuotą eilutę įtraukiame į formos eilučių konteinerį
+    rowClone.appendTo($(".formRowsContainer"));
+
+    // paslėpimo klasę pašaliname iš formos antraštės eilutės
+    $(".headerRow").removeClass("d-none");
+
+    //
+    return false;
+  })
+
+  $(".removeChild").click(function () {
+    // pašaliname formos eilutę, kuriai priklauso paspaustas mygtukas
+    $(this).closest(".formRow").remove();
+
+    // jeigu pašalinta paskutinė eilutė, paslepiame formos antraštę
+    if ($(".formRowsContainer").find('.formRow').size() == 1) {
+      $(".headerRow").addClass("d-none");
+    }
+
+    //
+    return false;
+  })
+
 });
 
 function showConfirmDialog(module, removeId) {
-    var r = confirm("Ar tikrai norite pašalinti!");
-    if (r === true) {
-        window.location.replace("index.php?module=" + module + "&action=delete&id=" + removeId);
-    }
+  var r = confirm("Ar tikrai norite pašalinti!");
+  if (r === true) {
+    window.location.replace("index.php?module=" + module + "&action=delete&id=" + removeId);
+  }
 }
+
+
+var modalConfirm = function (callback) {
+
+  $("#btn-confirm").on("click", function () {
+    $("#confirm-delete").modal('show');
+  });
+
+  $("#modal-btn-si").on("click", function () {
+    callback(true);
+    $("#confirm-delete").modal('hide');
+  });
+
+  $("#modal-btn-no").on("click", function () {
+    callback(false);
+    $("#confirm-delete").modal('hide');
+  });
+};
+
+modalConfirm(function (confirm) {
+  if (confirm) {
+    //Acciones si el usuario confirma
+    //$("#result").html("CONFIRMADO");
+    alert(1);
+  } else {
+    //Acciones si el usuario no confirma
+    //$("#result").html("NO CONFIRMADO");
+    alert(2);
+  }
+});

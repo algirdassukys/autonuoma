@@ -16,6 +16,14 @@ class common {
 		echo "<script type='text/javascript'>document.location.href='" . $url . "';</script>";
 		echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $url . '">';
 	}
+	
+	public static function logToConsole($output, $with_script_tags = true) {
+		$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
+		if ($with_script_tags) {
+			$js_code = '<script>' . $js_code . '</script>';
+		}
+		echo $js_code;
+	}
 }
 
 ?>

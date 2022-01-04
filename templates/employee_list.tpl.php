@@ -1,11 +1,14 @@
-<ul id="pagePath">
-	<li><a href="index.php">Pradžia</a></li>
-	<li>Darbuotojai</li>
-</ul>
-<div id="actions">
+<?php
+	// suformuojame puslapių kelio (breadcrumb) elementų masyvą
+	$breadcrumbItems = array(array('link' => 'index.php', 'title' => 'Pradžia'), array('title' => 'Darbuotojai'));
+	
+	// puslapių kelio šabloną
+	include 'templates/common/breadcrumb.tpl.php';
+?>
+
+<div class="d-flex flex-row-reverse gap-3">
 	<a href='index.php?module=<?php echo $module; ?>&action=create'>Naujas darbuotojas</a>
 </div>
-<div class="float-clear"></div>
 
 <?php if(isset($_GET['remove_error'])) { ?>
 	<div class="errorBox">
@@ -13,7 +16,7 @@
 	</div>
 <?php } ?>
 
-<table class="listTable">
+<table class="table">
 	<tr>
 		<th>Tabelio nr.</th>
 		<th>Vardas</th>
@@ -28,9 +31,9 @@
 					. "<td>{$val['tabelio_nr']}</td>"
 					. "<td>{$val['vardas']}</td>"
 					. "<td>{$val['pavarde']}</td>"
-					. "<td>"
-						. "<a href='#' onclick='showConfirmDialog(\"{$module}\", \"{$val['tabelio_nr']}\"); return false;' title=''>šalinti</a>&nbsp;"
-						. "<a href='index.php?module={$module}&action=edit&id={$val['tabelio_nr']}' title=''>redaguoti</a>"
+					. "<td class='d-flex flex-row-reverse gap-2'>"
+						. "<a href='index.php?module={$module}&action=edit&id={$val['tabelio_nr']}'>redaguoti</a>"
+						. "<a href='#' onclick='showConfirmDialog(\"{$module}\", \"{$val['tabelio_nr']}\"); return false;'>šalinti</a>&nbsp;"
 					. "</td>"
 				. "</tr>";
 		}

@@ -177,7 +177,7 @@ class validator
     			$filter = FILTER_VALIDATE_URL;
     		break;
     	}
-    	return ($filter === false) ? false : filter_var($var, $filter) !== false ? true : false;
+    	return ($filter === false) ? false : (filter_var($var, $filter) !== false ? true : false);
     }
 
 	function preparePostFieldsForSQL() {

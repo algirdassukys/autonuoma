@@ -1,7 +1,10 @@
-<ul id="pagePath">
-	<li><a href="index.php">Pradžia</a></li>
-	<li>Ataskaitos</li>
-</ul>
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="index.php">Pradžia</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Ataskaitos</li>
+	</ol>
+</nav>
+
 <div id="actions">
 	
 </div>

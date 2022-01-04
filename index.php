@@ -1,4 +1,8 @@
 <?php
+	
+	// pradedame sesiją
+	session_start();
+	
 	// nuskaitome konfigūracijų failą
 	include 'config.php';
 
@@ -33,11 +37,20 @@
 	}
 	
 	// nustatome, kurį valdiklį įtraukti šablone main.tpl.php
-	$actionFile = "";
+    $actionFile = "";
 	if(!empty($module) && !empty($action)) {
 		$actionFile = "controls/{$module}_{$action}.php";
+	} else {
+		// rodome, jeigu nenurodyti parametrai
+		$actionFile = "controls/home_page.php";
 	}
 	
 	// įtraukiame pagrindinį šabloną
 	include 'templates/main.tpl.php';
+	
+	// spausdiname vykdytas užklausas į konsolę
+	common::logToConsole($_SESSION['queries']);
+	
+	// išvalome vykdytų užklausų masyvą
+	$_SESSION['queries'] = array();
 ?>
