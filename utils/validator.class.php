@@ -180,7 +180,7 @@ class validator
     	return ($filter === false) ? false : (filter_var($var, $filter) !== false ? true : false);
     }
 
-	function preparePostFieldsForSQL() {
+	/*function preparePostFieldsForSQL() {
 		$data = array();
 
 		foreach($this->fields as $key=>$val) {
@@ -206,7 +206,7 @@ class validator
 		}
 
 		return $data;
-	}
+	}*/
 	
 }
 

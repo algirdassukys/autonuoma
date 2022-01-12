@@ -20,7 +20,6 @@
 
 	<h4 class="mt-3">Sutarties informacija</h4>
   	
-
 	<div class="form-group">
 		<label for="nr">Numeris<?php echo in_array('nr', $required) ? '<span> *</span>' : ''; ?></label>
 		<input type="text" id="nr" <?php if(isset($data['editing'])) { ?> readonly="readonly" <?php } ?> name="nr" class="form-control" value="<?php echo isset($data['nr']) ? $data['nr'] : ''; ?>">
@@ -28,7 +27,7 @@
 
 	<div class="form-group">
 		<label for="sutarties_data">Data<?php echo in_array('sutarties_data', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="sutarties_data" name="sutarties_data" class="form-control" value="<?php echo isset($data['sutarties_data']) ? $data['sutarties_data'] : ''; ?>">
+		<input type="text" id="sutarties_data" name="sutarties_data" class="form-control datepicker" value="<?php echo isset($data['sutarties_data']) ? $data['sutarties_data'] : ''; ?>">
 	</div>
 
 	<div class="form-group">
@@ -69,17 +68,17 @@
 
 	<div class="form-group">
 		<label for="nuomos_data_laikas">Nuomos data ir laikas<?php echo in_array('nuomos_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="nuomos_data_laikas" name="nuomos_data_laikas" class="form-control" value="<?php echo isset($data['nuomos_data_laikas']) ? $data['nuomos_data_laikas'] : ''; ?>">
+		<input type="text" id="nuomos_data_laikas" name="nuomos_data_laikas" class="form-control datetimepicker" value="<?php echo isset($data['nuomos_data_laikas']) ? $data['nuomos_data_laikas'] : ''; ?>">
 	</div>
 
 	<div class="form-group">
 		<label for="planuojama_grazinimo_data_laikas">Planuojama grąžinti<?php echo in_array('planuojama_grazinimo_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="planuojama_grazinimo_data_laikas" name="planuojama_grazinimo_data_laikas" class="form-control" value="<?php echo isset($data['planuojama_grazinimo_data_laikas']) ? $data['planuojama_grazinimo_data_laikas'] : ''; ?>">
+		<input type="text" id="planuojama_grazinimo_data_laikas" name="planuojama_grazinimo_data_laikas" class="form-control datetimepicker" value="<?php echo isset($data['planuojama_grazinimo_data_laikas']) ? $data['planuojama_grazinimo_data_laikas'] : ''; ?>">
 	</div>
 
 	<div class="form-group">
 		<label for="faktine_grazinimo_data_laikas">Grąžinta<?php echo in_array('faktine_grazinimo_data_laikas', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="faktine_grazinimo_data_laikas" name="faktine_grazinimo_data_laikas" class="form-control" value="<?php echo isset($data['faktine_grazinimo_data_laikas']) ? $data['faktine_grazinimo_data_laikas'] : ''; ?>">
+		<input type="text" id="faktine_grazinimo_data_laikas" name="faktine_grazinimo_data_laikas" class="form-control datetimepicker" value="<?php echo isset($data['faktine_grazinimo_data_laikas']) ? $data['faktine_grazinimo_data_laikas'] : ''; ?>">
 	</div>
 
 	<div class="form-group">
@@ -211,7 +210,7 @@
 					?>
 						<div class="formRow row col-12 <?php echo $key > 0 ? '' : 'd-none'; ?>">
 							<div class="col-6">
-								<select class="elementSelector form-select form-control" name="paslaugos[]" <?php echo $disabledAttr; ?>>
+								<select class="elementSelector form-select form-control" name="paslauga[]" <?php echo $disabledAttr; ?>>
 									<?php
 										$allServices = $servicesObj->getServicesList();
 										foreach($allServices as $service) {
@@ -219,18 +218,20 @@
 											$prices = $servicesObj->getServicePrices($service['id']);
 											foreach($prices as $price) {
 												$selected = "";
-												if($orderedService['fk_kaina_galioja_nuo'] == $price['galioja_nuo'] && $orderedService['fk_paslauga'] == $price['fk_paslauga']) {
-													$selected = " selected='selected'";
+												if(isset($orderedService['fk_kaina_galioja_nuo']) ) {
+													if($orderedService['fk_kaina_galioja_nuo'] == $price['galioja_nuo'] && $orderedService['fk_paslauga'] == $price['fk_paslauga']) {
+														$selected = " selected='selected'";
+													}
 												}
-												echo "<option{$selected} value='{$price['fk_paslauga']}:{$price['kaina']}:{$price['galioja_nuo']}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
+												echo "<option{$selected} value='{$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
 											}
 										}
 									?>
 								</select>
 							</div>
 
-							<div class="col-2"><input type="text" name="kiekiai[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
-							<div class="col-4"><a href="#" class="removeChild">šalinti</a></div>
+							<div class="col-2"><input type="text" name="kiekis[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
+							<div class="col-4"><a href="#" onclick="return false;" class="removeChild">šalinti</a></div>
 						</div>
 					<?php 
 					}

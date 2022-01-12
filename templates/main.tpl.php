@@ -7,6 +7,7 @@
     
         <title>Automobilių nuomos IS</title>
     
+        <!-- Bootstrap CSS -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
         <!-- Bootstrap Font Icon CSS -->
@@ -14,6 +15,21 @@
     
         <!-- Font Awesome Icon CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		
+        <!-- Datepicker CSS-->
+        <link rel="stylesheet" type="text/css" href="scripts/datetimepicker/jquery.datetimepicker.css"/ >
+            
+        <!-- JQuery-->
+        <script src="scripts/jquery-3.6.0.min.js"></script>
+
+		<!-- Bootstrap core JS-->
+        <script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        
+        <!-- Datepicker JS-->
+        <script type="text/javascript" src="scripts/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+
+		<!-- Additional JS functions -->
+        <script type="text/javascript" src="scripts/main.js"></script>
 	</head>
 	<body>
         <!-- Viršutinis meniu -->
@@ -45,7 +61,10 @@
                     // įtraukiame veiksmų failą
                     if(file_exists($actionFile)) {
                         include $actionFile;
-                    }
+                    } else {
+						// rodome klaidą, jeigu nerastas kontrolerio failas
+						throw new Exception("Nerastas kontrolerio failas '{$actionFile}'");	
+					}
                 ?>
             </div>
         </div>
@@ -56,14 +75,5 @@
             </div>
         </footer>
 
-		<!-- JQuery-->
-        <script src="scripts/jquery-3.6.0.min.js"></script>
-        
-		<!-- Bootstrap core JS-->
-        <script src="bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        
-		<!-- Core theme JS-->
-        <script src="scripts/main.js"></script>
-		
     </body>
 </html>

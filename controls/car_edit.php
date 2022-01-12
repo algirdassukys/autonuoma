@@ -45,29 +45,29 @@ if(!empty($_POST['submit'])) {
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
 		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
+		$data = $_POST;
 
 		// sutvarkome checkbox reikšmes
-		if(isset($dataPrepared['radijas']) && $dataPrepared['radijas'] == 'on') {
-			$dataPrepared['radijas'] = 1;
+		if(isset($data['radijas']) && $data['radijas'] == 'on') {
+			$data['radijas'] = 1;
 		} else {
-			$dataPrepared['radijas'] = 0;
+			$data['radijas'] = 0;
 		}
 
-		if(isset($dataPrepared['grotuvas']) && $dataPrepared['grotuvas'] == 'on') {
-			$dataPrepared['grotuvas'] = 1;
+		if(isset($data['grotuvas']) && $data['grotuvas'] == 'on') {
+			$data['grotuvas'] = 1;
 		} else {
-			$dataPrepared['grotuvas'] = 0;
+			$data['grotuvas'] = 0;
 		}
 
-		if(isset($dataPrepared['kondicionierius']) && $dataPrepared['kondicionierius'] == 'on') {
-			$dataPrepared['kondicionierius'] = 1;
+		if(isset($data['kondicionierius']) && $data['kondicionierius'] == 'on') {
+			$data['kondicionierius'] = 1;
 		} else {
-			$dataPrepared['kondicionierius'] = 0;
+			$data['kondicionierius'] = 0;
 		}
 
 		// atnaujiname duomenis
-		$carsObj->updateCar($dataPrepared);
+		$carsObj->updateCar($data);
 
 		// nukreipiame vartotoją į automobilių puslapį
 		common::redirect("index.php?module={$module}&action=list");

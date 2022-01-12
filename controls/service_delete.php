@@ -10,7 +10,7 @@ if(!empty($id)) {
 	$removeErrorParameter = '';
 	if($contractCount == 0) {
 		// pašaliname paslaugos kainas
-		$servicesObj->deleteServicePrices($id);
+		$servicesObj->deleteAllServicePrices($id);
 
 		// pašaliname paslaugą
 		$servicesObj->deleteService($id);

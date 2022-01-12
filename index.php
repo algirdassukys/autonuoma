@@ -15,25 +15,25 @@
 	// nustatome pasirinktą modulį
 	$module = '';
 	if(isset($_GET['module'])) {
-		$module = mysql::escape($_GET['module']);
+		$module = mysql::escapeFieldForSQL($_GET['module']);
 	}
 	
 	// jeigu pasirinktas elementas (sutartis, automobilis ir kt.), nustatome elemento id
 	$id = '';
 	if(isset($_GET['id'])) {
-		$id = mysql::escape($_GET['id']);
+		$id = mysql::escapeFieldForSQL($_GET['id']);
 	}
 	
 	// nustatome, kokia funkcija kviečiama
 	$action = '';
 	if(isset($_GET['action'])) {
-		$action = mysql::escape($_GET['action']);
+		$action = mysql::escapeFieldForSQL($_GET['action']);
 	}
 		
 	// nustatome elementų sąrašo puslapio numerį
 	$pageId = 1;
 	if(!empty($_GET['page'])) {
-		$pageId = mysql::escape($_GET['page']);
+		$pageId = mysql::escapeFieldForSQL($_GET['page']);
 	}
 	
 	// nustatome, kurį valdiklį įtraukti šablone main.tpl.php

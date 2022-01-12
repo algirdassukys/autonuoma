@@ -62,19 +62,19 @@
 					?>
 						<div class="formRow row col-12 <?php echo $key > 0 ? '' : 'd-none'; ?>">
 							<div class="col-4">
-								<input type="text" class="form-control" <?php if($neaktyvus == false) { ?>name="kainos[]"<?php } ?> value="<?php echo $kaina; ?>" <?php echo $disabledInputAttr ?> />
+								<input type="text" class="form-control" <?php if($neaktyvus == false) { ?>name="kaina[]"<?php } ?> value="<?php echo $kaina; ?>" <?php echo $disabledInputAttr ?> />
 								<?php if($neaktyvus) { ?>
-									<input type="hidden" name="kainos[]" value="<?php echo $kaina; ?>" />
+									<input type="hidden" name="kaina[]" value="<?php echo $kaina; ?>" />
 								<?php } ?>
 							</div>
 							<div class="col-4">
-								<input type="text" class="form-control" <?php if($neaktyvus == false) { ?>name="datos[]"<?php } ?> value="<?php echo $galiojaNuo; ?>" <?php echo $disabledInputAttr ?> />
+								<input type="text" class="form-control" <?php if($neaktyvus == false) { ?>name="galioja_nuo[]"<?php } ?> value="<?php echo $galiojaNuo; ?>" <?php echo $disabledInputAttr ?> />
 								<?php if($neaktyvus) { ?>
-									<input type="hidden" name="datos[]" value="<?php echo $galiojaNuo; ?>" />
+									<input type="hidden" name="galioja_nuo[]" value="<?php echo $galiojaNuo; ?>" />
 								<?php } ?>
 							</div>
 							<input type="hidden" class="isDisabledForEditing" name="neaktyvus[]" value="<?php echo $neaktyvus ? '1' : '0'; ?>" <?php echo $disabledHiddenAttr ?> />
-							<div class="col-4"><a href="#" class="removeChild <?php echo $neaktyvus ? 'd-none' : ''; ?>">šalinti</a></div>
+							<div class="col-4"><a href="#" onclick="return false;" class="removeChild <?php echo $neaktyvus ? 'd-none' : ''; ?>">šalinti</a></div>
 						</div>
 					<?php 
 					}

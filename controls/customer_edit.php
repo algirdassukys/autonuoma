@@ -35,11 +35,8 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// redaguojame klientą
-		$customersObj->updateCustomer($dataPrepared);
+		$customersObj->updateCustomer($_POST);
 
 		// nukreipiame vartotoją į klientų puslapį
 		common::redirect("index.php?module={$module}&action=list");

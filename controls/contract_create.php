@@ -17,6 +17,7 @@ $customersObj = new customers();
 
 $formErrors = null;
 $data = array();
+$data['uzsakytos_paslaugos'] = array();
 
 // nustatome privalomus laukus
 $required = array('nr', 'sutarties_data', 'nuomos_data_laikas', 'planuojama_grazinimo_data_laikas', 'pradine_rida', 'kaina', 'degalu_kiekis_paimant', 'busena', 'fk_klientas', 'fk_darbuotojas', 'fk_automobilis', 'fk_grazinimo_vieta', 'fk_paemimo_vieta', 'kiekiai');
@@ -43,32 +44,37 @@ if(!empty($_POST['submit'])) {
 		'fk_automobilis' => 'positivenumber',
 		'fk_grazinimo_vieta' => 'positivenumber',
 		'fk_paemimo_vieta' => 'positivenumber',
-		'kiekiai' => 'int');
+		'kiekis' => 'int');
 
 	// sukuriame laukų validatoriaus objektą
 	$validator = new validator($validations, $required);
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// patikriname, ar nėra sutarčių su tokiu pačiu numeriu
-		$tmp = $contractsObj->getContract($dataPrepared['nr']);
+		$kiekis = $contractsObj->checkIfContractNrExists($_POST['nr']);
 
-		if(isset($tmp['nr'])) {
+		if($kiekis > 0) {
 			// sudarome klaidų pranešimą
 			$formErrors = "Sutartis su įvestu numeriu jau egzistuoja.";
 			// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 			$data = $_POST;
 		} else {
 			// įrašome naują sutartį
-			$contractsObj->insertContract($dataPrepared);
+			$contractsObj->insertContract($_POST);
 
 			// įrašome užsakytas paslaugas
-			$contractsObj->updateOrderedServices($dataPrepared);
+			foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
+				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}
+				$tmp = explode(":", $serviceForm);
+				$serviceId = $tmp[0];
+				$priceFrom = $tmp[1];
+				$price = $tmp[2];
+
+				$contractsObj->insertOrderedService($_POST['nr'], $serviceId, $priceFrom, $price, $_POST['kiekis'][$keyForm]);
+			}
 		}
-		
+
 		// nukreipiame vartotoją į sutarčių puslapį
 		if($formErrors == null) {
 			common::redirect("index.php?module={$module}&action=list");
@@ -80,15 +86,48 @@ if(!empty($_POST['submit'])) {
 
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
-		if(isset($_POST['kiekiai']) && sizeof($_POST['kiekiai']) > 0) {
+		// if(isset($_POST['paslaugos'])) {
+		// 	$i = 0;
+		// 	foreach($_POST['kiekiai'] as $key => $val) {
+		// 		$data['uzsakytos_paslaugos'][$i]['kiekis'] = $val;
+		// 		$i++;
+		// 	}
+		// }
+
+
+		$data['uzsakytos_paslaugos'] = array();
+		if(isset($_POST['paslauga'])) {
 			$i = 0;
-			foreach($_POST['kiekiai'] as $key => $val) {
-				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $val;
+			foreach($_POST['paslauga'] as $key => $val) {
+				
+				$tmp = explode(":", $val);
+				$serviceId = $tmp[0];
+				$priceFrom = $tmp[1];
+				$price = $tmp[2];
+
+				
+				// $data['uzsakytos_paslaugos'][$i]['paslaugos'] = $val;
+				// $data['uzsakytos_paslaugos'][$i]['kiekiai'] = $_POST['kiekiai'][$key];
+				
+				$data['uzsakytos_paslaugos'][$i]['fk_paslauga'] = $serviceId;
+				$data['uzsakytos_paslaugos'][$i]['fk_kaina_galioja_nuo'] = $priceFrom;
+				$data['uzsakytos_paslaugos'][$i]['kaina'] = $price;
+				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['kiekis'][$key];
+
+				//[fk_kaina_galioja_nuo] => 2016-01-01 [fk_paslauga] => 1 [kiekis] => 1 [kaina] => 45.00
+
 				$i++;
 			}
 		}
+
+
 	}
 }
+
+// į užsakytų paslaugų masyvo pradžią įtraukiame tuščią reikšmę, kad užsakytų paslaugų formoje
+// būtų visada išvedami paslėpti formos laukai, kuriuos galėtume kopijuoti ir pridėti norimą
+// kiekį paslaugų
+array_unshift($data['uzsakytos_paslaugos'], array());
 
 // įtraukiame šabloną
 include 'templates/contract_form.tpl.php';

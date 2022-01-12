@@ -23,26 +23,30 @@
 </ul>
 <?php
 	if(sizeof($delayedCarsData) > 0) { ?>
-		<table class="reportTable">
-			<tr class="gray">
-				<th>Sutartis</th>
-				<th>Klientas</th>
-				<th class="width150">Planuota grąžinti</th>
-				<th class="width150">Grąžinta</th>
-			</tr>
+		<table class="table">
+			<thead>	
+				<tr>
+					<th>Sutartis</th>
+					<th>Klientas</th>
+					<th>Planuota grąžinti</th>
+					<th>Grąžinta</th>
+				</tr>
+			</thead>
 
-			<?php
-				// suformuojame lentelę
-				foreach($delayedCarsData as $key => $val) {
-					echo
-						"<tr>"
-							. "<td>#{$val['nr']}, {$val['sutarties_data']}</td>"
-							. "<td>{$val['vardas']} {$val['pavarde']}</td>"
-							. "<td>{$val['planuojama_grazinimo_data_laikas']}</td>"
-							. "<td>{$val['grazinta']}</td>"
-						. "</tr>";
-				}
-			?>
+			<tbody>
+				<?php
+					// suformuojame lentelę
+					foreach($delayedCarsData as $key => $val) {
+						echo
+							"<tr>"
+								. "<td>#{$val['nr']}, {$val['sutarties_data']}</td>"
+								. "<td>{$val['vardas']} {$val['pavarde']}</td>"
+								. "<td>{$val['planuojama_grazinimo_data_laikas']}</td>"
+								. "<td>{$val['grazinta']}</td>"
+							. "</tr>";
+					}
+				?>
+			</tbody>
 		</table>
 		<a href="index.php?module=contract&action=report_delayed_cars" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   

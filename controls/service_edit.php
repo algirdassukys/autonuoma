@@ -10,7 +10,7 @@ $formErrors = null;
 $data = array();
 
 // nustatome privalomus laukus
-$required = array('pavadinimas', 'kainos', 'datos');
+$required = array('pavadinimas', 'kaina', 'galioja_nuo');
 
 // maksimalūs leidžiami laukų ilgiai
 $maxLengths = array (
@@ -24,8 +24,8 @@ if(!empty($_POST['submit'])) {
 	$validations = array (
 		'pavadinimas' => 'anything',
 		'aprasymas' => 'anything',
-		'kainos' => 'price',
-		'datos' => 'date');
+		'kaina' => 'price',
+		'galioja_nuo' => 'date');
 
 	// sukuriame validatoriaus objektą
 	include 'utils/validator.class.php';
@@ -33,43 +33,44 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// atnaujiname duomenis
-		$servicesObj->updateService($dataPrepared);
+		$servicesObj->updateService($_POST);
 
 		// pašaliname nebereikalingas paslaugų kainas ir įrašome naujas
-		// gauname esamas paslaugas
-		$servicePrices = $servicesObj->getServicePrices($id);
+		// gauname esamas paslaugų kainas
+		$servicePricesFromDb = $servicesObj->getServicePrices($id);
 
-		// jeigu paslaugos kainos nerandame iš formos gautame masyve, šaliname
-		foreach($servicePrices as $priceDb) {
+		// jeigu paslaugos kainos nerandame iš duomenų įvedimo formos gautame masyve, šaliname
+		foreach($servicePricesFromDb as $priceDb) {
 			$found = false;
-			foreach($dataPrepared['kainos'] as $keyForm => $priceForm) {
-				if($priceDb['kaina'] == $dataPrepared['kainos'][$keyForm] && $priceDb['galioja_nuo'] == $dataPrepared['datos'][$keyForm]) {
-					$found = true;
+			if(isset($_POST['kaina'])) {
+				foreach($_POST['kaina'] as $keyForm => $priceForm) {
+					if($priceDb['kaina'] == $_POST['kaina'][$keyForm] && $priceDb['galioja_nuo'] == $_POST['galioja_nuo'][$keyForm]) {
+						$found = true;
+					}
 				}
 			}
 
 			if(!$found) {
 				// šalinama paslaugos kaina
-				$servicesObj->deleteServicePrices($id, $priceDb['galioja_nuo'], $priceDb['kaina']);
+				$servicesObj->deleteServicePrice($id, $priceDb['galioja_nuo'], $priceDb['kaina']);
 			}
 		}
 
-		foreach($dataPrepared['kainos'] as $keyForm => $priceForm) {
-			// jeigu paslaugos kainos nerandame duomenų bazėje, tačiau ji yra formoje, įrašome
-			$found = false;
-			foreach($servicePrices as $priceDb) {
-				if($priceDb['kaina'] == $dataPrepared['kainos'][$keyForm] && $priceDb['galioja_nuo'] == $dataPrepared['datos'][$keyForm]) {
-					$found = true;
+		if(isset($_POST['kaina'])) {
+			foreach($_POST['kaina'] as $keyForm => $priceForm) {
+				// jeigu paslaugos kainos nerandame duomenų bazėje, tačiau ji yra formoje, įrašome
+				$found = false;
+				foreach($servicePricesFromDb as $priceDb) {
+					if($priceDb['kaina'] == $_POST['kaina'][$keyForm] && $priceDb['galioja_nuo'] == $_POST['galioja_nuo'][$keyForm]) {
+						$found = true;
+					}
 				}
-			}
-
-			if(!$found) {
-				// įrašoma paslaugos kaina
-				$servicesObj->insertServicePrices($id, $dataPrepared['datos'][$keyForm], $dataPrepared['kainos'][$keyForm]);
+	
+				if(!$found) {
+					// įrašoma paslaugos kaina
+					$servicesObj->insertServicePrices($id, $_POST['galioja_nuo'][$keyForm], $priceForm);
+				}
 			}
 		}
 
@@ -81,12 +82,12 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// gauname įvestus laukus
 		$data = $_POST;
-		if(isset($_POST['kainos']) && sizeof($_POST['kainos']) > 0) {
+		if(isset($_POST['kaina'])) {
 			$i = 0;
-			foreach($_POST['kainos'] as $key => $val) {
+			foreach($_POST['kaina'] as $key => $val) {
 				$data['paslaugos_kainos'][$i]['fk_paslauga'] = $id;
 				$data['paslaugos_kainos'][$i]['kaina'] = $val;
-				$data['paslaugos_kainos'][$i]['galioja_nuo'] = $_POST['datos'][$key];
+				$data['paslaugos_kainos'][$i]['galioja_nuo'] = $_POST['galioja_nuo'][$key];
 				$data['paslaugos_kainos'][$i]['neaktyvus'] = $_POST['neaktyvus'][$key];
 				$i++;
 			}
@@ -98,6 +99,8 @@ if(!empty($_POST['submit'])) {
 	// tikriname, ar nurodytas elemento id. Jeigu taip, išrenkame elemento duomenis ir jais užpildome formos laukus.
 	if(!empty($id)) {
 		$data = $servicesObj->getService($id);
+		$data['paslaugos_kainos'] = array();
+		
 		$servicePrices = $servicesObj->getServicePrices($id);
 		if(sizeof($servicePrices) > 0) {
 			foreach($servicePrices as $key => $val) {

@@ -24,11 +24,8 @@ if(empty($_POST['submit'])) {
 	$validator = new validator($validations);
 
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$data = $validator->preparePostFieldsForSQL();
-		
 		// išrenkame ataskaitos duomenis
-		$delayedCarsData = $contractsObj->getDelayedCars($data['dataNuo'], $data['dataIki']);
+		$delayedCarsData = $contractsObj->getDelayedCars($_POST['dataNuo'], $_POST['dataIki']);
 		
 		// rodome ataskaitą
 		include 'templates/delayed_cars_report_show.tpl.php';

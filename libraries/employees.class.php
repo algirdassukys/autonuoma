@@ -21,11 +21,14 @@ class employees {
 	 * @return type
 	 */
 	public function getEmployee($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT *
 					FROM `{$this->darbuotojai_lentele}`
 					WHERE `tabelio_nr`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0];
 	}
 	
@@ -36,6 +39,13 @@ class employees {
 	 * @return type
 	 */
 	public function getEmplyeesList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -48,6 +58,7 @@ class employees {
 					FROM `{$this->darbuotojai_lentele}`" . $limitOffsetString;
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -60,6 +71,7 @@ class employees {
 					FROM `{$this->darbuotojai_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
@@ -68,6 +80,8 @@ class employees {
 	 * @param type $id
 	 */
 	public function deleteEmployee($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM `{$this->darbuotojai_lentele}`
 					WHERE `tabelio_nr`='{$id}'";
 		mysql::query($query);
@@ -78,6 +92,8 @@ class employees {
 	 * @param type $data
 	 */
 	public function updateEmployee($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  UPDATE `{$this->darbuotojai_lentele}`
 					SET    `vardas`='{$data['vardas']}',
 						   `pavarde`='{$data['pavarde']}'
@@ -90,6 +106,8 @@ class employees {
 	 * @param type $data
 	 */
 	public function insertEmployee($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO `{$this->darbuotojai_lentele}`
 								(
 									`tabelio_nr`,
@@ -111,13 +129,16 @@ class employees {
 	 * @return type
 	 */
 	public function getContractCountOfEmployee($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->darbuotojai_lentele}`
 						INNER JOIN `{$this->sutartys_lentele}`
 							ON `{$this->darbuotojai_lentele}`.`tabelio_nr`=`{$this->sutartys_lentele}`.`fk_darbuotojas`
 					WHERE `{$this->darbuotojai_lentele}`.`tabelio_nr`='{$id}'";
 		$data = mysql::select($query);
-		
+	
+		//
 		return $data[0]['kiekis'];
 	}
 	

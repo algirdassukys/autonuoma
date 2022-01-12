@@ -32,6 +32,9 @@ class contracts {
 	 * @return type
 	 */
 	public function getContractList($limit, $offset) {
+		$limit = mysql::escapeFieldForSQL($limit);
+		$offset = mysql::escapeFieldForSQL($offset);
+
 		$query = "  SELECT `{$this->sutartys_lentele}`.`nr`,
 						   `{$this->sutartys_lentele}`.`sutarties_data`,
 						   `{$this->darbuotojai_lentele}`.`vardas` AS `darbuotojo_vardas`,
@@ -48,6 +51,7 @@ class contracts {
 							ON `{$this->sutartys_lentele}`.`busena`=`{$this->sutarties_busenos_lentele}`.`id` LIMIT {$limit} OFFSET {$offset}";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -66,15 +70,18 @@ class contracts {
 							ON `{$this->sutartys_lentele}`.`busena`=`{$this->sutarties_busenos_lentele}`.`id`";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
 	/**
 	 * Sutarties išrinkimas
-	 * @param type $id
+	 * @param type $nr
 	 * @return type
 	 */
-	public function getContract($id) {
+	public function getContract($nr) {
+		$nr = mysql::escapeFieldForSQL($nr);
+
 		$query = "  SELECT `{$this->sutartys_lentele}`.`nr`,
 						   `{$this->sutartys_lentele}`.`sutarties_data`,
 						   `{$this->sutartys_lentele}`.`nuomos_data_laikas`,
@@ -95,23 +102,44 @@ class contracts {
 					FROM `{$this->sutartys_lentele}`
 						LEFT JOIN `{$this->uzsakytos_paslaugos_lentele}`
 							ON `{$this->sutartys_lentele}`.`nr`=`{$this->uzsakytos_paslaugos_lentele}`.`fk_sutartis`
-					WHERE `{$this->sutartys_lentele}`.`nr`='{$id}' GROUP BY `{$this->sutartys_lentele}`.`nr`";
+					WHERE `{$this->sutartys_lentele}`.`nr`='{$nr}' GROUP BY `{$this->sutartys_lentele}`.`nr`";
 		$data = mysql::select($query);
 
+		//
 		return $data[0];
 	}
 	
+	/**
+	 * Patikrinama, ar sutartis su nurodytu numeriu egzistuoja
+	 * @param type $nr
+	 * @return type
+	 */
+	public function checkIfContractNrExists($nr) {
+		$nr = mysql::escapeFieldForSQL($nr);
+
+		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
+					FROM `{$this->sutartys_lentele}`
+					WHERE `{$this->sutartys_lentele}`.`nr`='{$nr}'";
+		$data = mysql::select($query);
+
+		//
+		return $data[0]['kiekis'];
+	}
+
 	/**
 	 * Užsakytų papildomų paslaugų sąrašo išrinkimas
 	 * @param type $orderId
 	 * @return type
 	 */
 	public function getOrderedServices($orderId) {
+		$orderId = mysql::escapeFieldForSQL($orderId);
+
 		$query = "  SELECT *
 					FROM `{$this->uzsakytos_paslaugos_lentele}`
 					WHERE `fk_sutartis`='{$orderId}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -120,6 +148,8 @@ class contracts {
 	 * @param type $data
 	 */
 	public function updateContract($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  UPDATE `{$this->sutartys_lentele}`
 					SET    `sutarties_data`='{$data['sutarties_data']}',
 						   `nuomos_data_laikas`='{$data['nuomos_data_laikas']}',
@@ -145,6 +175,8 @@ class contracts {
 	 * @param type $data
 	 */
 	public function insertContract($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO `{$this->sutartys_lentele}`
 								(
 									`nr`,
@@ -191,26 +223,47 @@ class contracts {
 	 * @param type $id
 	 */
 	public function deleteContract($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM `{$this->sutartys_lentele}`
 					WHERE `nr`='{$id}'";
 		mysql::query($query);
 	}
 	
 	/**
-	 * Užsakytų papildomų paslaugų šalinimas
+	 * Visų sutarties užsakytų papildomų paslaugų šalinimas
 	 * @param type $contractId
 	 */
 	public function deleteOrderedServices($contractId) {
+		$contractId = mysql::escapeFieldForSQL($contractId);
+
 		$query = "  DELETE FROM `{$this->uzsakytos_paslaugos_lentele}`
 					WHERE `fk_sutartis`='{$contractId}'";
 		mysql::query($query);
 	}
 	
 	/**
+	 * Sutarties užsakytos papildomos paslaugos šalinimas
+	 * @param type $contractId
+	 */
+	public function deleteOrderedService($contractId, $serviceId, $priceFrom, $price) {
+		$contractId = mysql::escapeFieldForSQL($contractId);
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		$priceFrom = mysql::escapeFieldForSQL($priceFrom);
+		$price = mysql::escapeFieldForSQL($price);
+
+		$query = "  DELETE FROM `{$this->uzsakytos_paslaugos_lentele}`
+					WHERE `fk_sutartis`='{$contractId}' AND `fk_paslauga`='{$serviceId}' AND `fk_kaina_galioja_nuo`='{$priceFrom}' AND `kaina`='{$price}'";
+		mysql::query($query);
+	}
+
+	/**
 	 * Užsakytų papildomų paslaugų atnaujinimas
 	 * @param type $data
 	 */
 	public function updateOrderedServices($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$this->deleteOrderedServices($data['nr']);
 		
 		if(isset($data['paslaugos']) && sizeof($data['paslaugos']) > 0) {
@@ -241,6 +294,45 @@ class contracts {
 	}
 	
 	/**
+	 * Užsakytos papildomos paslaugos įrašymas
+	 * @param type $data
+	 */
+	public function insertOrderedService($contractId, $serviceId, $priceFrom, $price, $amount) {
+		$contractId = mysql::escapeFieldForSQL($contractId);
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		$priceFrom = mysql::escapeFieldForSQL($priceFrom);
+		$price = mysql::escapeFieldForSQL($price);
+		$amount = mysql::escapeFieldForSQL($amount);
+
+		// if(isset($data['paslaugos']) && sizeof($data['paslaugos']) > 0) {
+			// foreach($data['paslaugos'] as $key=>$val) {
+				// $tmp = explode(":", $val);
+				// $serviceId = $tmp[0];
+				// $price = $tmp[1];
+				// $date_from = $tmp[2];
+				$query = "  INSERT INTO `{$this->uzsakytos_paslaugos_lentele}`
+										(
+											`fk_sutartis`,
+											`fk_kaina_galioja_nuo`,
+											`fk_paslauga`,
+											`kiekis`,
+											`kaina`
+										)
+										VALUES
+										(
+											'{$contractId}',
+											'{$priceFrom}',
+											'{$serviceId}',
+											'{$amount}',
+											'{$price}'
+										)";
+				mysql::query($query);
+			// }
+		// }
+	}
+
+
+	/**
 	 * Sutarties būsenų sąrašo išrinkimas
 	 * @return type
 	 */
@@ -249,6 +341,7 @@ class contracts {
 					FROM `{$this->sutarties_busenos_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -261,6 +354,7 @@ class contracts {
 					FROM `{$this->aiksteles_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -271,6 +365,9 @@ class contracts {
 	 * @return type
 	 */
 	public function getPricesCountOfOrderedServices($serviceId, $validFrom) {
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		$validFrom = mysql::escapeFieldForSQL($validFrom);
+		
 		$query = "  SELECT COUNT(`{$this->uzsakytos_paslaugos_lentele}`.`fk_paslauga`) AS `kiekis`
 					FROM `{$this->paslaugu_kainos_lentele}`
 						INNER JOIN `{$this->uzsakytos_paslaugos_lentele}`
@@ -278,10 +375,14 @@ class contracts {
 					WHERE `{$this->paslaugu_kainos_lentele}`.`fk_paslauga`='{$serviceId}' AND `{$this->paslaugu_kainos_lentele}`.`galioja_nuo`='{$validFrom}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 
 	public function getCustomerContracts($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " WHERE `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -332,10 +433,14 @@ class contracts {
 					GROUP BY `{$this->sutartys_lentele}`.`nr` ORDER BY `{$this->klientai_lentele}`.`pavarde` ASC";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 	
 	public function getSumPriceOfContracts($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " WHERE `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -353,10 +458,14 @@ class contracts {
 					{$whereClauseString}";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 
 	public function getSumPriceOfOrderedServices($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " WHERE `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -376,10 +485,14 @@ class contracts {
 					{$whereClauseString}";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 	
 	public function getDelayedCars($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " AND `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -406,6 +519,7 @@ class contracts {
 					{$whereClauseString}";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 	

@@ -107,42 +107,62 @@ class mysql
     }
 
     /**
-     * Quote and escape value for use in a database query
-     *
-     * @param string $value The value to be quoted and escaped
-     * @return string The quoted and escaped string
-     */
-    public static function quote($value)
-    {
-        mysql::connect();
-
-        //
-        return "'" . self::$connection::real_escape_string($value) . "'";
-    }
-
-    /**
      * Return id of last inserted row
-     * @return type
+     * @return last insert id
      */
     public static function getLastInsertedId()
     {
         mysql::connect();
-
+		
         //
-        return self::$connection::insert_id;
+        return self::$connection->insert_id;
     }
-
+	
     /**
-     * Escape variable for security
-     * @param type $field
-     * @return type
+     * Quote and escape array of variables for use in a database query
+     * @param type $fields
+     * @return $fields escaped
      */
-    public static function escape($field)
-    {
-        mysql::connect();
+	public static function escapeFieldsArrayForSQL($fields) {
+		mysql::connect();
+		
+		$data = array();
+		foreach($fields as $key=>$val) {
+			$tmp = null;
+			if(!is_array($val)) {
+				$tmp = mysqli_real_escape_string(self::$connection, $val . '');
+			} else {
+				foreach($val as $key2 => $val2) {
+					$tmp[] = mysqli_real_escape_string(self::$connection, $val2 . '');
+				}
+			}
+			
+			if($tmp == '' || $tmp == array()) {
+				$data[$key] = '';
+			} else {
+				if(!is_array($tmp)) {
+					$data[$key] = $tmp;
+				} else {
+					$data[$key] = $tmp;
+				}
+				
+			}
+		}
 
         //
-        return mysqli_real_escape_string(self::$connection, $field . "");
-    }
+		return $data;
+	}
+	
+    /**
+     * Quote and escape variable for use in a database query
+     * @param type $field
+     * @return $field escaped
+     */
+	public static function escapeFieldForSQL($field) {
+		mysql::connect();
+		
+		//
+		return mysqli_real_escape_string(self::$connection, $field . '');
+	}
 	
 }

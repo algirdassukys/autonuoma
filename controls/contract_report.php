@@ -22,13 +22,10 @@ if(empty($_POST['submit'])) {
 	$validator = new validator($validations);
 
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$data = $validator->preparePostFieldsForSQL();
-		
 		// išrenkame ataskaitos duomenis
-		$contractData = $contractsObj->getCustomerContracts($data['dataNuo'], $data['dataIki']);
-		$totalPrice = $contractsObj->getSumPriceOfContracts($data['dataNuo'], $data['dataIki']);
-		$totalServicePrice = $contractsObj->getSumPriceOfOrderedServices($data['dataNuo'], $data['dataIki']);
+		$contractData = $contractsObj->getCustomerContracts($_POST['dataNuo'], $_POST['dataIki']);
+		$totalPrice = $contractsObj->getSumPriceOfContracts($_POST['dataNuo'], $_POST['dataIki']);
+		$totalServicePrice = $contractsObj->getSumPriceOfOrderedServices($_POST['dataNuo'], $_POST['dataIki']);
 		
 		// rodome ataskaitą
 		include 'templates/contract_report_show.tpl.php';

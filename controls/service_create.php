@@ -8,9 +8,10 @@ $servicesObj = new services();
 
 $formErrors = null;
 $data = array();
+$data['paslaugos_kainos'] = array();
 
 // nustatome privalomus laukus
-$required = array('pavadinimas', 'kainos', 'datos');
+$required = array('pavadinimas', 'kaina', 'galioja_nuo');
 
 // maksimalūs leidžiami laukų ilgiai
 $maxLengths = array (
@@ -24,25 +25,24 @@ if(!empty($_POST['submit'])) {
 	$validations = array (
 		'pavadinimas' => 'anything',
 		'aprasymas' => 'anything',
-		'kainos' => 'price',
-		'datos' => 'date');
+		'kaina' => 'price',
+		'galioja_nuo' => 'date');
 
 	// sukuriame validatoriaus objektą
 	include 'utils/validator.class.php';
 	$validator = new validator($validations, $required, $maxLengths);
-
+	
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-		
 		// įrašome naują pasaugą ir gauname jos id
-		$dataPrepared['id'] = $servicesObj->insertService($dataPrepared);
+		$id = $servicesObj->insertService($_POST);
 		
 		// įrašome paslaugų kainas
-		$servicesObj->insertServicePrices($dataPrepared);
+		foreach($_POST['kaina'] as $keyForm => $priceForm) {
+			$servicesObj->insertServicePrices($id, $_POST['galioja_nuo'][$keyForm], $_POST['kaina'][$keyForm]);
+		}
 
-		// nukreipiame į modelių puslapį
+		// nukreipiame į paslaugų puslapį
 		common::redirect("index.php?module={$module}&action=list");
 		die();
 	} else {
@@ -50,17 +50,24 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// gauname įvestus laukus
 		$data = $_POST;
-		if(isset($_POST['kainos']) && sizeof($_POST['kainos']) > 0) {
+		
+		$data['paslaugos_kainos'] = array();
+		if(isset($_POST['kaina']) && sizeof($_POST['kaina']) > 0) {
 			$i = 0;
-			foreach($_POST['kainos'] as $key => $val) {
+			foreach($_POST['kaina'] as $key => $val) {
 				$data['paslaugos_kainos'][$i]['kaina'] = $val;
-				$data['paslaugos_kainos'][$i]['galioja_nuo'] = $_POST['datos'][$key];
-				$data['paslaugos_kainos'][$i]['neaktyvus'] = $_POST['neaktyvus'][$key];
+				$data['paslaugos_kainos'][$i]['galioja_nuo'] = $_POST['galioja_nuo'][$key];
+				
 				$i++;
 			}
 		}
 	}
 }
+
+// į paslaugų kainų masyvo pradžią įtraukiame tuščią reikšmę, kad paslaugų kainų formoje
+// būtų visada išvedami paslėpti formos laukai, kuriuos galėtume kopijuoti ir pridėti norimą
+// kiekį kainų
+array_unshift($data['paslaugos_kainos'], array());
 
 // įtraukiame šabloną
 include 'templates/service_form.tpl.php';

@@ -21,11 +21,14 @@ class customers {
 	 * @return type
 	 */
 	public function getCustomer($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT *
 					FROM `{$this->klientai_lentele}`
 					WHERE `asmens_kodas`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0];
 	}
 	
@@ -36,6 +39,14 @@ class customers {
 	 * @return type
 	 */
 	public function getCustomersList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+		
+		
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -48,6 +59,7 @@ class customers {
 					FROM `{$this->klientai_lentele}`" . $limitOffsetString;
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -60,6 +72,7 @@ class customers {
 					FROM `{$this->klientai_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
@@ -68,6 +81,8 @@ class customers {
 	 * @param type $id
 	 */
 	public function deleteCustomer($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM `{$this->klientai_lentele}`
 					WHERE `asmens_kodas`='{$id}'";
 		mysql::query($query);
@@ -78,6 +93,8 @@ class customers {
 	 * @param type $data
 	 */
 	public function updateCustomer($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  UPDATE `{$this->klientai_lentele}`
 					SET    `vardas`='{$data['vardas']}',
 						   `pavarde`='{$data['pavarde']}',
@@ -93,6 +110,8 @@ class customers {
 	 * @param type $data
 	 */
 	public function insertCustomer($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO `{$this->klientai_lentele}`
 								(
 									`asmens_kodas`,
@@ -120,6 +139,8 @@ class customers {
 	 * @return type
 	 */
 	public function getContractCountOfCustomer($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->klientai_lentele}`
 						INNER JOIN `{$this->sutartys_lentele}`
@@ -127,6 +148,7 @@ class customers {
 					WHERE `{$this->klientai_lentele}`.`asmens_kodas`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	

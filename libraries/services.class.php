@@ -24,9 +24,16 @@ class services {
 	 * Paslaugų sąrašo išrinkimas
 	 * @param type $limit
 	 * @param type $offset
-	 * @return type
+	 * @return paslaugų sąrašas pagal nurodytus rėžius
 	 */
 	public function getServicesList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+		
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -45,7 +52,7 @@ class services {
 	
 	/**
 	 * Paslaugų kiekio radimas
-	 * @return type
+	 * @return paslaugų kiekis
 	 */
 	public function getServicesListCount() {
 		$query = "  SELECT COUNT(`{$this->paslaugos_lentele}`.`id`) as `kiekis`
@@ -59,23 +66,28 @@ class services {
 	/**
 	 * Paslaugos kainų sąrašo radimas
 	 * @param type $serviceId
-	 * @return type
+	 * @return paslaugos kainų sąrašas
 	 */
 	public function getServicePrices($serviceId) {
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		
 		$query = "  SELECT *
 					FROM `{$this->paslaugu_kainos_lentele}`
 					WHERE `fk_paslauga`='{$serviceId}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
 	/**
 	 * Sutarčių, į kurias įtraukta paslauga, kiekio radimas
 	 * @param type $serviceId
-	 * @return type
+	 * @return sutarčių kiekis
 	 */
 	public function getContractCountOfService($serviceId) {
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		
 		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->paslaugos_lentele}`
 						INNER JOIN `{$this->paslaugu_kainos_lentele}`
@@ -87,20 +99,24 @@ class services {
 					WHERE `{$this->paslaugos_lentele}`.`id`='{$serviceId}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
 	/**
 	 * Paslaugos išrinkimas
 	 * @param type $id
-	 * @return type
+	 * @return paslaugos duomenų masyvas
 	 */
 	public function getService($id) {
+		$id = mysql::escapeFieldForSQL($id);
+		
 		$query = "  SELECT *
 					FROM `{$this->paslaugos_lentele}`
 					WHERE `id`='{$id}'";
 		$data = mysql::select($query);
 
+		//
 		return $data[0];
 	}
 	
@@ -110,6 +126,8 @@ class services {
 	 * @return įrašytos paslaugos ID
 	 */
 	public function insertService($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+		
 		$query = "  INSERT INTO `{$this->paslaugos_lentele}`
 								(
 									`pavadinimas`,
@@ -122,6 +140,7 @@ class services {
 								)";
 		mysql::query($query);
 		
+		//
 		return mysql::getLastInsertedId();
 	}
 	
@@ -130,6 +149,8 @@ class services {
 	 * @param type $data
 	 */
 	public function updateService($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+		
 		$query = "  UPDATE `{$this->paslaugos_lentele}`
 					SET    `pavadinimas`='{$data['pavadinimas']}',
 						   `aprasymas`='{$data['aprasymas']}'
@@ -142,6 +163,8 @@ class services {
 	 * @param type $id
 	 */
 	public function deleteService($id) {
+		$id = mysql::escapeFieldForSQL($id);
+		
 		$query = "  DELETE FROM `{$this->paslaugos_lentele}`
 					WHERE `id`='{$id}'";
 		mysql::query($query);
@@ -149,42 +172,69 @@ class services {
 	
 	/**
 	 * Paslaugos kainų įrašymas
-	 * @param type $data
+	 * @param type $serviceId
+	 * @param type $galiojaNuo
+	 * @param type $kaina
 	 */
 	public function insertServicePrices($serviceId, $galiojaNuo, $kaina) {
-		// if(isset($data['kainos']) && sizeof($data['kainos']) > 0) {
-			// foreach($data['kainos'] as $key=>$val) {
-				// if($data['neaktyvus'] == array() || $data['neaktyvus'][$key] == 0) {
-					$query = "  INSERT INTO `{$this->paslaugu_kainos_lentele}`
-											(
-												`fk_paslauga`,
-												`galioja_nuo`,
-												`kaina`
-											)
-											VALUES
-											(
-												'{$serviceId}',
-												'{$galiojaNuo}',
-												'{$kaina}'
-											)";
-					mysql::query($query);
-				// }
-			// }
-		// }
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		$galiojaNuo = mysql::escapeFieldForSQL($galiojaNuo);
+		$kaina = mysql::escapeFieldForSQL($kaina);
+		
+		$query = "  INSERT INTO `{$this->paslaugu_kainos_lentele}`
+								(
+									`fk_paslauga`,
+									`galioja_nuo`,
+									`kaina`
+								)
+								VALUES
+								(
+									'{$serviceId}',
+									'{$galiojaNuo}',
+									'{$kaina}'
+								)";
+		mysql::query($query);
 	}
 	
 	/**
-	 * Paslaugos kainų šalinimas
+	 * Paslaugos kainos šalinimas
 	 * @param type $serviceId
-	 * @param type $clause
+	 * @param type $galiojaNuo
+	 * @param type $kaina
 	 */
-	public function deleteServicePrices($serviceId, $galiojaNuo, $kaina) {
+	public function deleteServicePrice($serviceId, $galiojaNuo, $kaina) {
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		$galiojaNuo = mysql::escapeFieldForSQL($galiojaNuo);
+		$kaina = mysql::escapeFieldForSQL($kaina);
+		
 		$query = "  DELETE FROM `{$this->paslaugu_kainos_lentele}`
 					WHERE `fk_paslauga`='{$serviceId}' AND `galioja_nuo`='{$galiojaNuo}' AND `kaina`='{$kaina}'";
 		mysql::query($query);
 	}
+
+	/**
+	 * Visų paslaugos kainų šalinimas
+	 * @param type $serviceId
+	 * @param type $clause
+	 */
+	public function deleteAllServicePrices($serviceId) {
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+
+		$query = "  DELETE FROM `{$this->paslaugu_kainos_lentele}`
+					WHERE `fk_paslauga`='{$serviceId}'";
+		mysql::query($query);
+	}
 	
+	/**
+	 * Užsakytų paslaugų išrinkimas
+	 * @param type $limit
+	 * @param type $offset
+	 * @return paslaugų sąrašas pagal nurodytus datos rėžius
+	 */
 	public function getOrderedServices($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+		
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " WHERE `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -210,10 +260,20 @@ class services {
 					GROUP BY `{$this->paslaugos_lentele}`.`id` ORDER BY `bendra_suma` DESC";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 
+	/**
+	 * Užsakytų paslaugų ataskaitos duomenų išrinkimas
+	 * @param type $limit
+	 * @param type $offset
+	 * @return užsakytų paslaugų kiekis ir suma
+	 */
 	public function getStatsOfOrderedServices($dateFrom, $dateTo) {
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$dateTo = mysql::escapeFieldForSQL($dateTo);
+		
 		$whereClauseString = "";
 		if(!empty($dateFrom)) {
 			$whereClauseString .= " WHERE `{$this->sutartys_lentele}`.`sutarties_data`>='{$dateFrom}'";
@@ -236,6 +296,7 @@ class services {
 					{$whereClauseString}";
 		$data = mysql::select($query);
 
+		//
 		return $data;
 	}
 }

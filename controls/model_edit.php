@@ -30,11 +30,8 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// atnaujiname duomenis
-		$modelsObj->updateModel($dataPrepared);
+		$modelsObj->updateModel($_POST);
 
 		// nukreipiame į modelių puslapį
 		common::redirect("index.php?module={$module}&action=list");

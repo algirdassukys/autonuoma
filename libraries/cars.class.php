@@ -35,6 +35,8 @@ class cars {
 	 * @return type
 	 */
 	public function getCar($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT `{$this->automobiliai_lentele}`.`id`,
 						   `{$this->automobiliai_lentele}`.`valstybinis_nr`,
 						   `{$this->automobiliai_lentele}`.`pagaminimo_data`,
@@ -55,6 +57,7 @@ class cars {
 					WHERE `{$this->automobiliai_lentele}`.`id`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0];
 	}
 	
@@ -63,6 +66,8 @@ class cars {
 	 * @param type $data
 	 */
 	public function updateCar($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  UPDATE `{$this->automobiliai_lentele}`
 					SET    `valstybinis_nr`='{$data['valstybinis_nr']}',
 						   `pagaminimo_data`='{$data['pagaminimo_data']}',
@@ -88,6 +93,8 @@ class cars {
 	 * @param type $data
 	 */
 	public function insertCar($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO `{$this->automobiliai_lentele}` 
 								(
 									`valstybinis_nr`,
@@ -134,6 +141,13 @@ class cars {
 	 * @return type
 	 */
 	public function getCarList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+		
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -156,6 +170,7 @@ class cars {
 							ON `{$this->automobiliai_lentele}`.`busena`=`{$this->auto_busenos_lentele}`.`id`" . $limitOffsetString;
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 
@@ -182,6 +197,8 @@ class cars {
 	 * @param type $id
 	 */
 	public function deleteCar($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM `{$this->automobiliai_lentele}`
 					WHERE `id`='{$id}'";
 		mysql::query($query);
@@ -193,6 +210,8 @@ class cars {
 	 * @return type
 	 */
 	public function getContractCountOfCar($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->automobiliai_lentele}`
 						INNER JOIN `{$this->sutartys_lentele}`
@@ -200,6 +219,7 @@ class cars {
 					WHERE `{$this->automobiliai_lentele}`.`id`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 	
@@ -212,6 +232,7 @@ class cars {
 					FROM `{$this->pavaru_dezes_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	
@@ -224,6 +245,7 @@ class cars {
 					FROM `{$this->degalu_tipai_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 
@@ -236,6 +258,7 @@ class cars {
 					FROM `{$this->kebulu_tipai_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 
@@ -248,6 +271,7 @@ class cars {
 					FROM `{$this->lagaminai_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 
@@ -260,6 +284,7 @@ class cars {
 					FROM `{$this->auto_busenos_lentele}`";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 	

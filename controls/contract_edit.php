@@ -50,20 +50,63 @@ if(!empty($_POST['submit'])) {
 
 	// laukai įvesti be klaidų
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// atnaujiname sutartį
-		$contractsObj->updateContract($dataPrepared);
+		$contractsObj->updateContract($_POST);
 
-		// atnaujiname užsakytas paslaugas
-		$contractsObj->updateOrderedServices($dataPrepared);
+		// pašaliname nebereikalingas paslaugas ir įrašome naujas
+		// gauname esamas paslaugas
+		$servicesFromDb = $contractsObj->getOrderedServices($id);
+
+		// jeigu paslaugos kainos nerandame iš formos gautame masyve, šaliname
+		foreach($servicesFromDb as $serviceDb) {
+			$found = false;
+			if(isset($_POST['paslauga'])) {
+				foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
+					// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}
+					$tmp = explode(":", $serviceForm);
+					$serviceId = $tmp[0];
+					$priceFrom = $tmp[1];
+					$price = $tmp[2];
+
+					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekiai'][$keyForm]) {
+						$found = true;
+					}
+				}
+			}
+
+			if(!$found) {
+				// šalinama paslaugos kaina
+				$contractsObj->deleteOrderedService($id, $serviceDb['fk_paslauga'], $serviceDb['fk_kaina_galioja_nuo'], $serviceDb['kaina']);
+			}
+		}
+
+		if(isset($_POST['paslauga'])) {
+			foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
+				// jeigu užsakytos paslaugos nerandame duomenų bazėje, tačiau ji yra formoje, įrašome
+
+				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}
+				$tmp = explode(":", $serviceForm);
+				$serviceId = $tmp[0];
+				$priceFrom = $tmp[1];
+				$price = $tmp[2];
+
+				$found = false;
+				foreach($servicesFromDb as $serviceDb) {
+					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekiai'][$keyForm]) {
+						$found = true;
+					}
+				}
+
+				if(!$found) {
+					// įrašoma paslaugos kaina
+					$contractsObj->insertOrderedService($id, $serviceId, $priceFrom, $price, $_POST['kiekiai'][$keyForm]);
+				}
+			}
+		}
 
 		// nukreipiame vartotoją į sutarčių puslapį
-		if($formErrors == null) {
-			common::redirect("index.php?module={$module}&action=list");
-			die();
-		}
+		common::redirect("index.php?module={$module}&action=list");
+		die();
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();

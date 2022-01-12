@@ -46,7 +46,7 @@
 	
 	<div class="form-group">
 		<label for="pagaminimo_data">Pagaminimo data<?php echo in_array('pagaminimo_data', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="pagaminimo_data" name="pagaminimo_data" class="form-control" value="<?php echo isset($data['pagaminimo_data']) ? $data['pagaminimo_data'] : ''; ?>">
+		<input type="text" id="pagaminimo_data" name="pagaminimo_data" class="form-control datepicker" value="<?php echo isset($data['pagaminimo_data']) ? $data['pagaminimo_data'] : ''; ?>">
 	</div>
 
 	<div class="form-group">
@@ -166,7 +166,7 @@
 
 	<div class="form-group">
 		<label for="registravimo_data">Registravimo data<?php echo in_array('registravimo_data', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="registravimo_data" name="registravimo_data" class="form-control" value="<?php echo isset($data['registravimo_data']) ? $data['registravimo_data'] : ''; ?>">
+		<input type="text" id="registravimo_data" name="registravimo_data" class="form-control datepicker" value="<?php echo isset($data['registravimo_data']) ? $data['registravimo_data'] : ''; ?>">
 	</div>
 
 	<div class="form-group">

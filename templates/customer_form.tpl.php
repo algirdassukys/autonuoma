@@ -33,7 +33,7 @@
 
 	<div class="form-group">
 		<label for="gimimo_data">Gimimo data<?php echo in_array('gimimo_data', $required) ? '<span> *</span>' : ''; ?></label>
-		<input type="text" id="gimimo_data" name="gimimo_data" class="form-control" value="<?php echo isset($data['gimimo_data']) ? $data['gimimo_data'] : ''; ?>">
+		<input type="text" id="gimimo_data" name="gimimo_data" class="form-control datepicker" value="<?php echo isset($data['gimimo_data']) ? $data['gimimo_data'] : ''; ?>">
 	</div>
 
 	<div class="form-group">

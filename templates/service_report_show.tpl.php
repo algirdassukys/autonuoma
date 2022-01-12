@@ -23,37 +23,41 @@
 </ul>
 <?php		
 	if(sizeof($servicesData) > 0) { ?>
-		<table class="reportTable">
-			<tr class="gray">
-				<th>ID</th>
-				<th>Paslauga</th>
-				<th class="width100">Užsakyta kartų</th>
-				<th class="width100">Užsakyta už</th>
-			</tr>
+		<table class="table">
+			<thead>	
+				<tr>
+					<th>ID</th>
+					<th>Paslauga</th>
+					<th>Užsakyta kartų</th>
+					<th>Užsakyta už</th>
+				</tr>
+			</thead>
 			
-			<?php
-				// suformuojame lentelę
-				foreach($servicesData as $key => $val) {
-					echo
-						"<tr>"
-							. "<td>{$val['id']}</td>"
-							. "<td>{$val['pavadinimas']}</td>"
-							. "<td>{$val['uzsakyta']}</td>"
-							. "<td>{$val['bendra_suma']} &euro;</td>"
-						. "</tr>";
-				}
-			?>
-			
-		  	<tr>
-				<td class='groupSeparator' colspan='4'>Suma</td>
-			</tr>
-			
-			<tr class="aggregate">
-				<td></td>
-				<td class="label"></td>
-				<td class="border"><?php echo "{$servicesStats[0]['uzsakyta']}"; ?></td>
-				<td class="border"><?php echo "{$servicesStats[0]['bendra_suma']}"; ?> &euro;</td>
-			</tr>
+			<tbody>
+				<?php
+					// suformuojame lentelę
+					foreach($servicesData as $key => $val) {
+						echo
+							"<tr>"
+								. "<td>{$val['id']}</td>"
+								. "<td>{$val['pavadinimas']}</td>"
+								. "<td>{$val['uzsakyta']}</td>"
+								. "<td>{$val['bendra_suma']} &euro;</td>"
+							. "</tr>";
+					}
+				?>
+				
+				<tr>
+					<td colspan='4'>Suma</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td><?php echo "{$servicesStats[0]['uzsakyta']}"; ?></td>
+					<td><?php echo "{$servicesStats[0]['bendra_suma']}"; ?> &euro;</td>
+				</tr>
+			</tbody>
 		</table>
 		<a href="index.php?module=service&action=report" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   

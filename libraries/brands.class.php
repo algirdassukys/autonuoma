@@ -21,11 +21,14 @@ class brands {
 	 * @return type
 	 */
 	public function getBrand($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT *
 					FROM {$this->markes_lentele}
 					WHERE `id`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0];
 	}
 	
@@ -36,6 +39,13 @@ class brands {
 	 * @return type
 	 */
 	public function getBrandList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -49,6 +59,7 @@ class brands {
 					FROM {$this->markes_lentele}{$limitOffsetString}";
 		$data = mysql::select($query);
 		
+		//
 		return $data;
 	}
 
@@ -61,6 +72,7 @@ class brands {
 					FROM {$this->markes_lentele}";
 		$data = mysql::select($query);
 		
+		// 
 		return $data[0]['kiekis'];
 	}
 	
@@ -69,6 +81,8 @@ class brands {
 	 * @param type $data
 	 */
 	public function insertBrand($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO {$this->markes_lentele}
 								(
 									`pavadinimas`
@@ -85,6 +99,8 @@ class brands {
 	 * @param type $data
 	 */
 	public function updateBrand($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  UPDATE {$this->markes_lentele}
 					SET    `pavadinimas`='{$data['pavadinimas']}'
 					WHERE `id`='{$data['id']}'";
@@ -96,6 +112,8 @@ class brands {
 	 * @param type $id
 	 */
 	public function deleteBrand($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM {$this->markes_lentele}
 					WHERE `id`='{$id}'";
 		mysql::query($query);
@@ -107,6 +125,8 @@ class brands {
 	 * @return type
 	 */
 	public function getModelCountOfBrand($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT COUNT({$this->modeliai_lentele}.`id`) AS `kiekis`
 					FROM {$this->markes_lentele}
 						INNER JOIN {$this->modeliai_lentele}
@@ -114,6 +134,7 @@ class brands {
 					WHERE {$this->markes_lentele}.`id`='{$id}'";
 		$data = mysql::select($query);
 		
+		//
 		return $data[0]['kiekis'];
 	}
 

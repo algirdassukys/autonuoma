@@ -24,14 +24,11 @@ if(empty($_POST['submit'])) {
 	include 'utils/validator.class.php';
 	$validator = new validator($validations);
 	
-	
+
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$data = $validator->preparePostFieldsForSQL();
-		
 		// išrenkame ataskaitos duomenis
-		$servicesData = $servicesObj->getOrderedServices($data['dataNuo'], $data['dataIki']);
-		$servicesStats = $servicesObj->getStatsOfOrderedServices($data['dataNuo'], $data['dataIki']);
+		$servicesData = $servicesObj->getOrderedServices($_POST['dataNuo'], $_POST['dataIki']);
+		$servicesStats = $servicesObj->getStatsOfOrderedServices($_POST['dataNuo'], $_POST['dataIki']);
 		
 		// rodome ataskaitą
 		include 'templates/service_report_show.tpl.php';

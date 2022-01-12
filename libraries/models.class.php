@@ -23,6 +23,8 @@ class models {
 	 * @return type
 	 */
 	public function getModel($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT *
 					FROM `{$this->modeliai_lentele}`
 					WHERE `id`='{$id}'";
@@ -38,6 +40,13 @@ class models {
 	 * @return type
 	 */
 	public function getModelList($limit = null, $offset = null) {
+		if($limit) {
+			$limit = mysql::escapeFieldForSQL($limit);
+		}
+		if($offset) {
+			$offset = mysql::escapeFieldForSQL($offset);
+		}
+
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -78,6 +87,8 @@ class models {
 	 * @return type
 	 */
 	public function getModelListByBrand($brandId) {
+		$brandId = mysql::escapeFieldForSQL($brandId);
+
 		$query = "  SELECT *
 					FROM `{$this->modeliai_lentele}`
 					WHERE `fk_marke`='{$brandId}'";
@@ -91,6 +102,8 @@ class models {
 	 * @param type $data
 	 */
 	public function updateModel($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+		
 		$query = "  UPDATE `{$this->modeliai_lentele}`
 					SET    `pavadinimas`='{$data['pavadinimas']}',
 						   `fk_marke`='{$data['fk_marke']}'
@@ -103,6 +116,8 @@ class models {
 	 * @param type $data
 	 */
 	public function insertModel($data) {
+		$data = mysql::escapeFieldsArrayForSQL($data);
+
 		$query = "  INSERT INTO `{$this->modeliai_lentele}`
 								(
 									`pavadinimas`,
@@ -121,6 +136,8 @@ class models {
 	 * @param type $id
 	 */
 	public function deleteModel($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  DELETE FROM `{$this->modeliai_lentele}`
 					WHERE `id`='{$id}'";
 		mysql::query($query);
@@ -132,6 +149,8 @@ class models {
 	 * @return type
 	 */
 	public function getCarCountOfModel($id) {
+		$id = mysql::escapeFieldForSQL($id);
+
 		$query = "  SELECT COUNT(`{$this->automobiliai_lentele}`.`id`) AS `kiekis`
 					FROM `{$this->modeliai_lentele}`
 						INNER JOIN `{$this->automobiliai_lentele}`

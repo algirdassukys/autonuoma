@@ -21,80 +21,80 @@
 		</span>
 	</li>
 </ul>
-
-
-
 <?php
 	if(sizeof($contractData) > 0) { ?>
-		<table class="reportTable">
-			<tr>
-				<th>Sutartis</th>
-				<th>Data</th>
-				<th class="width150">Sudarytų sutarčių vertė</th>
-				<th class="width150">Užsakyta paslaugų vertė</th>
-			</tr>
+		<table class="table">
+			<thead>	
+				<tr>
+					<th>Sutartis</th>
+					<th>Data</th>
+					<th>Sudarytų sutarčių vertė</th>
+					<th>Užsakyta paslaugų vertė</th>
+				</tr>
+			</thead>
 
-			<?php
-				// suformuojame lentelę
-				for($i = 0; $i < sizeof($contractData); $i++) {
-					
-					if($i == 0 || $contractData[$i]['asmens_kodas'] != $contractData[$i-1]['asmens_kodas']) {
+			<tbody>
+				<?php
+					// suformuojame lentelę
+					for($i = 0; $i < sizeof($contractData); $i++) {
+						
+						if($i == 0 || $contractData[$i]['asmens_kodas'] != $contractData[$i-1]['asmens_kodas']) {
+							echo
+								"<tr class='table-primary'>"
+									. "<td colspan='4'>{$contractData[$i]['vardas']} {$contractData[$i]['pavarde']}</td>"
+								. "</tr>";
+						}
+						
+						if($contractData[$i]['sutarties_paslaugu_kaina'] == 0) {
+							$contractData[$i]['sutarties_paslaugu_kaina'] = "neužsakyta";
+						} else {
+							$contractData[$i]['sutarties_paslaugu_kaina'] .= " &euro;";
+						}
+						
 						echo
-							  "<tr>"
-								. "<td class='groupSeparator' colspan='4'>{$contractData[$i]['vardas']} {$contractData[$i]['pavarde']}</td>"
+							"<tr>"
+								. "<td>#{$contractData[$i]['nr']}</td>"
+								. "<td>{$contractData[$i]['sutarties_data']}</td>"
+								. "<td>{$contractData[$i]['sutarties_kaina']} &euro;</td>"
+								. "<td>{$contractData[$i]['sutarties_paslaugu_kaina']}</td>"
 							. "</tr>";
-					}
-					
-					if($contractData[$i]['sutarties_paslaugu_kaina'] == 0) {
-						$contractData[$i]['sutarties_paslaugu_kaina'] = "neužsakyta";
-					} else {
-						$contractData[$i]['sutarties_paslaugu_kaina'] .= " &euro;";
-					}
-					
-					echo
-						"<tr>"
-							. "<td>#{$contractData[$i]['nr']}</td>"
-							. "<td>{$contractData[$i]['sutarties_data']}</td>"
-							. "<td>{$contractData[$i]['sutarties_kaina']} &euro;</td>"
-							. "<td>{$contractData[$i]['sutarties_paslaugu_kaina']}</td>"
-						. "</tr>";
-					if($i == (sizeof($contractData) - 1) || $contractData[$i]['asmens_kodas'] != $contractData[$i+1]['asmens_kodas']) {
-						if($contractData[$i]['bendra_kliento_paslaugu_kaina'] == 0) {
-							$contractData[$i]['bendra_kliento_paslaugu_kaina'] = "neužsakyta";
-						} else {
-							$contractData[$i]['bendra_kliento_paslaugu_kaina'] .= " &euro;";
+						if($i == (sizeof($contractData) - 1) || $contractData[$i]['asmens_kodas'] != $contractData[$i+1]['asmens_kodas']) {
+							if($contractData[$i]['bendra_kliento_paslaugu_kaina'] == 0) {
+								$contractData[$i]['bendra_kliento_paslaugu_kaina'] = "neužsakyta";
+							} else {
+								$contractData[$i]['bendra_kliento_paslaugu_kaina'] .= " &euro;";
+							}
+							
+							echo 
+								"<tr>"
+									. "<td colspan='2'></td>"
+									. "<td>{$contractData[$i]['bendra_kliento_sutarciu_kaina']} &euro;</td>"
+									. "<td>{$contractData[$i]['bendra_kliento_paslaugu_kaina']}</td>"
+								. "</tr>";
 						}
-						
-						echo 
-							"<tr class='aggregate'>"
-								. "<td colspan='2'></td>"
-								. "<td class='border'>{$contractData[$i]['bendra_kliento_sutarciu_kaina']} &euro;</td>"
-								. "<td class='border'>{$contractData[$i]['bendra_kliento_paslaugu_kaina']}</td>"
-							. "</tr>";
 					}
-				}
-			?>
-			
-
-		  	<tr>
-				<td class='groupSeparator' colspan='4'>Bendra suma</td>
-			</tr>
-			
-			<tr class="aggregate">
-				<td class="label" style="text-align: right" colspan="2"></td>
-				<td class="border"><?php echo $totalPrice[0]['nuomos_suma']; ?> &euro;</td>
-				<td class="border">
-					<?php
-						if($totalServicePrice[0]['paslaugu_suma'] == 0) {
-							$totalServicePrice[0]['paslaugu_suma'] = "neužsakyta";
-						} else {
-							$totalServicePrice[0]['paslaugu_suma'] .= " &euro;";
-						}
-						
-						echo $totalServicePrice[0]['paslaugu_suma'];
-					?>
-				</td>
-			</tr>
+				?>
+				
+				<tr>
+					<td colspan='4'>Bendra suma</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2"></td>
+					<td><?php echo $totalPrice[0]['nuomos_suma']; ?> &euro;</td>
+					<td>
+						<?php
+							if($totalServicePrice[0]['paslaugu_suma'] == 0) {
+								$totalServicePrice[0]['paslaugu_suma'] = "neužsakyta";
+							} else {
+								$totalServicePrice[0]['paslaugu_suma'] .= " &euro;";
+							}
+							
+							echo $totalServicePrice[0]['paslaugu_suma'];
+						?>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 		<a href="index.php?module=contract&action=report" title="Nauja ataskaita" style="margin-bottom: 15px" class="button large float-right">nauja ataskaita</a>
 <?php   

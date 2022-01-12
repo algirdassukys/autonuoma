@@ -25,11 +25,8 @@ if(!empty($_POST['submit'])) {
 	$validator = new validator($validations, $required, $maxLengths);
 
 	if($validator->validate($_POST)) {
-		// suformuojame laukų reikšmių masyvą SQL užklausai
-		$dataPrepared = $validator->preparePostFieldsForSQL();
-
 		// atnaujiname duomenis
-		$brandsObj->updateBrand($dataPrepared);
+		$brandsObj->updateBrand($_POST);
 
 		// nukreipiame į markių puslapį
 		common::redirect("index.php?module={$module}&action=list");

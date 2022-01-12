@@ -31,6 +31,15 @@ $(window).ready(function () {
     return false;
   })
 
+  $('.datepicker').datetimepicker({
+    format:'Y-m-d',
+    timepicker:false
+  });
+
+  $('.datetimepicker').datetimepicker({
+    format:'Y-m-d H:i:s'
+  });
+
 });
 
 function showConfirmDialog(module, removeId) {
@@ -57,15 +66,3 @@ var modalConfirm = function (callback) {
     $("#confirm-delete").modal('hide');
   });
 };
-
-modalConfirm(function (confirm) {
-  if (confirm) {
-    //Acciones si el usuario confirma
-    //$("#result").html("CONFIRMADO");
-    alert(1);
-  } else {
-    //Acciones si el usuario no confirma
-    //$("#result").html("NO CONFIRMADO");
-    alert(2);
-  }
-});

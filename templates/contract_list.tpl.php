@@ -42,10 +42,5 @@
 
 <?php
 	// įtraukiame puslapių šabloną
-	include 'templates/modal_confirm.tpl.php';
-?>
-
-<?php
-	// įtraukiame puslapių šabloną
 	include 'templates/paging.tpl.php';
 ?>
