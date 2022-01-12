@@ -40,5 +40,5 @@
 
 <?php
 	// įtraukiame puslapių šabloną
-	include 'templates/paging.tpl.php';
+	include 'templates/common/paging.tpl.php';
 ?>
