@@ -27,6 +27,10 @@ if(empty($_POST['submit'])) {
 		$totalPrice = $contractsObj->getSumPriceOfContracts($_POST['dataNuo'], $_POST['dataIki']);
 		$totalServicePrice = $contractsObj->getSumPriceOfOrderedServices($_POST['dataNuo'], $_POST['dataIki']);
 		
+		// perduodame datos filtro reikšmes į šabloną
+		$data['dataNuo'] = $_POST['dataNuo'];
+		$data['dataIki'] = $_POST['dataIki'];
+		
 		// rodome ataskaitą
 		include 'templates/contract_report_show.tpl.php';
 	} else {
