@@ -268,10 +268,14 @@ class contracts {
 		
 		if(isset($data['paslaugos']) && sizeof($data['paslaugos']) > 0) {
 			foreach($data['paslaugos'] as $key=>$val) {
-				$tmp = explode(":", $val);
+				
+				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}
+				$tmp = explode("#", $val);
+				
 				$serviceId = $tmp[0];
-				$price = $tmp[1];
-				$date_from = $tmp[2];
+				$priceFrom = $tmp[1];
+				$price = $tmp[2];
+				
 				$query = "  INSERT INTO `{$this->uzsakytos_paslaugos_lentele}`
 										(
 											`fk_sutartis`,
@@ -283,7 +287,7 @@ class contracts {
 										VALUES
 										(
 											'{$data['nr']}',
-											'{$date_from}',
+											'{$priceFrom}',
 											'{$serviceId}',
 											'{$data['kiekiai'][$key]}',
 											'{$price}'

@@ -80,7 +80,8 @@ if(!empty($_POST['submit'])) {
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
-		// gauname įvestus laukus
+		
+		// gauname įvestus laukus, kad galėtume užpildyti formą
 		$data = $_POST;
 		if(isset($_POST['kaina'])) {
 			$i = 0;

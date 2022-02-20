@@ -223,7 +223,7 @@
 														$selected = " selected='selected'";
 													}
 												}
-												echo "<option{$selected} value='{$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
+												echo "<option{$selected} value='{$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
 											}
 										}
 									?>

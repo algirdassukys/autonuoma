@@ -19,7 +19,7 @@ $formErrors = null;
 $data = array();
 
 // nustatome privalomus laukus
-$required = array('nr', 'sutarties_data', 'nuomos_data_laikas', 'planuojama_grazinimo_data_laikas', 'pradine_rida', 'kaina', 'degalu_kiekis_paimant', 'busena', 'fk_klientas', 'fk_darbuotojas', 'fk_automobilis', 'fk_grazinimo_vieta', 'fk_paemimo_vieta', 'kiekiai');
+$required = array('nr', 'sutarties_data', 'nuomos_data_laikas', 'planuojama_grazinimo_data_laikas', 'pradine_rida', 'kaina', 'degalu_kiekis_paimant', 'busena', 'fk_klientas', 'fk_darbuotojas', 'fk_automobilis', 'fk_grazinimo_vieta', 'fk_paemimo_vieta', 'kiekis');
 
 // vartotojas paspaudė išsaugojimo mygtuką
 if(!empty($_POST['submit'])) {
@@ -43,8 +43,8 @@ if(!empty($_POST['submit'])) {
 		'fk_automobilis' => 'positivenumber',
 		'fk_grazinimo_vieta' => 'positivenumber',
 		'fk_paemimo_vieta' => 'positivenumber',
-		'kiekiai' => 'int');
-
+		'kiekis' => 'int');
+		
 	// sukuriame laukų validatoriaus objektą
 	$validator = new validator($validations, $required);
 
@@ -63,12 +63,13 @@ if(!empty($_POST['submit'])) {
 			if(isset($_POST['paslauga'])) {
 				foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
 					// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}
-					$tmp = explode(":", $serviceForm);
+					$tmp = explode("#", $serviceForm);
+					
 					$serviceId = $tmp[0];
 					$priceFrom = $tmp[1];
 					$price = $tmp[2];
-
-					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekiai'][$keyForm]) {
+					
+					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekis'][$keyForm]) {
 						$found = true;
 					}
 				}
@@ -79,27 +80,28 @@ if(!empty($_POST['submit'])) {
 				$contractsObj->deleteOrderedService($id, $serviceDb['fk_paslauga'], $serviceDb['fk_kaina_galioja_nuo'], $serviceDb['kaina']);
 			}
 		}
-
+		
 		if(isset($_POST['paslauga'])) {
 			foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
 				// jeigu užsakytos paslaugos nerandame duomenų bazėje, tačiau ji yra formoje, įrašome
 
 				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}:{$price['galioja_nuo']}:{$price['kaina']}
-				$tmp = explode(":", $serviceForm);
+				$tmp = explode("#", $serviceForm);
+				
 				$serviceId = $tmp[0];
 				$priceFrom = $tmp[1];
 				$price = $tmp[2];
 
 				$found = false;
 				foreach($servicesFromDb as $serviceDb) {
-					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekiai'][$keyForm]) {
+					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kiekis'] == $_POST['kiekis'][$keyForm]) {
 						$found = true;
 					}
 				}
 
 				if(!$found) {
 					// įrašoma paslaugos kaina
-					$contractsObj->insertOrderedService($id, $serviceId, $priceFrom, $price, $_POST['kiekiai'][$keyForm]);
+					$contractsObj->insertOrderedService($id, $serviceId, $priceFrom, $price, $_POST['kiekis'][$keyForm]);
 				}
 			}
 		}
@@ -113,13 +115,27 @@ if(!empty($_POST['submit'])) {
 
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
-		if(isset($_POST['kiekiai']) && sizeof($_POST['kiekiai']) > 0) {
+		if(isset($_POST['paslauga'])) {
 			$i = 0;
-			foreach($_POST['kiekiai'] as $key => $val) {
-				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $val;
+			foreach($_POST['paslauga'] as $key => $val) {
+				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}
+				$tmp = explode("#", $val);
+				
+				$serviceId = $tmp[0];
+				$priceFrom = $tmp[1];
+				$price = $tmp[2];
+				
+				$data['uzsakytos_paslaugos'][$i]['fk_sutartis'] = $id;
+				$data['uzsakytos_paslaugos'][$i]['fk_paslauga'] = $serviceId;
+				$data['uzsakytos_paslaugos'][$i]['fk_kaina_galioja_nuo'] = $priceFrom;
+				$data['uzsakytos_paslaugos'][$i]['kaina'] = $price;
+				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['kiekis'][$key];
+
 				$i++;
 			}
 		}
+		
+		array_unshift($data['uzsakytos_paslaugos'], array());
 	}
 } else {
 	//  išrenkame elemento duomenis ir jais užpildome formos laukus.
