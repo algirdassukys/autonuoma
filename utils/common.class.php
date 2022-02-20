@@ -9,7 +9,7 @@
 class common {
 
 	/**
-	* @desc Nekreipimo funkcija, naudojant Javascript
+	* @desc Nukreipimo funkcija, naudojant Javascript
 	* @param url adresas, į kurį nukreipiama
 	*/
 	public static function redirect($url) {
@@ -17,11 +17,18 @@ class common {
 		echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $url . '">';
 	}
 	
-	public static function logToConsole($output, $with_script_tags = true) {
-		$js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
-		if ($with_script_tags) {
-			$js_code = '<script>' . $js_code . '</script>';
+	/**
+	* @desc Žinučių išvedimo į konsolę funkciją naudojant Javascript
+	* @param output spausdinamų reikšmių masyvas
+	*/
+	public static function logToConsole($output) {
+		$js_code = '';
+		foreach($output as $val) {
+			$js_code .= 'console.log("' . $val . '");';
 		}
+
+		$js_code = '<script>' . $js_code . '</script>';
+		
 		echo $js_code;
 	}
 }
