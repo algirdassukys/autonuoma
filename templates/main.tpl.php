@@ -18,7 +18,10 @@
 		
         <!-- Datepicker CSS-->
         <link rel="stylesheet" type="text/css" href="scripts/datetimepicker/jquery.datetimepicker.css"/ >
-            
+
+        <!-- Custom CSS-->
+        <link rel="stylesheet" type="text/css" href="style/custom.css"/ >
+		
         <!-- JQuery-->
         <script src="scripts/jquery-3.6.0.min.js"></script>
 
@@ -55,7 +58,7 @@
             </div>
         </nav>
         <!-- Puslapio turinys -->
-        <div class="container">
+        <div class="container" style="padding-bottom: 150px;">
             <div class="mt-5">
                 <?php
                     // įtraukiame veiksmų failą
@@ -69,11 +72,5 @@
             </div>
         </div>
         
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <div class="col-md-4 d-flex align-items-center" style="padding-left: 15px;">                
-                <span class="text-muted">Automobilių nuomos IS</span>
-            </div>
-        </footer>
-
     </body>
 </html>
