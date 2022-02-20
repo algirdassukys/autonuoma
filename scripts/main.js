@@ -23,7 +23,7 @@ $(window).ready(function () {
     $(this).closest(".formRow").remove();
 
     // jeigu pašalinta paskutinė eilutė, paslepiame formos antraštę
-    if ($(".formRowsContainer").find('.formRow').size() == 1) {
+    if ($(".formRowsContainer") && $(".formRowsContainer").find('.formRow').length == 1) {
       $(".headerRow").addClass("d-none");
     }
 
@@ -48,21 +48,3 @@ function showConfirmDialog(module, removeId) {
     window.location.replace("index.php?module=" + module + "&action=delete&id=" + removeId);
   }
 }
-
-
-var modalConfirm = function (callback) {
-
-  $("#btn-confirm").on("click", function () {
-    $("#confirm-delete").modal('show');
-  });
-
-  $("#modal-btn-si").on("click", function () {
-    callback(true);
-    $("#confirm-delete").modal('hide');
-  });
-
-  $("#modal-btn-no").on("click", function () {
-    callback(false);
-    $("#confirm-delete").modal('hide');
-  });
-};
