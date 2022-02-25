@@ -15,6 +15,10 @@
 	</div>
 <?php } ?>
 
+<div class="alert alert-info" role="alert">
+	Šioje svetainėje duomenis leidžiama tik peržiūrėti.
+</div>
+
 <form action="" method="post" class="d-grid gap-3">
 	<div class="form-group">
 		<label for="asmens_kodas">Asmens kodas<?php echo in_array('asmens_kodas', $required) ? '<span> *</span>' : ''; ?></label>
@@ -48,5 +52,5 @@
 
 	<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 
-	<input type="submit" class="btn btn-primary w-25" name="submit" value="Išsaugoti">
+	<input type="submit" class="btn btn-primary w-25" name="submit" value="Grįžti">
 </form>

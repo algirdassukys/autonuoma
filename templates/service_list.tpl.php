@@ -8,7 +8,6 @@
 
 <div class="d-flex flex-row-reverse gap-3">
 	<a href='index.php?module=<?php echo $module; ?>&action=report' target="_blank">Paslaugų ataskaita</a>
-	<a href='index.php?module=<?php echo $module; ?>&action=create'>Nauja paslauga</a>
 </div>
 
 <?php if(isset($_GET['remove_error'])) { ?>
@@ -31,8 +30,7 @@
 					. "<td>{$val['id']}</td>"
 					. "<td>{$val['pavadinimas']}</td>"
 					. "<td class='d-flex flex-row-reverse gap-2'>"
-						. "<a href='index.php?module={$module}&action=edit&id={$val['id']}'>redaguoti</a>"
-						. "<a href='#' onclick='showConfirmDialog(\"{$module}\", \"{$val['id']}\"); return false;'>šalinti</a>&nbsp;"
+						. "<a href='index.php?module={$module}&action=edit&id={$val['id']}'>peržiūrėti</a>"
 					. "</td>"
 				. "</tr>";
 		}

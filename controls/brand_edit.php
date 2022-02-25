@@ -16,8 +16,12 @@ $maxLengths = array (
 
 // paspaustas išsaugojimo mygtukas
 if(!empty($_POST['submit'])) {
+	// nukreipiame į markių puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+
 	// nustatome laukų validatorių tipus
-	$validations = array (
+	/*$validations = array (
 		'pavadinimas' => 'anything');
 
 	// sukuriame validatoriaus objektą
@@ -36,7 +40,7 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// gauname įvestus laukus
 		$data = $_POST;
-	}
+	}*/
 } else {
 	// išrenkame elemento duomenis ir jais užpildome formos laukus.
 	$data = $brandsObj->getBrand($id);

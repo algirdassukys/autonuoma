@@ -22,6 +22,11 @@ $maxLengths = array (
 
 // vartotojas paspaudė išsaugojimo mygtuką
 if(!empty($_POST['submit'])) {
+	// nukreipiame vartotoją į automobilių puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+
+	/*
 	// nustatome laukų validatorių tipus
 	$validations = array (
 		'modelis' => 'positivenumber',
@@ -77,7 +82,7 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
-	}
+	}*/
 } else {
 	// išrenkame elemento duomenis ir jais užpildome formos laukus.
 	$data = $carsObj->getCar($id);

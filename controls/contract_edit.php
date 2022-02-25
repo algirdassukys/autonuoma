@@ -23,6 +23,11 @@ $required = array('nr', 'sutarties_data', 'nuomos_data_laikas', 'planuojama_graz
 
 // vartotojas paspaudė išsaugojimo mygtuką
 if(!empty($_POST['submit'])) {
+	// nukreipiame vartotoją į sutarčių puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+	
+	/*
 	include 'utils/validator.class.php';
 
 	// nustatome laukų validatorių tipus
@@ -136,7 +141,7 @@ if(!empty($_POST['submit'])) {
 		}
 		
 		array_unshift($data['uzsakytos_paslaugos'], array());
-	}
+	}*/
 } else {
 	//  išrenkame elemento duomenis ir jais užpildome formos laukus.
 	$data = $contractsObj->getContract($id);

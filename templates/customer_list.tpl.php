@@ -6,10 +6,6 @@
 	include 'templates/common/breadcrumb.tpl.php';
 ?>
 
-<div class="d-flex flex-row-reverse gap-3">
-	<a href='index.php?module=<?php echo $module; ?>&action=create'>Naujas klientas</a>
-</div>
-
 <?php if(isset($_GET['remove_error'])) { ?>
 	<div class="errorBox">
 		Klientas nebuvo pašalintas, nes turi užsakymą (-ų).
@@ -34,8 +30,7 @@
 					. "<td>{$val['pavarde']}</td>"
 					. "<td>{$val['gimimo_data']}</td>"
 					. "<td class='d-flex flex-row-reverse gap-2'>"
-						. "<a href='index.php?module={$module}&action=edit&id={$val['asmens_kodas']}'>redaguoti</a>"
-						. "<a href='#' onclick='showConfirmDialog(\"{$module}\", \"{$val['asmens_kodas']}\"); return false;'>šalinti</a>&nbsp;"
+						. "<a href='index.php?module={$module}&action=edit&id={$val['asmens_kodas']}'>peržiūrėti</a>"
 					. "</td>"
 				. "</tr>";
 		}

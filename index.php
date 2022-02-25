@@ -1,5 +1,8 @@
 <?php
 	
+	// išjungiame klaidų išvedimą
+	error_reporting(0);
+
 	// pradedame sesiją
 	session_start();
 	

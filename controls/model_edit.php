@@ -19,6 +19,11 @@ $maxLengths = array (
 
 // paspaustas išsaugojimo mygtukas
 if(!empty($_POST['submit'])) {
+	// nukreipiame į modelių puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+
+	/*
 	// nustatome laukų validatorių tipus
 	$validations = array (
 		'pavadinimas' => 'anything',
@@ -41,7 +46,7 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// gauname įvestus laukus
 		$data = $_POST;
-	}
+	}*/
 } else {
 	// tikriname, ar nurodytas elemento id. Jeigu taip, išrenkame elemento duomenis ir jais užpildome formos laukus.
 	$data = $modelsObj->getModel($id);

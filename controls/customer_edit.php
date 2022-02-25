@@ -18,6 +18,11 @@ $maxLengths = array (
 
 // vartotojas paspaudė išsaugojimo mygtuką
 if(!empty($_POST['submit'])) {
+	// nukreipiame vartotoją į klientų puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+	
+	/*
 	include 'utils/validator.class.php';
 
 	// nustatome laukų validatorių tipus
@@ -47,7 +52,7 @@ if(!empty($_POST['submit'])) {
 		$formErrors = $validator->getErrorHTML();
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
-	}
+	}*/
 } else {
 	// išrenkame klientą
 	$data = $customersObj->getCustomer($id);

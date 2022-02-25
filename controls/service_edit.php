@@ -20,6 +20,11 @@ $maxLengths = array (
 
 // paspaustas išsaugojimo mygtukas
 if(!empty($_POST['submit'])) {
+	// nukreipiame į paslaugų puslapį
+	common::redirect("index.php?module={$module}&action=list");
+	die();
+	
+	/*
 	// nustatome laukų validatorių tipus
 	$validations = array (
 		'pavadinimas' => 'anything',
@@ -95,7 +100,7 @@ if(!empty($_POST['submit'])) {
 		}
 
 		array_unshift($data['paslaugos_kainos'], array());
-	}
+	}*/
 } else {
 	// tikriname, ar nurodytas elemento id. Jeigu taip, išrenkame elemento duomenis ir jais užpildome formos laukus.
 	if(!empty($id)) {
