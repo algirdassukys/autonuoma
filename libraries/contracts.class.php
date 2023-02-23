@@ -14,7 +14,7 @@ class contracts {
 	private $uzsakytos_paslaugos_lentele = '';
 	private $aiksteles_lentele = '';
 	private $paslaugu_kainos_lentele = '';
-	
+
 	public function __construct() {
 		$this->sutartys_lentele = config::DB_PREFIX . 'sutartys';
 		$this->darbuotojai_lentele = config::DB_PREFIX . 'darbuotojai';
@@ -23,6 +23,7 @@ class contracts {
 		$this->uzsakytos_paslaugos_lentele = config::DB_PREFIX . 'uzsakytos_paslaugos';
 		$this->aiksteles_lentele = config::DB_PREFIX . 'aiksteles';
 		$this->paslaugu_kainos_lentele = config::DB_PREFIX . 'paslaugu_kainos';
+		$this->paslaugos_lentele = config::DB_PREFIX . 'paslaugos';
 	}
 	
 	/**
@@ -128,21 +129,44 @@ class contracts {
 
 	/**
 	 * Užsakytų papildomų paslaugų sąrašo išrinkimas
-	 * @param type $orderId
+	 * @param type $contractId
 	 * @return type
 	 */
-	public function getOrderedServices($orderId) {
-		$orderId = mysql::escapeFieldForSQL($orderId);
+	public function getOrderedServices($contractId) {
+		$contractId = mysql::escapeFieldForSQL($contractId);
 
-		$query = "  SELECT *
+		$query = "	SELECT `{$this->uzsakytos_paslaugos_lentele}`.`fk_sutartis`,
+						  `{$this->uzsakytos_paslaugos_lentele}`.`fk_kaina_galioja_nuo`,
+						  `{$this->uzsakytos_paslaugos_lentele}`.`fk_paslauga`,
+						  `{$this->uzsakytos_paslaugos_lentele}`.`kiekis`,
+						  `{$this->uzsakytos_paslaugos_lentele}`.`kaina`,
+						  `{$this->paslaugos_lentele}`.`pavadinimas`
 					FROM `{$this->uzsakytos_paslaugos_lentele}`
-					WHERE `fk_sutartis`='{$orderId}'";
+						LEFT JOIN `{$this->paslaugos_lentele}`
+							ON `{$this->uzsakytos_paslaugos_lentele}`.`fk_paslauga`=`{$this->paslaugos_lentele}`.`id`
+					WHERE `fk_sutartis`='{$contractId}'";
 		$data = mysql::select($query);
 		
 		//
 		return $data;
 	}
 	
+	/**
+	 * Užsakytų papildomų paslaugų sąrašo išrinkimas
+	 * @param type $orderId
+	 * @return type
+	 */
+	public function checkIfOrderedServiceExists($contractId, $serviceId, $priceFrom) {
+		$query = "	SELECT COUNT(`{$this->uzsakytos_paslaugos_lentele}`.`fk_sutartis`) AS `kiekis`
+					FROM `{$this->uzsakytos_paslaugos_lentele}`
+					WHERE `fk_sutartis`='{$contractId}' AND `fk_paslauga`='{$serviceId}' AND `fk_kaina_galioja_nuo`='{$priceFrom}'";
+		$data = mysql::select($query);
+	
+		//
+		return $data[0]['kiekis'];
+	}
+
+
 	/**
 	 * Sutarties atnaujinimas
 	 * @param type $data
@@ -246,55 +270,29 @@ class contracts {
 	 * Sutarties užsakytos papildomos paslaugos šalinimas
 	 * @param type $contractId
 	 */
-	public function deleteOrderedService($contractId, $serviceId, $priceFrom, $price) {
+	public function deleteOrderedService($contractId, $serviceId, $priceFrom) {
 		$contractId = mysql::escapeFieldForSQL($contractId);
 		$serviceId = mysql::escapeFieldForSQL($serviceId);
 		$priceFrom = mysql::escapeFieldForSQL($priceFrom);
-		$price = mysql::escapeFieldForSQL($price);
+		//$price = mysql::escapeFieldForSQL($price);
 
 		$query = "  DELETE FROM `{$this->uzsakytos_paslaugos_lentele}`
-					WHERE `fk_sutartis`='{$contractId}' AND `fk_paslauga`='{$serviceId}' AND `fk_kaina_galioja_nuo`='{$priceFrom}' AND `kaina`='{$price}'";
+					WHERE `fk_sutartis`='{$contractId}' AND `fk_paslauga`='{$serviceId}' AND `fk_kaina_galioja_nuo`='{$priceFrom}'";
 		mysql::query($query);
 	}
 
 	/**
-	 * Užsakytų papildomų paslaugų atnaujinimas
+	 * Užsakytos papildomos paslaugos atnaujinimas
 	 * @param type $data
 	 */
-	public function updateOrderedServices($data) {
+	public function updateOrderedService($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$this->deleteOrderedServices($data['nr']);
-		
-		if(isset($data['paslaugos']) && sizeof($data['paslaugos']) > 0) {
-			foreach($data['paslaugos'] as $key=>$val) {
-				
-				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}
-				$tmp = explode("#", $val);
-				
-				$serviceId = $tmp[0];
-				$priceFrom = $tmp[1];
-				$price = $tmp[2];
-				
-				$query = "  INSERT INTO `{$this->uzsakytos_paslaugos_lentele}`
-										(
-											`fk_sutartis`,
-											`fk_kaina_galioja_nuo`,
-											`fk_paslauga`,
-											`kiekis`,
-											`kaina`
-										)
-										VALUES
-										(
-											'{$data['nr']}',
-											'{$priceFrom}',
-											'{$serviceId}',
-											'{$data['kiekiai'][$key]}',
-											'{$price}'
-										)";
-					mysql::query($query);
-			}
-		}
+		$query = "  UPDATE `{$this->uzsakytos_paslaugos_lentele}`
+					SET    `kaina`='{$data['kaina']}',
+						   `kiekis`='{$data['kiekis']}'
+					WHERE `fk_sutartis`='{$data['fk_sutartis']}' AND `fk_kaina_galioja_nuo`='{$data['fk_kaina_galioja_nuo']}' AND `fk_paslauga`='{$data['fk_paslauga']}'";
+		mysql::query($query);
 	}
 	
 	/**

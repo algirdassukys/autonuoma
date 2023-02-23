@@ -77,7 +77,7 @@ if(!empty($_POST['submit'])) {
 
 			if(!$found) {
 				// šalinama paslaugos kaina
-				$contractsObj->deleteOrderedService($id, $serviceDb['fk_paslauga'], $serviceDb['fk_kaina_galioja_nuo'], $serviceDb['kaina']);
+				$contractsObj->deleteOrderedService($id, $serviceDb['fk_paslauga'], $serviceDb['fk_kaina_galioja_nuo']);
 			}
 		}
 		

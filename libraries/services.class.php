@@ -265,6 +265,36 @@ class services {
 	}
 
 	/**
+	 * Užsakytos paslaugos išrinkimas sutartyje
+	 * @param type $contractId sutarties id
+	 * @param type $dateFrom užsakytos paslaugos kainos galiojimo pradžios data
+	 * @param type $serviceId užsakytos paslaugos id
+	 * @return užsakytos paslaugos duomenų masyvas
+	 */
+	public function getOrderedService($contractId, $dateFrom, $serviceId) {
+		$contractId = mysql::escapeFieldForSQL($contractId);
+		$dateFrom = mysql::escapeFieldForSQL($dateFrom);
+		$serviceId = mysql::escapeFieldForSQL($serviceId);
+		
+		$query = "     SELECT
+						`fk_sutartis`,
+						`fk_kaina_galioja_nuo`,
+						`fk_paslauga`,
+						`kiekis`,
+						`kaina`
+					FROM
+						`{$this->uzsakytos_paslaugos_lentele}`
+					WHERE
+						`fk_sutartis`='{$contractId}' AND 
+						`fk_kaina_galioja_nuo`='{$dateFrom}' AND
+						`fk_paslauga`='{$serviceId}'";
+		$data = mysql::select($query);
+
+		//
+		return $data[0];
+	}
+
+	/**
 	 * Užsakytų paslaugų ataskaitos duomenų išrinkimas
 	 * @param type $limit
 	 * @param type $offset

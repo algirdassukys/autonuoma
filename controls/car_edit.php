@@ -75,6 +75,7 @@ if(!empty($_POST['submit'])) {
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
+		
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
 	}
