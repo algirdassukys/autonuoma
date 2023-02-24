@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/customers.class.php';
+// sukuriame užklausų klasės objektą
 $customersObj = new customers();
 
 if(!empty($id)) {

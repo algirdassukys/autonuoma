@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/models.class.php';
+// sukuriame užklausų klasės objektą
 $modelsObj = new models();
 
 if(!empty($id)) {

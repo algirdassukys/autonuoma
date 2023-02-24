@@ -1,9 +1,7 @@
 <?php
 
-include 'libraries/brands.class.php';
+// sukuriame užklausų klasių objektus
 $brandsObj = new brands();
-
-include 'libraries/models.class.php';
 $modelsObj = new models();
 
 $formErrors = null;
@@ -49,6 +47,6 @@ if(!empty($_POST['submit'])) {
 }
 
 // įtraukiame šabloną
-include 'templates/model/model_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/brands.class.php';
+// sukuriame užklausų klasės objektą
 $brandsObj = new brands();
 
 if(!empty($id)) {

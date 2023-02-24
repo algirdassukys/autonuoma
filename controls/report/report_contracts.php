@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasės objektą
 $contractsObj = new contracts();
 
 $formErrors = null;
@@ -9,7 +9,7 @@ $fields = array();
 $data = array();
 if(empty($_POST['submit'])) {
 	// rodome ataskaitos parametrų įvedimo formą
-	include 'templates/report/report_contracts_form.tpl.php';
+	include "templates/{$module}/{$module}_contracts_form.tpl.php";
 } else {
 	// nustatome laukų validatorių tipus
 	$validations = array (
@@ -31,7 +31,7 @@ if(empty($_POST['submit'])) {
 		$data['dataIki'] = $_POST['dataIki'];
 		
 		// rodome ataskaitą
-		include 'templates/report/report_contracts_show.tpl.php';
+		include "templates/{$module}/{$module}_contracts_show.tpl.php";
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
@@ -39,6 +39,6 @@ if(empty($_POST['submit'])) {
 		$fields = $_POST;
 
 		// rodome ataskaitos parametrų įvedimo formą su klaidomis
-		include 'templates/report/report_contracts_form.tpl.php';
+		include "templates/{$module}/{$module}_contracts_form.tpl.php";
 	}
 }

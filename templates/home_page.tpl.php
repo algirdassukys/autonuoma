@@ -1,8 +1,15 @@
 <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 	<div class="feature col">
-		<h2>Sutartys</h2>
+		<h2>Sutartys F2</h2>
 		<p>Automobilių nuomos sutarčių peržiūra, sudarymas, redagavimas.</p>
-		<a href="index.php?module=contract&action=list" class="icon-link">
+		<a href="index.php?module=contract_f2&action=list" class="icon-link">
+			Atidaryti
+		</a>
+	</div>
+	<div class="feature col">
+		<h2>Sutartys F3</h2>
+		<p>Automobilių nuomos sutarčių peržiūra, sudarymas, redagavimas.</p>
+		<a href="index.php?module=contract_f3&action=list" class="icon-link">
 			Atidaryti
 		</a>
 	</div>
@@ -13,6 +20,9 @@
 			Atidaryti
 		</a>
 	</div>
+</div>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 	<div class="feature col">
 		<h2>Klientai</h2>
 		<p>Klientų peržiūra, registravimas, redagavimas.</p>
@@ -20,9 +30,6 @@
 			Atidaryti
 		</a>
 	</div>
-</div>
-
-<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 	<div class="feature col">
 		<h2>Darbuotojai</h2>
 		<p>Darbuotojų peržiūra, registravimas, redagavimas.</p>
@@ -37,6 +44,9 @@
 			Atidaryti
 		</a>
 	</div>
+</div>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 	<div class="feature col">
 		<h2>Markės</h2>
 		<p>Automobilių markių klasifikatoriaus administravimas.</p>
@@ -44,9 +54,6 @@
 			Atidaryti
 		</a>
 	</div>
-</div>
-
-<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
 	<div class="feature col">
 		<h2>Modeliai</h2>
 		<p>Automobilių modelių klasifikatoriaus administravimas.</p>

@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasės objektą
 $contractsObj = new contracts();
 
 // gauname redaguojamos užsakytos paslaugos išrinkimo identifikatorius iš GET masyvo

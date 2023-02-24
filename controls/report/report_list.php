@@ -1,6 +1,6 @@
 <?php
 	
 // įtraukiame šabloną
-include 'templates/report/report_list.tpl.php';
+include "templates/{$module}/{$module}_list.tpl.php";
 
 ?>

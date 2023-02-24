@@ -7,7 +7,6 @@
 ?>
 
 <div class="d-flex flex-row-reverse gap-3">
-	<a href='index.php?module=<?php echo $module; ?>&action=report' target="_blank">Paslaugų ataskaita</a>
 	<a href='index.php?module=<?php echo $module; ?>&action=create'>Nauja paslauga</a>
 </div>
 

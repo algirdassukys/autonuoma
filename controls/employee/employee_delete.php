@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/employees.class.php';
+// sukuriame užklausų klasės objektą
 $employeesObj = new employees();
 
 if(!empty($id)) {

@@ -1,6 +1,6 @@
 <?php
 	
-include 'libraries/customers.class.php';
+// sukuriame užklausų klasės objektą
 $customersObj = new customers();
 
 $formErrors = null;
@@ -49,6 +49,6 @@ if(!empty($_POST['submit'])) {
 }
 
 // įtraukiame šabloną
-include 'templates/customer/customer_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

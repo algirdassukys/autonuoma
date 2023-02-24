@@ -7,8 +7,6 @@
 ?>
 
 <div class="d-flex flex-row-reverse gap-3">
-	<a href='index.php?module=<?php echo $module; ?>&action=report_delayed_cars'>Vėluojamų grąžinti automobilių ataskaita</a>
-	<a href='index.php?module=<?php echo $module; ?>&action=report'>Sutarčių ataskaita</a>
 	<a href='index.php?module=<?php echo $module; ?>&action=create'>Nauja sutartis</a>
 </div>
 

@@ -1,18 +1,10 @@
 <?php
 
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasių objektus
 $contractsObj = new contracts();
-
-include 'libraries/services.class.php';
 $servicesObj = new services();
-
-include 'libraries/cars.class.php';
 $carsObj = new cars();
-
-include 'libraries/employees.class.php';
 $employeesObj = new employees();
-
-include 'libraries/customers.class.php';
 $customersObj = new customers();
 
 $formErrors = null;
@@ -71,6 +63,6 @@ if(!empty($_POST['submit'])) {
 $data['editing'] = 1;
 
 // įtraukiame šabloną
-include 'templates/contract2/contract2_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

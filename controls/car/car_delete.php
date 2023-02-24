@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/cars.class.php';
+// sukuriame užklausų klasės objektą
 $carsObj = new cars();
 
 if(!empty($id)) {

@@ -1,6 +1,6 @@
 <?php
 	
-include 'libraries/employees.class.php';
+// sukuriame užklausų klasės objektą
 $employeesObj = new employees();
 
 $formErrors = null;
@@ -46,6 +46,6 @@ if(!empty($_POST['submit'])) {
 }
 
 // įtraukiame šabloną
-include 'templates/employee/employee_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/services.class.php';
+// sukuriame užklausų klasės objektą
 $servicesObj = new services();
 
 if(!empty($id)) {

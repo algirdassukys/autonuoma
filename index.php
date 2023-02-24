@@ -15,6 +15,18 @@
 	// iškviečiame validatoriaus klasę
 	include 'utils/validator.class.php';
 
+	// iškviečiame puslapiavimo klasę
+	include 'utils/paging.class.php';
+
+	// iškviečiame visų modulių užklausų klases
+	include 'libraries/brands.class.php';
+	include 'libraries/cars.class.php';
+	include 'libraries/contracts.class.php';
+	include 'libraries/customers.class.php';
+	include 'libraries/employees.class.php';
+	include 'libraries/models.class.php';
+	include 'libraries/services.class.php';
+
 	// nustatome pasirinktą modulį
 	$module = '';
 	if(isset($_GET['module'])) {

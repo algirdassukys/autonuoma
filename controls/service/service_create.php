@@ -1,9 +1,7 @@
 <?php
 	
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasių objektus
 $contractsObj = new contracts();
-
-include 'libraries/services.class.php';
 $servicesObj = new services();
 
 $formErrors = null;
@@ -69,6 +67,6 @@ if(!empty($_POST['submit'])) {
 array_unshift($data['paslaugos_kainos'], array());
 
 // įtraukiame šabloną
-include 'templates/service/service_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

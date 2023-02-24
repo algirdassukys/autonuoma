@@ -1,11 +1,9 @@
 <?php
 
-// sukuriame sutarčių klasės objektą
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasės objektą
 $contractsObj = new contracts();
 
 // sukuriame puslapiavimo klasės objektą
-include 'utils/paging.class.php';
 $paging = new paging(config::NUMBER_OF_ROWS_IN_PAGE);
 
 // suskaičiuojame bendrą įrašų kiekį
@@ -18,6 +16,6 @@ $paging->process($elementCount, $pageId);
 $data = $contractsObj->getContractList($paging->size, $paging->first);
 
 // įtraukiame šabloną
-include 'templates/contract/contract_list.tpl.php';
+include "templates/{$module}/{$module}_list.tpl.php";
 
 ?>

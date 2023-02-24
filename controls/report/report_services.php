@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/services.class.php';
+// sukuriame užklausų klasės objektą
 $servicesObj = new services();
 
 $formErrors = null;
@@ -11,7 +11,7 @@ $data = array();
 if(empty($_POST['submit'])) {
 	
 	// rodome ataskaitos parametrų įvedimo formą
-	include 'templates/report/report_services_form.tpl.php';
+	include "templates/{$module}/{$module}_services_form.tpl.php";
 } else {
 	$formSubmitted = true;
 	
@@ -30,7 +30,7 @@ if(empty($_POST['submit'])) {
 		$servicesStats = $servicesObj->getStatsOfOrderedServices($_POST['dataNuo'], $_POST['dataIki']);
 		
 		// rodome ataskaitą
-		include 'templates/report/report_services_show.tpl.php';
+		include "templates/{$module}/{$module}_services_show.tpl.php";
 	} else {
 		// gauname klaidų pranešimą
 		$formErrors = $validator->getErrorHTML();
@@ -38,7 +38,7 @@ if(empty($_POST['submit'])) {
 		$fields = $_POST;
 		
 		// rodome ataskaitos parametrų įvedimo formą su klaidomis ir sustabdome scenarijaus vykdym1
-		include 'templates/report/report_services_form.tpl.php';
+		include "templates/{$module}/{$module}_services_form.tpl.php";
 	}
 }
 

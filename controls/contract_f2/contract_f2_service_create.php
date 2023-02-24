@@ -1,18 +1,10 @@
 <?php
 	
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasių objektus
 $contractsObj = new contracts();
-
-include 'libraries/services.class.php';
 $servicesObj = new services();
-
-include 'libraries/cars.class.php';
 $carsObj = new cars();
-
-include 'libraries/employees.class.php';
 $employeesObj = new employees();
-
-include 'libraries/customers.class.php';
 $customersObj = new customers();
 
 $formErrors = null;
@@ -115,6 +107,6 @@ if(!empty($_POST['submit'])) {
 array_unshift($data['uzsakytos_paslaugos'], array());
 
 // įtraukiame šabloną
-include 'templates/contract/contract_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

@@ -1,12 +1,8 @@
 <?php
 
-include 'libraries/cars.class.php';
+// sukuriame užklausų klasių objektus
 $carsObj = new cars();
-
-include 'libraries/brands.class.php';
 $brandsObj = new brands();
-
-include 'libraries/models.class.php';
 $modelsObj = new models();
 
 $formErrors = null;
@@ -85,6 +81,6 @@ if(!empty($_POST['submit'])) {
 }
 
 // įtraukiame šabloną
-include 'templates/car/car_form.tpl.php';
+include "templates/{$module}/{$module}_form.tpl.php";
 
 ?>

@@ -1,14 +1,12 @@
 <?php
 
-// sukuriame darbuotojų klasės objektą
-include 'libraries/employees.class.php';
+// sukuriame užklausų klasės objektą
 $employeesObj = new employees();
 
 // suskaičiuojame bendrą įrašų kiekį
 $elementCount = $employeesObj->getEmplyeesListCount();
 
 // sukuriame puslapiavimo klasės objektą
-include 'utils/paging.class.php';
 $paging = new paging(config::NUMBER_OF_ROWS_IN_PAGE);
 
 // suformuojame sąrašo puslapius
@@ -18,6 +16,6 @@ $paging->process($elementCount, $pageId);
 $data = $employeesObj->getEmplyeesList($paging->size, $paging->first);
 
 // įtraukiame šabloną
-include 'templates/employee/employee_list.tpl.php';
+include "templates/{$module}/{$module}_list.tpl.php";
 
 ?>

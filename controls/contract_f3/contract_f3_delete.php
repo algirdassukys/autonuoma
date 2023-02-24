@@ -1,6 +1,6 @@
 <?php
 
-include 'libraries/contracts.class.php';
+// sukuriame užklausų klasės objektą
 $contractsObj = new contracts();
 
 if(!empty($id)) {
