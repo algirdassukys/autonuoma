@@ -191,7 +191,9 @@
 		<div class="formRowsContainer column">
 			<div class="row headerRow<?php if(empty($data['uzsakytos_paslaugos']) || sizeof($data['uzsakytos_paslaugos']) == 1) echo ' d-none'; ?>">
 				<div class="col-6">Paslauga</div>
-				<div class="col-2">Kiekis</div>
+				<div class="col-1">Kaina</div>
+				<div class="col-1">Kiekis</div>
+				<div class="col-4"></div>
 			</div>
 			<?php
 				if(!empty($data['uzsakytos_paslaugos']) && sizeof($data['uzsakytos_paslaugos']) > 0) {
@@ -200,6 +202,11 @@
 						$disabledAttr = "";
 						if($key === 0) {
 							$disabledAttr = "disabled='disabled'";
+						}
+
+						$kaina = '';
+						if(isset($orderedService['kaina']) ) {
+							$kaina = $orderedService['kaina'];
 						}
 
 						$kiekis = '';
@@ -223,14 +230,15 @@
 														$selected = " selected='selected'";
 													}
 												}
-												echo "<option{$selected} value='{$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
+												echo "<option{$selected} value='{$price['fk_paslauga']}#{$price['galioja_nuo']}}'>{$service['pavadinimas']} {$price['kaina']} EUR (nuo {$price['galioja_nuo']})</option>";
 											}
 										}
 									?>
 								</select>
 							</div>
 
-							<div class="col-2"><input type="text" name="kiekis[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
+							<div class="col-1"><input type="text" name="kaina[]" class="form-control" value="<?php echo $kaina; ?>" <?php echo $disabledAttr; ?> /></div>
+							<div class="col-1"><input type="text" name="kiekis[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
 							<div class="col-4"><a href="#" onclick="return false;" class="removeChild">šalinti</a></div>
 						</div>
 					<?php 

@@ -23,9 +23,9 @@ class employees {
 	public function getEmployee($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT *
-					FROM `{$this->darbuotojai_lentele}`
-					WHERE `tabelio_nr`='{$id}'";
+		$query = "SELECT *
+				FROM `{$this->darbuotojai_lentele}`
+				WHERE `tabelio_nr`='{$id}'";
 		$data = mysql::select($query);
 		
 		//
@@ -54,8 +54,9 @@ class employees {
 			$limitOffsetString .= " OFFSET {$offset}";
 		}
 		
-		$query = "  SELECT *
-					FROM `{$this->darbuotojai_lentele}`" . $limitOffsetString;
+		$query = "SELECT *
+				FROM `{$this->darbuotojai_lentele}`
+				{$limitOffsetString}";
 		$data = mysql::select($query);
 		
 		//
@@ -67,8 +68,8 @@ class employees {
 	 * @return type
 	 */
 	public function getEmplyeesListCount() {
-		$query = "  SELECT COUNT(`tabelio_nr`) as `kiekis`
-					FROM `{$this->darbuotojai_lentele}`";
+		$query = "SELECT COUNT(`tabelio_nr`) as `kiekis`
+				FROM `{$this->darbuotojai_lentele}`";
 		$data = mysql::select($query);
 		
 		//
@@ -82,8 +83,9 @@ class employees {
 	public function deleteEmployee($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  DELETE FROM `{$this->darbuotojai_lentele}`
-					WHERE `tabelio_nr`='{$id}'";
+		$query = "DELETE
+				FROM `{$this->darbuotojai_lentele}`
+				WHERE `tabelio_nr`='{$id}'";
 		mysql::query($query);
 	}
 	
@@ -94,10 +96,10 @@ class employees {
 	public function updateEmployee($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  UPDATE `{$this->darbuotojai_lentele}`
-					SET    `vardas`='{$data['vardas']}',
-						   `pavarde`='{$data['pavarde']}'
-					WHERE `tabelio_nr`='{$data['tabelio_nr']}'";
+		$query = "UPDATE `{$this->darbuotojai_lentele}`
+				SET `vardas`='{$data['vardas']}',
+				    `pavarde`='{$data['pavarde']}'
+				WHERE `tabelio_nr`='{$data['tabelio_nr']}'";
 		mysql::query($query);
 	}
 	
@@ -108,18 +110,13 @@ class employees {
 	public function insertEmployee($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  INSERT INTO `{$this->darbuotojai_lentele}`
-								(
-									`tabelio_nr`,
-									`vardas`,
-									`pavarde`
-								) 
-								VALUES
-								(
-									'{$data['tabelio_nr']}',
-									'{$data['vardas']}',
-									'{$data['pavarde']}'
-								)";
+		$query = "INSERT INTO `{$this->darbuotojai_lentele}`
+						  (`tabelio_nr`,
+						   `vardas`,
+						   `pavarde`) 
+				VALUES      ('{$data['tabelio_nr']}',
+						   '{$data['vardas']}',
+						   '{$data['pavarde']}')";
 		mysql::query($query);
 	}
 	
@@ -131,11 +128,11 @@ class employees {
 	public function getContractCountOfEmployee($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
+		$query = "SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->darbuotojai_lentele}`
 						INNER JOIN `{$this->sutartys_lentele}`
 							ON `{$this->darbuotojai_lentele}`.`tabelio_nr`=`{$this->sutartys_lentele}`.`fk_darbuotojas`
-					WHERE `{$this->darbuotojai_lentele}`.`tabelio_nr`='{$id}'";
+				WHERE `{$this->darbuotojai_lentele}`.`tabelio_nr`='{$id}'";
 		$data = mysql::select($query);
 	
 		//

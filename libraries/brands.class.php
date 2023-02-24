@@ -23,9 +23,9 @@ class brands {
 	public function getBrand($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT *
-					FROM {$this->markes_lentele}
-					WHERE `id`='{$id}'";
+		$query = "SELECT *
+				FROM {$this->markes_lentele}
+				WHERE `id`='{$id}'";
 		$data = mysql::select($query);
 		
 		//
@@ -55,8 +55,9 @@ class brands {
 			}	
 		}
 		
-		$query = "  SELECT *
-					FROM {$this->markes_lentele}{$limitOffsetString}";
+		$query = "SELECT *
+				FROM {$this->markes_lentele}
+				{$limitOffsetString}";
 		$data = mysql::select($query);
 		
 		//
@@ -68,8 +69,8 @@ class brands {
 	 * @return type
 	 */
 	public function getBrandListCount() {
-		$query = "  SELECT COUNT(`id`) as `kiekis`
-					FROM {$this->markes_lentele}";
+		$query = "SELECT COUNT(`id`) as `kiekis`
+				FROM {$this->markes_lentele}";
 		$data = mysql::select($query);
 		
 		// 
@@ -83,14 +84,9 @@ class brands {
 	public function insertBrand($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  INSERT INTO {$this->markes_lentele}
-								(
-									`pavadinimas`
-								)
-								VALUES
-								(
-									'{$data['pavadinimas']}'
-								)";
+		$query = "INSERT INTO {$this->markes_lentele}
+						  (`pavadinimas`)
+				VALUES      ('{$data['pavadinimas']}')";
 		mysql::query($query);
 	}
 	
@@ -101,9 +97,9 @@ class brands {
 	public function updateBrand($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  UPDATE {$this->markes_lentele}
-					SET    `pavadinimas`='{$data['pavadinimas']}'
-					WHERE `id`='{$data['id']}'";
+		$query = "UPDATE {$this->markes_lentele}
+				SET `pavadinimas`='{$data['pavadinimas']}'
+				WHERE `id`='{$data['id']}'";
 		mysql::query($query);
 	}
 	
@@ -114,8 +110,8 @@ class brands {
 	public function deleteBrand($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  DELETE FROM {$this->markes_lentele}
-					WHERE `id`='{$id}'";
+		$query = "DELETE FROM {$this->markes_lentele}
+				WHERE `id`='{$id}'";
 		mysql::query($query);
 	}
 	
@@ -127,11 +123,11 @@ class brands {
 	public function getModelCountOfBrand($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT COUNT({$this->modeliai_lentele}.`id`) AS `kiekis`
-					FROM {$this->markes_lentele}
-						INNER JOIN {$this->modeliai_lentele}
-							ON {$this->markes_lentele}.`id`={$this->modeliai_lentele}.`fk_marke`
-					WHERE {$this->markes_lentele}.`id`='{$id}'";
+		$query = "SELECT COUNT({$this->modeliai_lentele}.`id`) AS `kiekis`
+				FROM {$this->markes_lentele}
+					INNER JOIN {$this->modeliai_lentele}
+						ON {$this->markes_lentele}.`id`={$this->modeliai_lentele}.`fk_marke`
+				WHERE {$this->markes_lentele}.`id`='{$id}'";
 		$data = mysql::select($query);
 		
 		//
