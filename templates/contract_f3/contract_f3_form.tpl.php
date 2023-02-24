@@ -188,7 +188,7 @@
 	<h4 class="mt-3">Papildomos paslaugos</h4>
 
 	<div class="d-flex flex-row-reverse gap-3">
-		<a href='index.php?module=<?php echo $module; ?>&action=service_create&contractId=<?php echo $id; ?>'>Nauja užsakyta paslauga</a>
+		
 	</div>
 
 	<?php if(!empty($data['uzsakytos_paslaugos']) && sizeof($data['uzsakytos_paslaugos']) > 0) { ?>
