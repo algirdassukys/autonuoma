@@ -207,7 +207,7 @@
 							. "<td>{$orderedService['kaina']}</td>"
 							. "<td>{$orderedService['kiekis']}</td>"
 							. "<td class='d-flex flex-row-reverse gap-2'>"
-							. "<a href='index.php?module=contract2&action=service_edit&contractId={$data['nr']}&serviceId={$orderedService['fk_paslauga']}&dateFrom={$orderedService['fk_kaina_galioja_nuo']}'>redaguoti</a>"
+							. "<a href='index.php?module=contract_f3&action=service_edit&contractId={$data['nr']}&serviceId={$orderedService['fk_paslauga']}&dateFrom={$orderedService['fk_kaina_galioja_nuo']}'>redaguoti</a>"
 							. "<a href='#' onclick='showOrderedServiceConfirmDialog(\"{$module}\", \"{$data['nr']}\", \"{$orderedService['fk_paslauga']}\", \"{$orderedService['fk_kaina_galioja_nuo']}\"); return false;'>šalinti</a>"
 							. "</td>"
 						. "</tr>";
