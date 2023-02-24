@@ -48,3 +48,10 @@ function showConfirmDialog(module, removeId) {
     window.location.replace("index.php?module=" + module + "&action=delete&id=" + removeId);
   }
 }
+
+function showOrderedServiceConfirmDialog(module, contractId, serviceId, dateFrom) {
+     var r = confirm("Ar tikrai norite pašalinti!");
+     if (r === true) {
+          window.location.replace("index.php?module=" + module + "&action=service_delete&contractId=" + contractId + "&serviceId=" + serviceId + "&dateFrom=" + dateFrom);
+     }
+}

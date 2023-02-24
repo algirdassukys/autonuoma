@@ -18,8 +18,8 @@
 class validator
 {
     public $regexes = Array(
-		'date' => "^[0-9]{4}[-/][0-9]{1,2}[-/][0-9]{1,2}\$", // 2016-01-15
-		'datetime' => "^[0-9]{4}[-/][0-9]{1,2}[-/][0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?\$", // 2016-01-15 12:12, 2016-01-15 12:12:00
+		'date' => "^[0-9]{4}[-/][0-9]{1,2}[-/][0-9]{1,2}\$", // 2023-01-15
+		'datetime' => "^[0-9]{4}[-/][0-9]{1,2}[-/][0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?\$", // 2023-01-15 12:12, 2023-01-15 12:12:00
 		'positivenumber' => "^[0-9\.]+\$", // teigiami sveikieji skaičiai bei skaičiai su kableliu (pvz.: 25.14)
 		'price' => "^([1-9][0-9]*|0)(\.[0-9]{2})?\$", // kaina (pvz.: 25.99)
 		'anything' => "^[\d\D]{1,}\$", // bet koks simbolis
@@ -31,7 +31,7 @@ class validator
 		 * email,
 		 * int,
 		 * float,
-		 * boolen,
+		 * boolean,
 		 * ip,
 		 * url*/
     );
@@ -51,15 +51,16 @@ class validator
     	$this->corrects = array();
     }
 
-    /**
-	 * Patikrinamas reikšių masyvas
-	 * @param type $items
-	 * @return type
-	 */
-    public function validate($items) {
-    	$this->fields = $items;
-    	$havefailures = false;
-    	foreach($items as $key=>$val) {
+	/**
+	* Patikrinamas reikšmių masyvas
+	* @param type $items
+	* @return type
+	*/
+	public function validate($items) {
+		$this->fields = $items;
+    		$havefailures = false;
+    	
+		foreach($items as $key=>$val) {
 			if(((!is_array($val) && strlen($val) == 0) || key_exists($key, $this->validations) === false) && array_search($key, $this->mandatories) === false) {
 				$this->corrects[] = $key;
 				continue;
@@ -90,11 +91,18 @@ class validator
 
     	return(!$havefailures);
     }
-	
+
+    /**
+	 * Pagal nurodytą tipą patikrinamos masyvo reikšmės
+	 * @param type $var
+	 * @param type $type
+	 * @return type
+	 */
 	private function validateArray($array, $key) {
 		$havefailures = false;
 		if((key_exists($key, $this->validations) === false) && array_search($key, $this->mandatories) === false) {
 			$this->corrects[] = $key;
+			//
 			return false;
 		}
 		
@@ -116,33 +124,9 @@ class validator
 			$this->corrects[] = $key;
 		}
 		
+		//
 		return !$havefailures;
 	}
-	
-    /**
-	 * Gaunamas klaidos pranešimas
-	 * @return type
-	 */
-    public function getErrorHTML() {
-    	if(!empty($this->errors)) {
-    		$errors = array();
-    		foreach($this->errors as $key=>$val) {
-				$errors[] = "<li>" . $key . "</li>";
-			}
-    		$output = "<ul>" . implode('', $errors) . "</ul>";
-    	}
-    	
-    	return($output);
-    }
-
-	/**
-	 * Į klaidų masyvą įtraukiama klaida
-	 * @param type $field
-	 * @param type $type
-	 */
-    private function addError($field, $type='string') {
-    	$this->errors[$field] = $type;
-    }
 
     /**
 	 * Pagal nurodytą tipą patikrinama viena reikšmė
@@ -151,34 +135,63 @@ class validator
 	 * @return type
 	 */
     public function validateItem($var, $type) {
-		if(array_key_exists($type, $this->regexes)) {
-    		$returnval =  filter_var($var, FILTER_VALIDATE_REGEXP, array("options"=> array("regexp"=>'!'.$this->regexes[$type].'!i'))) !== false;
-    		return($returnval);
-    	}
-    	$filter = false;
-    	switch($type) {
-    		case 'email':
-    			$var = substr($var, 0, 254);
-    			$filter = FILTER_VALIDATE_EMAIL;	
-    		break;
-    		case 'int':
-    			$filter = FILTER_VALIDATE_INT;
-    		break;
-    		case 'float':
-    			$filter = FILTER_VALIDATE_FLOAT;
-    		break;
-    		case 'boolean':
-    			$filter = FILTER_VALIDATE_BOOLEAN;
-    		break;
-    		case 'ip':
-    			$filter = FILTER_VALIDATE_IP;
-    		break;
-    		case 'url':
-    			$filter = FILTER_VALIDATE_URL;
-    		break;
-    	}
-    	return ($filter === false) ? false : (filter_var($var, $filter) !== false ? true : false);
+	    if(array_key_exists($type, $this->regexes)) {
+    			//
+			return filter_var($var, FILTER_VALIDATE_REGEXP, array("options"=> array("regexp"=>'!'.$this->regexes[$type].'!i'))) !== false;
+	    }
+	
+    		$filter = false;
+    		switch($type) {
+    			case 'email':
+    				$var = substr($var, 0, 254);
+    				$filter = FILTER_VALIDATE_EMAIL;	
+    			break;
+    			case 'int':
+    				$filter = FILTER_VALIDATE_INT;
+    			break;
+    			case 'float':
+    				$filter = FILTER_VALIDATE_FLOAT;
+    			break;
+    			case 'boolean':
+    				$filter = FILTER_VALIDATE_BOOLEAN;
+    			break;
+    			case 'ip':
+    				$filter = FILTER_VALIDATE_IP;
+    			break;
+    			case 'url':
+    				$filter = FILTER_VALIDATE_URL;
+    			break;
+    		}
+	
+		//
+    		return ($filter === false) ? false : (filter_var($var, $filter) !== false ? true : false);
     }
+
+    /**
+	 * Gaunamas klaidos pranešimas
+	 * @return type
+	 */
+	public function getErrorHTML() {
+		if(!empty($this->errors)) {
+    			$errors = array();
+    			foreach($this->errors as $key=>$val) {
+				$errors[] = "<li>" . $key . "</li>";
+			}
+    			$output = "<ul>" . implode('', $errors) . "</ul>";
+    		}
+		
+		//
+    		return($output);
+    }
+
+	/**
+	 * Į klaidų masyvą įtraukiama klaida
+	 * @param type $field
+	 * @param type $type
+	 */
+	private function addError($field, $type='string') {
+		$this->errors[$field] = $type;
+	}
 
 }
 

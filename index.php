@@ -1,8 +1,5 @@
 <?php
 	
-	// išjungiame klaidų išvedimą
-	error_reporting(0);
-
 	// pradedame sesiją
 	session_start();
 	
@@ -15,6 +12,21 @@
 	// iškviečiame prisijungimo prie duomenų bazės klasę
 	include 'utils/mysql.class.php';
 	
+	// iškviečiame validatoriaus klasę
+	include 'utils/validator.class.php';
+
+	// iškviečiame puslapiavimo klasę
+	include 'utils/paging.class.php';
+
+	// iškviečiame visų modulių užklausų klases
+	include 'libraries/brands.class.php';
+	include 'libraries/cars.class.php';
+	include 'libraries/contracts.class.php';
+	include 'libraries/customers.class.php';
+	include 'libraries/employees.class.php';
+	include 'libraries/models.class.php';
+	include 'libraries/services.class.php';
+
 	// nustatome pasirinktą modulį
 	$module = '';
 	if(isset($_GET['module'])) {
@@ -42,7 +54,7 @@
 	// nustatome, kurį valdiklį įtraukti šablone main.tpl.php
     $actionFile = "";
 	if(!empty($module) && !empty($action)) {
-		$actionFile = "controls/{$module}_{$action}.php";
+		$actionFile = "controls/{$module}/{$module}_{$action}.php";
 	} else {
 		// rodome, jeigu nenurodyti parametrai
 		$actionFile = "controls/home_page.php";

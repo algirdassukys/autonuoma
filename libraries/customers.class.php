@@ -23,9 +23,9 @@ class customers {
 	public function getCustomer($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT *
-					FROM `{$this->klientai_lentele}`
-					WHERE `asmens_kodas`='{$id}'";
+		$query = "SELECT *
+				FROM `{$this->klientai_lentele}`
+				WHERE `asmens_kodas`='{$id}'";
 		$data = mysql::select($query);
 		
 		//
@@ -46,7 +46,6 @@ class customers {
 			$offset = mysql::escapeFieldForSQL($offset);
 		}
 		
-		
 		$limitOffsetString = "";
 		if(isset($limit)) {
 			$limitOffsetString .= " LIMIT {$limit}";
@@ -55,8 +54,9 @@ class customers {
 			$limitOffsetString .= " OFFSET {$offset}";
 		}
 		
-		$query = "  SELECT *
-					FROM `{$this->klientai_lentele}`" . $limitOffsetString;
+		$query = "SELECT *
+				FROM `{$this->klientai_lentele}`
+				{$limitOffsetString}";
 		$data = mysql::select($query);
 		
 		//
@@ -68,8 +68,8 @@ class customers {
 	 * @return type
 	 */
 	public function getCustomersListCount() {
-		$query = "  SELECT COUNT(`asmens_kodas`) as `kiekis`
-					FROM `{$this->klientai_lentele}`";
+		$query = "SELECT COUNT(`asmens_kodas`) as `kiekis`
+				FROM `{$this->klientai_lentele}`";
 		$data = mysql::select($query);
 		
 		//
@@ -83,8 +83,8 @@ class customers {
 	public function deleteCustomer($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  DELETE FROM `{$this->klientai_lentele}`
-					WHERE `asmens_kodas`='{$id}'";
+		$query = "DELETE FROM `{$this->klientai_lentele}`
+				WHERE `asmens_kodas`='{$id}'";
 		mysql::query($query);
 	}
 	
@@ -95,13 +95,13 @@ class customers {
 	public function updateCustomer($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  UPDATE `{$this->klientai_lentele}`
-					SET    `vardas`='{$data['vardas']}',
-						   `pavarde`='{$data['pavarde']}',
-						   `gimimo_data`='{$data['gimimo_data']}',
-						   `telefonas`='{$data['telefonas']}',
-						   `epastas`='{$data['epastas']}'
-					WHERE `asmens_kodas`='{$data['asmens_kodas']}'";
+		$query = "UPDATE `{$this->klientai_lentele}`
+				SET `vardas`='{$data['vardas']}',
+					`pavarde`='{$data['pavarde']}',
+					`gimimo_data`='{$data['gimimo_data']}',
+					`telefonas`='{$data['telefonas']}',
+					`epastas`='{$data['epastas']}'
+				WHERE `asmens_kodas`='{$data['asmens_kodas']}'";
 		mysql::query($query);
 	}
 	
@@ -112,24 +112,19 @@ class customers {
 	public function insertCustomer($data) {
 		$data = mysql::escapeFieldsArrayForSQL($data);
 
-		$query = "  INSERT INTO `{$this->klientai_lentele}`
-								(
-									`asmens_kodas`,
-									`vardas`,
-									`pavarde`,
-									`gimimo_data`,
-									`telefonas`,
-									`epastas`
-								) 
-								VALUES
-								(
-									'{$data['asmens_kodas']}',
-									'{$data['vardas']}',
-									'{$data['pavarde']}',
-									'{$data['gimimo_data']}',
-									'{$data['telefonas']}',
-									'{$data['epastas']}'
-								)";
+		$query = "INSERT INTO `{$this->klientai_lentele}`
+						  (`asmens_kodas`,
+						   `vardas`,
+						   `pavarde`,
+						   `gimimo_data`,
+						   `telefonas`,
+						   `epastas`) 
+				VALUES      ('{$data['asmens_kodas']}',
+						   '{$data['vardas']}',
+						   '{$data['pavarde']}',
+						   '{$data['gimimo_data']}',
+						   '{$data['telefonas']}',
+						   '{$data['epastas']}')";
 		mysql::query($query);
 	}
 	
@@ -141,11 +136,11 @@ class customers {
 	public function getContractCountOfCustomer($id) {
 		$id = mysql::escapeFieldForSQL($id);
 
-		$query = "  SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
+		$query = "SELECT COUNT(`{$this->sutartys_lentele}`.`nr`) AS `kiekis`
 					FROM `{$this->klientai_lentele}`
 						INNER JOIN `{$this->sutartys_lentele}`
 							ON `{$this->klientai_lentele}`.`asmens_kodas`=`{$this->sutartys_lentele}`.`fk_klientas`
-					WHERE `{$this->klientai_lentele}`.`asmens_kodas`='{$id}'";
+				WHERE `{$this->klientai_lentele}`.`asmens_kodas`='{$id}'";
 		$data = mysql::select($query);
 		
 		//
