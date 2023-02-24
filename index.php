@@ -12,6 +12,9 @@
 	// iškviečiame prisijungimo prie duomenų bazės klasę
 	include 'utils/mysql.class.php';
 	
+	// iškviečiame validatoriaus klasę
+	include 'utils/validator.class.php';
+
 	// nustatome pasirinktą modulį
 	$module = '';
 	if(isset($_GET['module'])) {
@@ -39,7 +42,7 @@
 	// nustatome, kurį valdiklį įtraukti šablone main.tpl.php
     $actionFile = "";
 	if(!empty($module) && !empty($action)) {
-		$actionFile = "controls/{$module}_{$action}.php";
+		$actionFile = "controls/{$module}/{$module}_{$action}.php";
 	} else {
 		// rodome, jeigu nenurodyti parametrai
 		$actionFile = "controls/home_page.php";

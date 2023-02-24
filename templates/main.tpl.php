@@ -45,8 +45,8 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link <?php if($module == 'contract') { echo 'active'; } ?>" aria-current="page" href="index.php?module=contract&action=list">Sutartys</a></li>
-				    <li class="nav-item"><a class="nav-link <?php if($module == 'contract2') { echo 'active'; } ?>" aria-current="page" href="index.php?module=contract2&action=list">Sutartys2</a></li>
+                        <li class="nav-item"><a class="nav-link <?php if($module == 'contract') { echo 'active'; } ?>" aria-current="page" href="index.php?module=contract&action=list">Sutartys F2</a></li>
+				    <li class="nav-item"><a class="nav-link <?php if($module == 'contract2') { echo 'active'; } ?>" aria-current="page" href="index.php?module=contract2&action=list">Sutartys F3</a></li>
                         <li class="nav-item"><a class="nav-link <?php if($module == 'service') { echo 'active'; } ?>" href="index.php?module=service&action=list">Paslaugos</a></li>
                         <li class="nav-item"><a class="nav-link <?php if($module == 'customer') { echo 'active'; } ?>" href="index.php?module=customer&action=list">Klientai</a></li>
                         <li class="nav-item"><a class="nav-link <?php if($module == 'employee') { echo 'active'; } ?>" href="index.php?module=employee&action=list">Darbuotojai</a></li>
