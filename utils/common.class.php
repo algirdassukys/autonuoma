@@ -23,11 +23,13 @@ class common {
 	*/
 	public static function logToConsole($output) {
 		$js_code = '';
-		foreach($output as $val) {
-			$js_code .= 'console.log("' . $val . '");';
-		}
+		if($output) {
+			foreach($output as $val) {
+				$js_code .= 'console.log("' . $val . '");';
+			}
 
-		$js_code = '<script>' . $js_code . '</script>';
+			$js_code = '<script>' . $js_code . '</script>';
+		}
 		
 		echo $js_code;
 	}

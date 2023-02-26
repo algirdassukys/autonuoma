@@ -64,7 +64,9 @@
 	include 'templates/main.tpl.php';
 	
 	// spausdiname vykdytas užklausas į konsolę
-	common::logToConsole($_SESSION['queries']);
+	if(array_key_exists('queries', $_SESSION)) {
+		common::logToConsole($_SESSION['queries']);
+	}
 	
 	// išvalome vykdytų užklausų masyvą
 	$_SESSION['queries'] = array();
