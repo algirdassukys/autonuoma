@@ -62,7 +62,7 @@ if(!empty($_POST['submit'])) {
 				$serviceId = $tmp[0];
 				$priceFrom = $tmp[1];
 
-				$contractsObj->insertOrderedService($_POST['nr'], $serviceId, $priceFrom, $_POST['kaina'][$keyForm], $_POST['kiekis'][$keyForm]);
+				$contractsObj->insertOrderedService($_POST['nr'], $serviceId, $priceFrom, $_POST['paslaugos_kaina'][$keyForm], $_POST['paslaugos_kiekis'][$keyForm]);
 			}
 		}
 
@@ -90,8 +90,8 @@ if(!empty($_POST['submit'])) {
 				
 				$data['uzsakytos_paslaugos'][$i]['fk_paslauga'] = $serviceId;
 				$data['uzsakytos_paslaugos'][$i]['fk_kaina_galioja_nuo'] = $priceFrom;
-				$data['uzsakytos_paslaugos'][$i]['kaina'] = $_POST['kaina'][$key];
-				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['kiekis'][$key];
+				$data['uzsakytos_paslaugos'][$i]['kaina'] = $_POST['paslaugos_kaina'][$key];
+				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['paslaugos_kiekis'][$key];
 
 				$i++;
 			}

@@ -237,8 +237,8 @@
 								</select>
 							</div>
 
-							<div class="col-1"><input type="text" name="kaina[]" class="form-control" value="<?php echo $kaina; ?>" <?php echo $disabledAttr; ?> /></div>
-							<div class="col-1"><input type="text" name="kiekis[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
+							<div class="col-1"><input type="text" name="paslaugos_kaina[]" class="form-control" value="<?php echo $kaina; ?>" <?php echo $disabledAttr; ?> /></div>
+							<div class="col-1"><input type="text" name="paslaugos_kiekis[]" class="form-control" value="<?php echo $kiekis; ?>" <?php echo $disabledAttr; ?> /></div>
 							<div class="col-4"><a href="#" onclick="return false;" class="removeChild">šalinti</a></div>
 						</div>
 					<?php 
@@ -250,10 +250,6 @@
 			<a href="#" class="addChild">Pridėti</a>
 		</div>
 	</div>
-
-	<?php if(isset($data['id'])) { ?>
-			<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
-	<?php } ?>
 
 	<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
 

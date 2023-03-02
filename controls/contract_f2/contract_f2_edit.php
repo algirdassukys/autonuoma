@@ -82,14 +82,14 @@ if(!empty($_POST['submit'])) {
 
 				$found = false;
 				foreach($servicesFromDb as $serviceDb) {
-					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kaina'] == $_POST['kaina'][$keyForm] && $serviceDb['kiekis'] == $_POST['kiekis'][$keyForm]) {
+					if($serviceDb['fk_paslauga'] == $serviceId && $serviceDb['fk_kaina_galioja_nuo'] == $priceFrom && $serviceDb['kaina'] == $_POST['paslaugos_kaina'][$keyForm] && $serviceDb['kiekis'] == $_POST['paslaugos_kiekis'][$keyForm]) {
 						$found = true;
 					}
 				}
 
 				if(!$found) {
 					// įrašoma paslaugos kaina
-					$contractsObj->insertOrderedService($id, $serviceId, $priceFrom, $_POST['kaina'][$keyForm], $_POST['kiekis'][$keyForm]);
+					$contractsObj->insertOrderedService($id, $serviceId, $priceFrom, $_POST['paslaugos_kaina'][$keyForm], $_POST['paslaugos_kiekis'][$keyForm]);
 				}
 			}
 		}
@@ -115,8 +115,8 @@ if(!empty($_POST['submit'])) {
 				$data['uzsakytos_paslaugos'][$i]['fk_sutartis'] = $id;
 				$data['uzsakytos_paslaugos'][$i]['fk_paslauga'] = $serviceId;
 				$data['uzsakytos_paslaugos'][$i]['fk_kaina_galioja_nuo'] = $priceFrom;
-				$data['uzsakytos_paslaugos'][$i]['kaina'] = $_POST['kaina'][$key];
-				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['kiekis'][$key];
+				$data['uzsakytos_paslaugos'][$i]['kaina'] = $_POST['paslaugos_kaina'][$key];
+				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['paslaugos_kiekis'][$key];
 
 				$i++;
 			}
