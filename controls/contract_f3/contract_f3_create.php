@@ -53,23 +53,8 @@ if(!empty($_POST['submit'])) {
 			// įrašome naują sutartį
 			$contractsObj->insertContract($_POST);
 
-			// įrašome užsakytas paslaugas
-			foreach($_POST['paslauga'] as $keyForm => $serviceForm) {
-
-				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}
-				$tmp = explode("#", $serviceForm);
-				
-				$serviceId = $tmp[0];
-				$priceFrom = $tmp[1];
-				$price = $tmp[2];
-
-				$contractsObj->insertOrderedService($_POST['nr'], $serviceId, $priceFrom, $price, $_POST['kiekis'][$keyForm]);
-			}
-		}
-
-		// nukreipiame vartotoją į sutarčių puslapį
-		if($formErrors == null) {
-			common::redirect("index.php?module={$module}&action=list");
+			// nukreipiame vartotoją į sutarčių puslapį
+			common::redirect("index.php?module={$module}&action=edit&id={$_POST['nr']}");
 			die();
 		}
 	} else {
@@ -78,33 +63,8 @@ if(!empty($_POST['submit'])) {
 
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
-
-		$data['uzsakytos_paslaugos'] = array();
-		if(isset($_POST['paslauga'])) {
-			$i = 0;
-			foreach($_POST['paslauga'] as $key => $val) {
-				// gauname paslaugos id, galioja nuo ir kaina reikšmes {$price['fk_paslauga']}#{$price['galioja_nuo']}#{$price['kaina']}
-				$tmp = explode("#", $val);
-				
-				$serviceId = $tmp[0];
-				$priceFrom = $tmp[1];
-				$price = $tmp[2];
-				
-				$data['uzsakytos_paslaugos'][$i]['fk_paslauga'] = $serviceId;
-				$data['uzsakytos_paslaugos'][$i]['fk_kaina_galioja_nuo'] = $priceFrom;
-				$data['uzsakytos_paslaugos'][$i]['kaina'] = $price;
-				$data['uzsakytos_paslaugos'][$i]['kiekis'] = $_POST['kiekis'][$key];
-
-				$i++;
-			}
-		}
 	}
 }
-
-// į užsakytų paslaugų masyvo pradžią įtraukiame tuščią reikšmę, kad užsakytų paslaugų formoje
-// būtų visada išvedami paslėpti formos laukai, kuriuos galėtume kopijuoti ir pridėti norimą
-// kiekį paslaugų
-array_unshift($data['uzsakytos_paslaugos'], array());
 
 // įtraukiame šabloną
 include "templates/{$module}/{$module}_form.tpl.php";

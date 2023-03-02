@@ -52,6 +52,7 @@ if(!empty($_POST['submit'])) {
 
 		// laukų reikšmių kintamajam priskiriame įvestų laukų reikšmes
 		$data = $_POST;
+		$data['uzsakytos_paslaugos'] = $contractsObj->getOrderedServices($id);
 	}
 } else {
 	//  išrenkame elemento duomenis ir jais užpildome formos laukus.

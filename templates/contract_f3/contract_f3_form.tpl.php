@@ -185,39 +185,37 @@
 		<input type="text" id="dagalu_kiekis_grazinus" name="dagalu_kiekis_grazinus" class="form-control" value="<?php echo isset($data['dagalu_kiekis_grazinus']) ? $data['dagalu_kiekis_grazinus'] : ''; ?>">
 	</div>
 
-	<h4 class="mt-3">Papildomos paslaugos</h4>
-
-	<div class="d-flex flex-row-reverse gap-3">
-		<a href='index.php?module=<?php echo $module; ?>&action=service_create&contractId=<?php echo $id; ?>'>Nauja užsakyta paslauga</a>
-	</div>
-
-	<?php if(!empty($data['uzsakytos_paslaugos']) && sizeof($data['uzsakytos_paslaugos']) > 0) { ?>
-		<table class="table">
-			<tr>
-				<th>Paslauga</th>
-				<th>Kaina</th>
-				<th colspan="2">Kiekis</th>
-			</tr>
-			<?php
-				// suformuojame lentelę
-				foreach($data['uzsakytos_paslaugos'] as $key => $orderedService) {
-					echo
-						"<tr>"
-							. "<td>{$orderedService['pavadinimas']} {$orderedService['kaina']} EUR ({$orderedService['fk_kaina_galioja_nuo']})</td>"
-							. "<td>{$orderedService['kaina']}</td>"
-							. "<td>{$orderedService['kiekis']}</td>"
-							. "<td class='d-flex flex-row-reverse gap-2'>"
-							. "<a href='index.php?module=contract_f3&action=service_edit&contractId={$data['nr']}&serviceId={$orderedService['fk_paslauga']}&dateFrom={$orderedService['fk_kaina_galioja_nuo']}'>redaguoti</a>"
-							. "<a href='#' onclick='showOrderedServiceConfirmDialog(\"{$module}\", \"{$data['nr']}\", \"{$orderedService['fk_paslauga']}\", \"{$orderedService['fk_kaina_galioja_nuo']}\"); return false;'>šalinti</a>"
-							. "</td>"
-						. "</tr>";
-				}
-			?>
-		</table>
-	<?php } ?>
-
-	<?php if(isset($data['id'])) { ?>
-			<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+	<?php if(isset($data['nr'])) { ?>
+		<h4 class="mt-3">Papildomos paslaugos</h4>		
+	
+		<div class="d-flex flex-row-reverse gap-3">
+			<a href='index.php?module=<?php echo $module; ?>&action=service_create&contractId=<?php echo $id; ?>'>Nauja užsakyta paslauga</a>
+		</div>
+	
+		<?php if(!empty($data['uzsakytos_paslaugos']) && sizeof($data['uzsakytos_paslaugos']) > 0) { ?>
+			<table class="table">
+				<tr>
+					<th>Paslauga</th>
+					<th>Kaina</th>
+					<th colspan="2">Kiekis</th>
+				</tr>
+				<?php
+					// suformuojame lentelę
+					foreach($data['uzsakytos_paslaugos'] as $key => $orderedService) {
+						echo
+							"<tr>"
+								. "<td>{$orderedService['pavadinimas']} {$orderedService['kaina']} EUR ({$orderedService['fk_kaina_galioja_nuo']})</td>"
+								. "<td>{$orderedService['kaina']}</td>"
+								. "<td>{$orderedService['kiekis']}</td>"
+								. "<td class='d-flex flex-row-reverse gap-2'>"
+								. "<a href='index.php?module=contract_f3&action=service_edit&contractId={$data['nr']}&serviceId={$orderedService['fk_paslauga']}&dateFrom={$orderedService['fk_kaina_galioja_nuo']}'>redaguoti</a>"
+								. "<a href='#' onclick='showOrderedServiceConfirmDialog(\"{$module}\", \"{$data['nr']}\", \"{$orderedService['fk_paslauga']}\", \"{$orderedService['fk_kaina_galioja_nuo']}\"); return false;'>šalinti</a>"
+								. "</td>"
+							. "</tr>";
+					}
+				?>
+			</table>
+		<?php } ?>
 	<?php } ?>
 
 	<p class="required-note">* pažymėtus laukus užpildyti privaloma</p>
